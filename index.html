@@ -163,8 +163,6 @@
   .add-player-btn:hover{border-color:var(--accent);color:var(--accent);}
   .setup-hint{color:var(--ink-muted);font-size:12.5px;margin-top:6px;}
   .setup-side h3{color:var(--accent-2);margin:2px 0 10px;font-size:14px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.6px;}
-  .deck-stat-row{display:flex;justify-content:space-between;font-size:13.5px;padding:7px 0;border-bottom:1px dashed var(--line);color:var(--ink-secondary);}
-  .deck-stat-row b{color:var(--ink-primary);}
   .start-cta{display:flex;justify-content:center;margin-top:22px;}
   .start-cta .btn{font-size:16px;padding:14px 34px;}
 
@@ -366,6 +364,26 @@
   .rules-list li{font-size:12px;color:var(--ink-secondary);background:var(--surface-2);border-radius:8px;padding:6px 8px;}
   .rules-list .empty{color:var(--ink-muted);font-style:italic;}
 
+  /* ---------- Schätzfrage ---------- */
+  .est-q{font-size:16px;font-weight:800;line-height:1.35;color:var(--ink-primary);}
+  .est-unit{font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.6px;margin-top:5px;}
+  .est-turn{display:flex;align-items:center;gap:8px;font-size:14.5px;margin:14px 0 8px;}
+  .est-dot{width:11px;height:11px;border-radius:50%;flex:none;}
+  .est-progress{margin-left:auto;font-size:11.5px;color:var(--ink-muted);background:var(--surface-2);border-radius:99px;padding:2px 9px;}
+  .est-input{font-size:20px !important;font-weight:800;text-align:center;letter-spacing:.5px;}
+  .est-solution{margin:4px 0 12px;}
+  .est-result{display:flex;flex-direction:column;gap:6px;margin-bottom:4px;}
+  .est-row{
+    display:flex;align-items:center;gap:8px;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;
+  }
+  .est-row.best{border-color:var(--good);background:rgba(60,232,143,0.12);}
+  .est-row .est-name{font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .est-row .est-val{font-weight:800;font-variant-numeric:tabular-nums;}
+  .est-row .est-dev{color:var(--ink-muted);font-size:11.5px;font-variant-numeric:tabular-nums;min-width:52px;text-align:right;}
+  .est-row .est-pen{font-weight:800;min-width:42px;text-align:right;color:var(--accent);}
+  .est-row.best .est-pen{color:var(--good);}
+
   /* ---------- MODAL / END SCREEN ---------- */
   .overlay{position:fixed;inset:0;background:rgba(8,6,18,0.80);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;overflow-y:auto;overscroll-behavior:contain;}
   .overlay.show{display:flex;}
@@ -377,32 +395,6 @@
   .ranking .medal{width:22px;text-align:center;}
   .ranking .rname{flex:1;font-weight:700;font-size:14px;}
   .ranking .rsips{font-weight:800;color:var(--accent);}
-
-  /* ---------- PRINT VIEW ---------- */
-  #printScreen{display:none;}
-  .print-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
-  .print-sheet{background:#f4efe4;color:#1c1710;border-radius:14px;padding:22px;}
-  .rulebook h2{margin-top:0;}
-  .rulebook table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;}
-  .rulebook td, .rulebook th{border:1px solid #cfc4a8;padding:6px 8px;text-align:left;}
-  .cardback-preview{width:150px;height:210px;border-radius:12px;background:linear-gradient(160deg,#2a1f4d,#150f2a);border:2px solid #63e6ff;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#63e6ff;font-weight:800;margin:10px 0;}
-  .print-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;}
-  .print-card{
-    width:100%;aspect-ratio:63/88;border-radius:10px;border:1.5px solid #00000030;padding:9px;display:flex;flex-direction:column;
-    background:#fffdf7;break-inside:avoid;page-break-inside:avoid;
-  }
-  .print-card .pc-top{display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:800;text-transform:uppercase;}
-  .print-card .pc-icon{font-size:16px;}
-  .print-card .pc-text{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10.5px;font-weight:700;line-height:1.25;padding:4px 0;}
-  .print-card .pc-foot{font-size:7.5px;text-align:center;opacity:.6;font-weight:700;letter-spacing:.4px;}
-
-  @media print{
-    body{background:#fff !important;}
-    #setupScreen,#gameScreen,.topbar-actions,.print-toolbar,.overlay,#ageGateOverlay{display:none !important;}
-    #printScreen{display:block !important;}
-    .print-sheet{background:#fff;padding:0;}
-    .app{max-width:100%;padding:0;}
-  }
 
   /* ---------- FUSSZEILE & RECHTSTEXTE ---------- */
   .site-footer{
@@ -426,7 +418,6 @@
     background:rgba(255,207,77,0.12);border:1px solid rgba(255,207,77,0.4);color:var(--warning);
     border-radius:9px;padding:9px 11px;font-size:12.5px;line-height:1.5;margin:0 0 12px;
   }
-  @media print{ .site-footer{display:none !important;} }
 
   .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--surface-3);border:1px solid var(--line);padding:10px 18px;border-radius:999px;font-size:13px;box-shadow:0 8px 20px rgba(0,0,0,.4);z-index:80;opacity:0;transition:opacity .25s ease, transform .25s ease;pointer-events:none;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
@@ -531,7 +522,6 @@
       <div class="tag">das Trinkspiel mit Karten, Münze &amp; Chaos</div>
     </div>
     <div class="topbar-actions">
-      <button class="btn ghost small" id="btnShowPrintFromTop" style="display:none;" title="Kartenspiel &amp; Regelheft">🖨️<span class="btn-label"> Kartenspiel &amp; Regelheft</span></button>
       <button class="btn danger small" id="btnEndGame" style="display:none;" title="Spiel beenden">🏁<span class="btn-label"> Spiel beenden</span></button>
     </div>
   </div>
@@ -552,8 +542,7 @@
       </div>
     </div>
 
-    <div class="start-cta" style="flex-direction:column;gap:12px;">
-      <button class="btn ghost small" id="btnShowDeckInfo">📖 Was steckt im Deck?</button>
+    <div class="start-cta">
       <button class="btn primary" id="btnStartGame">🎉 Los geht's – Spiel starten</button>
     </div>
   </div>
@@ -602,34 +591,6 @@
           <ul class="log-list" id="logList"></ul>
         </details>
       </div>
-    </div>
-  </div>
-
-  <!-- ============ PRINT / EXPORT SCREEN ============ -->
-  <div id="printScreen">
-    <div class="print-toolbar">
-      <button class="btn ghost small" id="btnBackFromPrint">← Zurück zum Spiel</button>
-      <button class="btn primary small" id="btnDoPrint">🖨️ Jetzt drucken / als PDF speichern</button>
-    </div>
-    <div class="print-sheet">
-      <div class="rulebook">
-        <h2><span class="nix-wordmark" style="color:#c2185b;text-shadow:none;font-size:1.15em;">NIX<span class="lc">is</span>NIX</span> — Regelheft (Kartenspiel-Edition)</h2>
-        <p><b>Spieler:innen:</b> 2–12 · <b>Material:</b> 60 Karten, eine Münze, Getränke nach Wahl (alkoholfrei geht auch!).</p>
-        <p><b>Ziel:</b> Es gibt keinen Sieger — nur den, der es überlebt. Reihum wird eine Karte gezogen und sofort ausgeführt. Wer nicht mitmacht, trinkt zur Strafe 2 Schlücke extra.</p>
-        <h3 style="margin-bottom:4px;">Kartentypen</h3>
-        <table>
-          <tr><th>Typ</th><th>Anzahl</th><th>Was passiert</th></tr>
-          <tr><td>🥤 Trinkbefehl</td><td>20</td><td>Direkte Anweisung: du, alle, Nachbarn oder frei gewählte Mitspieler trinken.</td></tr>
-          <tr><td>🪙 Münze – Doppelt oder NIXisNIX</td><td>8</td><td>Kopf oder Zahl tippen und Münze werfen. Richtig = ein Gegner deiner Wahl trinkt doppelt. Falsch = du trinkst doppelt.</td></tr>
-          <tr><td>🤝 Wetten</td><td>8</td><td>Fordere jemanden zu einer Wette heraus (Armdrücken, Quiz, Würfel-Duell, …), setzt Schlücke ein, Verlierer trinkt.</td></tr>
-          <tr><td>🎭 Minispiel</td><td>16</td><td>Zufälliges Minispiel aus 18 Varianten: Pantomime, Reimschmiede, Wahrheit oder Pflicht, Zungenbrecher u.v.m.</td></tr>
-          <tr><td>🌀 NIXisNIX Twist</td><td>4</td><td>Chaoskarten: Regeln ändern sich, Plätze werden getauscht oder alle trinken gemeinsam.</td></tr>
-          <tr><td>📜 Neue Hausregel</td><td>4</td><td>Ab sofort gilt eine neue Dauerregel — wer sie bricht, trinkt.</td></tr>
-        </table>
-        <p style="font-size:12px;opacity:.75;">Alle Kartentexte der digitalen Version findest du unten zum Ausschneiden. Rückseite (einmal drucken, laminieren, für alle Karten verwenden):</p>
-        <div class="cardback-preview"><span class="nix-wordmark" style="color:var(--accent-2);font-size:22px;text-shadow:0 0 14px var(--glow-cyan);line-height:1.15;">NIX<br><span class="lc">is</span><br>NIX</span></div>
-      </div>
-      <div class="print-grid" id="printGrid"></div>
     </div>
   </div>
 
@@ -683,18 +644,6 @@
 <!-- Aktions-Popup: die Frage zur gezogenen Karte -->
 <div class="overlay action-overlay" id="actionOverlay">
   <div class="action-panel" id="actionPanel"></div>
-</div>
-
-<!-- Deck-Info: zeigt, was im Kartenstapel steckt -->
-<div class="overlay" id="deckInfoOverlay">
-  <div class="modal" style="max-width:460px;text-align:left;">
-    <h2 style="text-align:center;">📖 Was steckt im Deck?</h2>
-    <div class="deck-stat-row-list" id="deckStatRows"></div>
-    <p class="setup-hint" style="margin-top:14px;">Tipp: Nach dem Testen im Browser könnt ihr euch das komplette Deck auch als Kartenspiel & Regelheft zum Ausdrucken exportieren.</p>
-    <div class="action-buttons" style="justify-content:center;margin-top:6px;">
-      <button class="btn primary" id="btnCloseDeckInfo">Schließen</button>
-    </div>
-  </div>
 </div>
 
 <!-- Alters-Disclaimer: muss vor jeder Interaktion bestätigt werden -->
@@ -751,6 +700,7 @@ const CAT_META = {
   mini:   { label:'Minispiel',   icon:'🎭', color:'#c9a4ff' },
   twist:  { label:'NIXisNIX',    icon:'🌀', color:'#ff5fa2' },
   regel:  { label:'Hausregel',   icon:'📜', color:'#ff8a5b' },
+  schaetz:{ label:'Schätzfrage', icon:'📊', color:'#d9f27e' },
 };
 
 /* ---------- Kartentexte ---------- */
@@ -887,6 +837,45 @@ const MINIGAMES = [
     instructions:"Die aktive Person nennt drei Aussagen über sich – zwei wahr, eine gelogen. Wer falsch tippt, trinkt." },
 ];
 
+/* ---------- Schätzfragen ----------
+   answer = feste Lösung. answer:null bedeutet: die aktive Person trägt die
+   Lösung nach dem Schätzen selbst ein (für Fragen über die Runde). */
+
+const SCHAETZ_FRAGEN = [
+  { q:"Wie viele Knochen hat ein erwachsener Mensch?",                       a:206,    unit:"Knochen" },
+  { q:"Wie viele Tasten hat ein klassisches Klavier?",                       a:88,     unit:"Tasten" },
+  { q:"Wie viele Felder hat ein Schachbrett?",                               a:64,     unit:"Felder" },
+  { q:"Wie viele Sekunden hat ein Tag?",                                     a:86400,  unit:"Sekunden" },
+  { q:"Wie viele Punkte hat ein Würfel insgesamt (alle sechs Seiten)?",      a:21,     unit:"Punkte" },
+  { q:"Wie lang ist ein Marathon in Metern?",                                a:42195,  unit:"Meter" },
+  { q:"Wie hoch ist der Mount Everest in Metern?",                           a:8849,   unit:"Meter" },
+  { q:"Wie weit ist der Mond im Schnitt von der Erde entfernt (in km)?",     a:384400, unit:"Kilometer" },
+  { q:"Wie viele Zähne hat ein erwachsener Mensch mit Weisheitszähnen?",     a:32,     unit:"Zähne" },
+  { q:"Wie viele Herzen hat ein Oktopus?",                                   a:3,      unit:"Herzen" },
+  { q:"Wie viele Halswirbel hat eine Giraffe?",                              a:7,      unit:"Wirbel" },
+  { q:"Wie viele Mitgliedsstaaten hat die Europäische Union?",               a:27,     unit:"Staaten" },
+  { q:"Wie viele Karten hat ein Skatblatt?",                                 a:32,     unit:"Karten" },
+  { q:"Wie viele Spieler:innen stehen bei einem Fußballspiel auf dem Feld?", a:22,     unit:"Personen" },
+  { q:"Wie viele Streifen hat die Flagge der USA?",                          a:13,     unit:"Streifen" },
+  { q:"Wie viele Nullen hat eine Milliarde?",                                a:9,      unit:"Nullen" },
+  { q:"Wie viele Grad hat die Winkelsumme im Dreieck?",                      a:180,    unit:"Grad" },
+  { q:"Wie viele Knöpfe hat ein Standard-Rubik's-Cube pro Seite?",           a:9,      unit:"Felder" },
+  /* Lösung wird am Tisch ermittelt */
+  { q:"Wie viele Buchstaben haben alle Vornamen am Tisch zusammen?",         a:null,   unit:"Buchstaben" },
+  { q:"Wie viele Getränke stehen gerade auf dem Tisch?",                     a:null,   unit:"Getränke" },
+  { q:"Wie viele Schlücke hat die Person mit den meisten bisher intus?",     a:null,   unit:"Schlücke" },
+  { q:"Wie alt ist die älteste Person am Tisch?",                            a:null,   unit:"Jahre" },
+];
+
+const SCHAETZ_CARDS = [
+  { text:"📊 Schätzfrage! Alle tippen reihum eine Zahl." },
+  { text:"Zahlen-Duell: Wer liegt am weitesten daneben, trinkt am meisten." },
+  { text:"Schätzen statt wissen — alle geben eine Zahl ab." },
+  { text:"Reihum schätzen! Die beste Schätzung bleibt verschont." },
+  { text:"Wer hat das beste Zahlengefühl? Alle tippen." },
+  { text:"Schätzrunde: Danach wird aufgelöst, wer am weitesten weg lag." },
+];
+
 /* ---------- Deck-Aufbau ---------- */
 
 function buildDeckTemplates(){
@@ -897,6 +886,7 @@ function buildDeckTemplates(){
   MINI_CARDS.forEach(c => list.push({ ...c, cat:'mini', kind:'minigame' }));
   TWIST_CARDS.forEach(c => list.push({ ...c, cat:'twist' }));
   REGEL_CARDS.forEach(c => list.push({ ...c, cat:'regel', kind:'newrule' }));
+  SCHAETZ_CARDS.forEach(c => list.push({ ...c, cat:'schaetz', kind:'estimate' }));
   list.forEach((c,i) => { c.uid = 'card_' + i; c.meta = CAT_META[c.cat]; });
   return list;
 }
@@ -973,7 +963,6 @@ function restoreSavedGame(d){
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
-  document.getElementById('btnShowPrintFromTop').style.display = 'inline-flex';
   renderAll();
 }
 
@@ -1140,7 +1129,6 @@ function startGame(){
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
-  document.getElementById('btnShowPrintFromTop').style.display = 'inline-flex';
   renderAll();
   addLogNarrative('🎉 Spiel gestartet mit ' + state.players.length + ' Spieler:innen.');
   saveState();
@@ -1323,6 +1311,7 @@ function openActionForCard(card){
     case 'bet': renderBetPanel(card, body); break;
     case 'minigame': renderMinigamePanel(card, body); break;
     case 'newrule': renderNewRulePanel(card, body); break;
+    case 'estimate': renderEstimatePanel(card, body); break;
     default: {
       const btn = document.createElement('button');
       btn.className = 'btn primary'; btn.textContent = 'Weiter';
@@ -1790,6 +1779,138 @@ function renderMinigamePanel(card, body){
   };
 }
 
+/* ---------- Schätzfrage ----------
+   Alle geben reihum eine Zahl ein — bereits abgegebene Schätzungen bleiben
+   verdeckt, damit auf einem gemeinsamen Handy niemand abschreiben kann.
+   Danach wird aufgelöst: die schlechteste Schätzung trinkt 3, die
+   zweitschlechteste 2, die drittschlechteste 1. Die beste bleibt verschont;
+   gleiche Abweichungen bekommen die gleiche Strafe. */
+
+function renderEstimatePanel(card, body){
+  const frage = pick(SCHAETZ_FRAGEN);
+  const order = state.players.slice(state.currentIndex).concat(state.players.slice(0, state.currentIndex));
+  const guesses = [];
+  let step = 0;
+
+  const qBox = document.createElement('div'); qBox.className = 'prompt-box';
+  qBox.innerHTML = `<div class="est-q">${escapeHtml(frage.q)}</div>`
+    + `<div class="est-unit">Antwort in: ${escapeHtml(frage.unit)}</div>`;
+  body.appendChild(qBox);
+
+  const stage = document.createElement('div');
+  body.appendChild(stage);
+
+  function askNext(){
+    stage.innerHTML = '';
+    if(step >= order.length){ askSolution(); return; }
+    const p = order[step];
+    const head = document.createElement('div'); head.className = 'est-turn';
+    head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
+      + `<b>${escapeHtml(p.name)}</b> ist dran`
+      + `<span class="est-progress">${step + 1} / ${order.length}</span>`;
+    stage.appendChild(head);
+
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.inputMode = 'decimal'; inp.className = 'styled-input est-input';
+    inp.placeholder = 'Deine Schätzung …';
+    stage.appendChild(inp);
+
+    const hint = document.createElement('div'); hint.className = 'reveal-hint';
+    hint.textContent = 'Gerät weitergeben — die anderen Schätzungen bleiben verdeckt.';
+    stage.appendChild(hint);
+
+    const acts = document.createElement('div'); acts.className = 'action-buttons';
+    const btn = document.createElement('button'); btn.className = 'btn primary';
+    btn.textContent = step === order.length - 1 ? '✅ Fertig' : '➡️ Weiter';
+    btn.disabled = true;
+    acts.appendChild(btn); stage.appendChild(acts);
+
+    const valid = () => inp.value.trim() !== '' && isFinite(parseFloat(inp.value));
+    inp.addEventListener('input', () => { btn.disabled = !valid(); });
+    inp.addEventListener('keydown', e => { if(e.key === 'Enter' && valid()) btn.click(); });
+    btn.onclick = () => {
+      if(!valid()) return;
+      guesses.push({ player: p, value: parseFloat(inp.value) });
+      step++; askNext();
+    };
+    setTimeout(() => inp.focus(), 30);
+  }
+
+  function askSolution(){
+    if(frage.a !== null && frage.a !== undefined){ reveal(frage.a); return; }
+    stage.innerHTML = '';
+    const head = document.createElement('div'); head.className = 'est-turn';
+    head.innerHTML = '🔍 <b>Auflösung eintragen</b>';
+    stage.appendChild(head);
+    const info = document.createElement('div'); info.className = 'free-total';
+    info.textContent = 'Ermittelt die richtige Zahl am Tisch und tragt sie hier ein.';
+    stage.appendChild(info);
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.inputMode = 'decimal'; inp.className = 'styled-input est-input';
+    inp.placeholder = 'Richtige Zahl …';
+    stage.appendChild(inp);
+    const acts = document.createElement('div'); acts.className = 'action-buttons';
+    const btn = document.createElement('button'); btn.className = 'btn primary';
+    btn.textContent = '🎯 Auflösen'; btn.disabled = true;
+    acts.appendChild(btn); stage.appendChild(acts);
+    const valid = () => inp.value.trim() !== '' && isFinite(parseFloat(inp.value));
+    inp.addEventListener('input', () => { btn.disabled = !valid(); });
+    inp.addEventListener('keydown', e => { if(e.key === 'Enter' && valid()) btn.click(); });
+    btn.onclick = () => { if(valid()) reveal(parseFloat(inp.value)); };
+    setTimeout(() => inp.focus(), 30);
+  }
+
+  function fmt(n){
+    return Number.isInteger(n) ? n.toLocaleString('de-DE') : n.toLocaleString('de-DE', { maximumFractionDigits: 2 });
+  }
+
+  function reveal(solution){
+    stage.innerHTML = '';
+    const rows = guesses.map(g => ({ ...g, dev: Math.abs(g.value - solution) }));
+    const sorted = rows.slice().sort((a, b) => b.dev - a.dev);   // schlechteste zuerst
+    const bestDev = Math.min.apply(null, rows.map(r => r.dev));
+    const PEN = [3, 2, 1];
+    let rank = 0;
+    sorted.forEach((row, i) => {
+      if(i > 0 && row.dev !== sorted[i-1].dev) rank = i;
+      row.pen = (row.dev === bestDev) ? 0 : (PEN[rank] || 0);
+    });
+
+    const sol = document.createElement('div'); sol.className = 'prompt-box est-solution';
+    sol.innerHTML = `<div class="est-unit">Richtige Antwort</div>`
+      + `<div class="word">${fmt(solution)} ${escapeHtml(frage.unit)}</div>`;
+    stage.appendChild(sol);
+
+    const list = document.createElement('div'); list.className = 'est-result';
+    sorted.slice().reverse().forEach(row => {
+      const el = document.createElement('div');
+      el.className = 'est-row' + (row.dev === bestDev ? ' best' : '');
+      el.innerHTML = `<span class="est-dot" style="background:${row.player.color}"></span>`
+        + `<span class="est-name">${escapeHtml(row.player.name)}</span>`
+        + `<span class="est-val">${fmt(row.value)}</span>`
+        + `<span class="est-dev">±${fmt(row.dev)}</span>`
+        + `<span class="est-pen">${row.pen > 0 ? row.pen + ' 🍺' : (row.dev === bestDev ? '🏆' : '–')}</span>`;
+      list.appendChild(el);
+    });
+    stage.appendChild(list);
+
+    const acts = document.createElement('div'); acts.className = 'action-buttons';
+    const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen';
+    btn.onclick = () => {
+      sorted.forEach(row => {
+        if(row.pen > 0) addSips(row.player.id, row.pen, 'Schätzfrage: ' + frage.q);
+      });
+      const winner = sorted[sorted.length - 1];
+      addLogNarrative('📊 ' + frage.q + ' Richtig: ' + fmt(solution) + ' ' + frage.unit
+        + '. Beste Schätzung: ' + winner.player.name + ' (' + fmt(winner.value) + ').');
+      finishTurn();
+    };
+    acts.appendChild(btn); stage.appendChild(acts);
+  }
+
+  askNext();
+}
+
 function renderNewRulePanel(card, body){
   const available = RULES.filter(r => !state.activeRules.includes(r));
   const rule = available.length ? pick(available) : pick(RULES);
@@ -1816,34 +1937,6 @@ function endGame(){
   list.innerHTML = sorted.map((p, i) => `<li><span class="medal">${medals[i] || '🍺'}</span><span class="rname" style="color:${p.color}">${escapeHtml(p.name)}</span><span class="rsips">${p.sips} Schlücke</span></li>`).join('');
   document.getElementById('endOverlay').classList.add('show');
 }
-
-/* ---------- Print / Kartenspiel-Export ---------- */
-
-function buildPrintGrid(){
-  const grid = document.getElementById('printGrid');
-  grid.innerHTML = DECK_TEMPLATE.map(c => `
-    <div class="print-card" style="border-color:${c.meta.color}">
-      <div class="pc-top" style="color:${c.meta.color}"><span>${c.meta.label}</span><span class="pc-icon">${c.meta.icon}</span></div>
-      <div class="pc-text">${escapeHtml(c.text)}</div>
-      <div class="pc-foot nix-wordmark" style="color:#8a2352;text-shadow:none;font-size:8.5px;">NIX<span class="lc">is</span>NIX</div>
-    </div>
-  `).join('');
-}
-
-/* ---------- Deck-Info ---------- */
-
-function renderDeckInfo(){
-  const counts = {};
-  DECK_TEMPLATE.forEach(c => { counts[c.cat] = (counts[c.cat]||0) + 1; });
-  const order = ['trink','muenze','wette','mini','twist','regel'];
-  const rows = order.map(cat => `
-    <div class="deck-stat-row"><span>${CAT_META[cat].icon} ${escapeHtml(CAT_META[cat].label)}-Karten</span><b>${counts[cat]||0}</b></div>
-  `).join('') + `
-    <div class="deck-stat-row" style="border-bottom:none;"><span><b>Gesamt</b></span><b>${DECK_TEMPLATE.length}</b></div>
-  `;
-  document.getElementById('deckStatRows').innerHTML = rows;
-}
-
 
 /* ---------- Rechtstexte ----------
    Die mit [ ... ] markierten Stellen müssen vor der Veröffentlichung
@@ -1957,14 +2050,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnStartGame').addEventListener('click', startGame);
   document.getElementById('deckPile').addEventListener('click', drawCard);
 
-  document.getElementById('btnShowDeckInfo').addEventListener('click', () => {
-    renderDeckInfo();
-    document.getElementById('deckInfoOverlay').classList.add('show');
-  });
-  document.getElementById('btnCloseDeckInfo').addEventListener('click', () => {
-    document.getElementById('deckInfoOverlay').classList.remove('show');
-  });
-
   document.getElementById('btnImpressum').addEventListener('click', () => openLegal('impressum'));
   document.getElementById('btnDatenschutz').addEventListener('click', () => openLegal('datenschutz'));
   document.getElementById('btnCloseLegal').addEventListener('click', () => {
@@ -1979,21 +2064,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('endOverlay').classList.remove('show');
     document.getElementById('gameScreen').style.display = 'none';
     document.getElementById('btnEndGame').style.display = 'none';
-    document.getElementById('btnShowPrintFromTop').style.display = 'none';
     document.getElementById('setupScreen').style.display = 'block';
   });
-
-  document.getElementById('btnShowPrintFromTop').addEventListener('click', () => {
-    buildPrintGrid();
-    document.getElementById('setupScreen').style.display = 'none';
-    document.getElementById('gameScreen').style.display = 'none';
-    document.getElementById('printScreen').style.display = 'block';
-  });
-  document.getElementById('btnBackFromPrint').addEventListener('click', () => {
-    document.getElementById('printScreen').style.display = 'none';
-    document.getElementById('gameScreen').style.display = 'block';
-  });
-  document.getElementById('btnDoPrint').addEventListener('click', () => window.print());
 });
 </script>
 </body>
