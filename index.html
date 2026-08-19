@@ -3,6 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="NIXisNIX — das Trinkspiel mit Karten, Münze und Chaos. 60 Karten, 18 Minispiele, für 2 bis 12 Spieler:innen. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="theme-color" content="#0d0b18">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+
+<!-- Vorschau beim Teilen (WhatsApp, Signal, Telegram, Facebook …) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NIXisNIX">
+<meta property="og:title" content="NIXisNIX — Das Trinkspiel">
+<meta property="og:description" content="60 Karten, 18 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta property="og:image" content="nixisnix-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NIXisNIX — Das Trinkspiel">
+<meta name="twitter:description" content="60 Karten, 18 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="twitter:image" content="nixisnix-preview.png">
 <title>NIXisNIX – Das Trinkspiel</title>
 <style>
   :root{
@@ -175,9 +193,9 @@
 
   .player-card .info{flex:1;min-width:0;}
   .player-card .name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .player-card .turn-tag{font-size:10.5px;color:var(--accent);font-weight:700;}
+  .player-card .turn-tag{font-size:11.5px;color:var(--accent);font-weight:700;}
   .player-card .sips{font-size:19px;font-weight:800;min-width:32px;text-align:right;flex:none;}
-  .player-card .sips small{display:block;font-size:9px;color:var(--ink-muted);font-weight:600;text-align:right;white-space:nowrap;}
+  .player-card .sips small{display:block;font-size:11px;color:var(--ink-muted);font-weight:600;text-align:right;white-space:nowrap;}
 
   .center-col{display:flex;flex-direction:column;align-items:center;gap:16px;}
   .deck-zone{display:flex;align-items:center;justify-content:center;gap:34px;flex-wrap:wrap;padding:26px 10px;}
@@ -195,7 +213,7 @@
   .deck-pile:hover{transform:translateY(-4px) scale(1.02);}
   .deck-pile:active{transform:translateY(0) scale(0.99);}
   .deck-pile .dpile-logo{font-size:16px;letter-spacing:1px;}
-  .deck-pile .dpile-sub{font-size:11px;color:#a99ddb;}
+  .deck-pile .dpile-sub{font-size:12px;color:#a99ddb;}
   .deck-pile .dpile-count{font-size:12px;color:#7d72ab;margin-top:6px;}
   .deck-pile.disabled{opacity:.55;cursor:default;}
 
@@ -336,7 +354,7 @@
   .fold[open] > summary::after{transform:rotate(180deg);}
   .fold > summary:hover{color:var(--accent);}
   .fold .fold-count{
-    font-size:10.5px;color:var(--ink-muted);background:var(--surface-2);
+    font-size:11.5px;color:var(--ink-muted);background:var(--surface-2);
     border-radius:99px;padding:2px 7px;letter-spacing:0;font-weight:700;
   }
   .fold > *:not(summary){padding-bottom:10px;}
@@ -386,6 +404,30 @@
     .app{max-width:100%;padding:0;}
   }
 
+  /* ---------- FUSSZEILE & RECHTSTEXTE ---------- */
+  .site-footer{
+    margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+    font-size:12px;color:var(--ink-muted);
+  }
+  .link-btn{
+    background:none;border:none;padding:2px 0;font-size:12px;color:var(--ink-secondary);
+    text-decoration:underline;text-underline-offset:3px;font-family:inherit;
+  }
+  .link-btn:hover{color:var(--accent);}
+  .dot-sep{opacity:.5;}
+  .footer-note{opacity:.8;}
+  .legal-modal{max-width:560px;text-align:left;}
+  .legal-modal h2{text-align:center;}
+  .legal-body{max-height:62vh;overflow-y:auto;overscroll-behavior:contain;padding-right:4px;}
+  .legal-body h3{font-size:13px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.6px;margin:16px 0 6px;}
+  .legal-body p{font-size:13.5px;line-height:1.6;color:var(--ink-secondary);margin:0 0 8px;}
+  .legal-body .todo{
+    background:rgba(255,207,77,0.12);border:1px solid rgba(255,207,77,0.4);color:var(--warning);
+    border-radius:9px;padding:9px 11px;font-size:12.5px;line-height:1.5;margin:0 0 12px;
+  }
+  @media print{ .site-footer{display:none !important;} }
+
   .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--surface-3);border:1px solid var(--line);padding:10px 18px;border-radius:999px;font-size:13px;box-shadow:0 8px 20px rgba(0,0,0,.4);z-index:80;opacity:0;transition:opacity .25s ease, transform .25s ease;pointer-events:none;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
 
@@ -407,21 +449,23 @@
     .deck-zone{padding:2px 0;gap:0;}
     .deck-pile{width:132px;height:184px;gap:3px;}
     .deck-pile .dpile-logo{font-size:14px;}
-    .deck-pile .dpile-sub{font-size:10px;}
-    .deck-pile .dpile-count{font-size:11px;margin-top:3px;}
+    .deck-pile .dpile-sub{font-size:11.5px;}
+    .deck-pile .dpile-count{font-size:12px;margin-top:3px;}
     .turn-banner .who{font-size:11.5px;}
     .turn-banner .name{font-size:20px;}
 
     /* Spieler:innen zweispaltig statt untereinander */
     .players-panel{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
     .player-card{padding:7px 8px;gap:7px;border-radius:11px;}
-    .player-card .name{font-size:12.5px;}
-    .player-card .turn-tag{font-size:9px;}
-    .player-card .sips{font-size:16px;min-width:24px;}
-    .player-card .sips small{font-size:8px;}
+    .player-card .name{font-size:13px;}
+    .player-card .turn-tag{font-size:11px;}
+    .player-card .sips{font-size:17px;min-width:26px;}
+    .player-card .sips small{font-size:10.5px;}
     .player-card .glass-svg{width:22px;height:40px;}
 
     .topbar{margin-bottom:10px;gap:8px;}
+    .site-footer{margin-top:18px;padding-top:11px;font-size:11.5px;gap:6px;}
+    .site-footer .footer-note{flex-basis:100%;text-align:center;}
   }
 
   /* ---------- NUR HANDY: Bottom-Sheet & Symbol-Buttons ---------- */
@@ -440,7 +484,8 @@
     .topbar-actions .btn.small{padding:8px 10px;font-size:14px;}
     .players-panel{gap:6px;}
     .player-card{padding:6px 7px;gap:6px;}
-    .player-card .name{font-size:12px;}
+    .player-card .name{font-size:12.5px;}
+    .player-card .sips small{font-size:10px;}
   }
 
   /* Größere Touch-Ziele auf Touchscreens (Handy/Tablet) — bewusst am Ende,
@@ -588,6 +633,14 @@
     </div>
   </div>
 
+  <footer class="site-footer">
+    <button class="link-btn" id="btnImpressum">Impressum</button>
+    <span class="dot-sep">·</span>
+    <button class="link-btn" id="btnDatenschutz">Datenschutz</button>
+    <span class="dot-sep">·</span>
+    <span class="footer-note">Bitte verantwortungsvoll trinken. Ab 18.</span>
+  </footer>
+
 </div>
 
 <!-- End game overlay -->
@@ -599,6 +652,30 @@
     <div class="action-buttons" style="justify-content:center;">
       <button class="btn ghost" id="btnCloseEnd">Weiterspielen</button>
       <button class="btn primary" id="btnNewGame">🔄 Neues Spiel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rechtstexte -->
+<div class="overlay" id="legalOverlay">
+  <div class="modal legal-modal">
+    <h2 id="legalTitle">Impressum</h2>
+    <div class="legal-body" id="legalBody"></div>
+    <div class="action-buttons" style="justify-content:center;margin-top:14px;">
+      <button class="btn primary" id="btnCloseLegal">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fortsetzen-Abfrage nach dem Neuladen -->
+<div class="overlay" id="resumeOverlay">
+  <div class="modal">
+    <div style="font-size:40px;line-height:1;margin-bottom:6px;">🎲</div>
+    <h2>Weiterspielen?</h2>
+    <p>Es läuft noch ein Spiel mit <b id="resumeInfo">–</b>. Möchtet ihr da weitermachen?</p>
+    <div class="action-buttons" style="justify-content:center;margin-top:16px;">
+      <button class="btn ghost" id="btnDiscardGame">🔄 Neues Spiel</button>
+      <button class="btn primary" id="btnResumeGame">▶️ Weiterspielen</button>
     </div>
   </div>
 </div>
@@ -836,6 +913,79 @@ const state = {
   log: [],
 };
 
+/* ---------- Spielstand sichern & wiederherstellen ----------
+   Läuft komplett im Browser (localStorage), es verlässt nichts das Gerät.
+   Jeder Zugriff ist abgesichert: Ist Speichern nicht möglich (Privatmodus,
+   deaktivierter Speicher), läuft das Spiel unverändert weiter — nur ohne
+   Fortsetzen nach dem Neuladen. */
+const SAVE_KEY = 'nixisnix.game.v1';
+const AGE_KEY  = 'nixisnix.age.v1';
+
+function storageOk(){
+  try { const k='__nix_test__'; localStorage.setItem(k,'1'); localStorage.removeItem(k); return true; }
+  catch(e){ return false; }
+}
+const HAS_STORAGE = storageOk();
+
+function saveState(){
+  if(!HAS_STORAGE || state.players.length === 0) return;
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      v: 1,
+      players: state.players,
+      currentIndex: state.currentIndex,
+      deck: state.deck.map(c => c.uid),
+      discard: state.discard.map(c => c.uid),
+      activeRules: state.activeRules,
+      log: state.log.slice(0, 100),
+    }));
+  } catch(e){ /* z.B. Speicher voll — Spiel läuft trotzdem weiter */ }
+}
+
+function clearSavedGame(){
+  if(!HAS_STORAGE) return;
+  try { localStorage.removeItem(SAVE_KEY); } catch(e){}
+}
+
+function readSavedGame(){
+  if(!HAS_STORAGE) return null;
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return null;
+    const d = JSON.parse(raw);
+    if(!d || d.v !== 1 || !Array.isArray(d.players) || d.players.length < 2) return null;
+    return d;
+  } catch(e){ return null; }
+}
+
+function restoreSavedGame(d){
+  const byUid = {};
+  DECK_TEMPLATE.forEach(c => { byUid[c.uid] = c; });
+  const toCards = ids => (Array.isArray(ids) ? ids.map(u => byUid[u]).filter(Boolean) : []);
+  state.players      = d.players;
+  state.currentIndex = Math.min(d.currentIndex || 0, d.players.length - 1);
+  state.deck         = toCards(d.deck);
+  state.discard      = toCards(d.discard);
+  state.activeRules  = Array.isArray(d.activeRules) ? d.activeRules : [];
+  state.log          = Array.isArray(d.log) ? d.log : [];
+  // Sicherheitsnetz: ohne Karten im Stapel wäre das Spiel nicht spielbar
+  if(state.deck.length === 0 && state.discard.length === 0) state.deck = shuffle(DECK_TEMPLATE);
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+  document.getElementById('btnEndGame').style.display = 'inline-flex';
+  document.getElementById('btnShowPrintFromTop').style.display = 'inline-flex';
+  renderAll();
+}
+
+function setAgeConfirmed(){
+  if(!HAS_STORAGE) return;
+  try { localStorage.setItem(AGE_KEY, '1'); } catch(e){}
+}
+function isAgeConfirmed(){
+  if(!HAS_STORAGE) return false;
+  try { return localStorage.getItem(AGE_KEY) === '1'; } catch(e){ return false; }
+}
+
 function shuffle(arr){
   const a = arr.slice();
   for(let i = a.length - 1; i > 0; i--){
@@ -869,10 +1019,12 @@ function addSips(playerId, amount, reason){
   renderPlayers();
   renderLog();
   bumpGlass(playerId);
+  saveState();
 }
 function addLogNarrative(text){
   state.log.unshift({ text: escapeHtml(text) });
   renderLog();
+  saveState();
 }
 
 function bumpGlass(playerId){
@@ -991,6 +1143,7 @@ function startGame(){
   document.getElementById('btnShowPrintFromTop').style.display = 'inline-flex';
   renderAll();
   addLogNarrative('🎉 Spiel gestartet mit ' + state.players.length + ' Spieler:innen.');
+  saveState();
 }
 
 /* ---------- Render: Spieler, Regeln, Log ---------- */
@@ -1074,6 +1227,7 @@ function finishTurn(){
   document.getElementById('actionPanel').innerHTML = '';
   state.currentIndex = (state.currentIndex + 1) % state.players.length;
   renderPlayers();
+  saveState();
   const flip = document.getElementById('flipCard');
   setTimeout(() => flip.classList.remove('flipped'), 250);
 }
@@ -1690,11 +1844,97 @@ function renderDeckInfo(){
   document.getElementById('deckStatRows').innerHTML = rows;
 }
 
+
+/* ---------- Rechtstexte ----------
+   Die mit [ ... ] markierten Stellen müssen vor der Veröffentlichung
+   durch echte Angaben ersetzt werden. */
+
+const LEGAL_TEXTS = {
+  impressum: {
+    title: 'Impressum',
+    html: `
+      <div class="todo">⚠️ Vor der Veröffentlichung ausfüllen: Ersetze alle Angaben in eckigen Klammern durch deine echten Daten. Eine Postfachadresse reicht nicht — es muss eine ladungsfähige Anschrift sein.</div>
+      <h3>Angaben gemäß § 5 DDG</h3>
+      <p>[Vor- und Nachname]<br>
+      [Straße und Hausnummer]<br>
+      [PLZ und Ort]<br>
+      Deutschland</p>
+      <h3>Kontakt</h3>
+      <p>E-Mail: [deine@email.de]<br>
+      Telefon: [optional, aber ein zweiter schneller Kontaktweg ist Pflicht]</p>
+      <h3>Verantwortlich für den Inhalt</h3>
+      <p>[Vor- und Nachname], Anschrift wie oben.</p>
+      <h3>Haftung für Inhalte</h3>
+      <p>Die Inhalte dieser Seite wurden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität wird jedoch keine Gewähr übernommen.</p>
+      <h3>Hinweis zum Spiel</h3>
+      <p>NIXisNIX ist ein Partyspiel für Erwachsene ab 18 Jahren. Alle Trinkaufforderungen im Spiel lassen sich ebenso gut mit alkoholfreien Getränken erfüllen. Die Teilnahme erfolgt auf eigene Verantwortung; für gesundheitliche Folgen übernehmen wir keine Haftung.</p>
+      <h3>Verwendete Schriftart</h3>
+      <p>Schriftart „Progo“ von JVMIYO, freie Lizenz für private und kommerzielle Nutzung.</p>
+    `
+  },
+  datenschutz: {
+    title: 'Datenschutzerklärung',
+    html: `
+      <div class="todo">⚠️ Vor der Veröffentlichung ausfüllen: Name und Kontaktdaten in eckigen Klammern ergänzen. Der Text ist auf GitHub Pages als Hoster zugeschnitten — bei einem anderen Anbieter den Abschnitt „Hosting“ anpassen.</div>
+      <h3>Verantwortlich</h3>
+      <p>[Vor- und Nachname]<br>[Anschrift]<br>E-Mail: [deine@email.de]</p>
+      <h3>Das Wichtigste vorweg</h3>
+      <p>Dieses Spiel läuft vollständig in deinem Browser. Es gibt keinen Server, der Spielstände verarbeitet, keine Cookies, kein Tracking, keine Analyse-Werkzeuge, keine Werbung und keine Inhalte von fremden Servern. Spielernamen und Schluckzähler verlassen dein Gerät nicht.</p>
+      <h3>Lokale Speicherung auf deinem Gerät</h3>
+      <p>Damit ein laufendes Spiel nach dem Neuladen fortgesetzt werden kann, speichert die Seite den Spielstand (Namen, Schluckzähler, Kartenstapel, Hausregeln, Protokoll) sowie die Bestätigung deiner Volljährigkeit im lokalen Speicher deines Browsers. Diese Daten werden nicht übertragen und nicht ausgewertet. Du kannst sie jederzeit löschen, indem du im Spiel „Neues Spiel“ wählst oder die Websitedaten in den Browsereinstellungen entfernst.</p>
+      <h3>Hosting und Server-Protokolle</h3>
+      <p>Diese Seite wird bei GitHub Pages gehostet (GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA). Beim Aufruf verarbeitet der Anbieter technisch notwendige Zugriffsdaten, darunter deine IP-Adresse, Datum und Uhrzeit, die abgerufene Datei sowie Browser- und Betriebssystemangaben. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO — unser berechtigtes Interesse an einer sicheren und stabilen Bereitstellung. Näheres in der Datenschutzerklärung von GitHub: https://docs.github.com/site-policy/privacy-policies/github-privacy-statement</p>
+      <h3>Deine Rechte</h3>
+      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten sowie auf Datenübertragbarkeit und Widerspruch. Wende dich dafür an die oben genannte Adresse.</p>
+      <p>Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren, etwa bei der Behörde deines Bundeslandes.</p>
+      <h3>Stand</h3>
+      <p>Diese Erklärung gilt ab dem Zeitpunkt der Veröffentlichung und wird bei Änderungen am Angebot angepasst.</p>
+    `
+  }
+};
+
+function openLegal(which){
+  const t = LEGAL_TEXTS[which];
+  if(!t) return;
+  document.getElementById('legalTitle').textContent = t.title;
+  document.getElementById('legalBody').innerHTML = t.html;
+  document.getElementById('legalOverlay').classList.add('show');
+}
+
 /* ---------- Init & Events ---------- */
+
+/* Bietet nach dem Neuladen an, das laufende Spiel fortzusetzen. */
+function maybeOfferResume(){
+  const saved = readSavedGame();
+  if(!saved) return;
+  const names = saved.players.map(p => p.name).join(', ');
+  const sips = saved.players.reduce((a, p) => a + (p.sips || 0), 0);
+  document.getElementById('resumeInfo').textContent =
+    names + ' · ' + sips + (sips === 1 ? ' Schluck' : ' Schlücke') + ' bisher';
+  document.getElementById('resumeOverlay').classList.add('show');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnAgeYes').addEventListener('click', () => {
+    setAgeConfirmed();
     document.getElementById('ageGateOverlay').classList.remove('show');
+    maybeOfferResume();
+  });
+
+  // Alter bereits bestätigt? Dann nicht bei jedem Aufruf erneut fragen.
+  if(isAgeConfirmed()){
+    document.getElementById('ageGateOverlay').classList.remove('show');
+    maybeOfferResume();
+  }
+
+  document.getElementById('btnResumeGame').addEventListener('click', () => {
+    document.getElementById('resumeOverlay').classList.remove('show');
+    const saved = readSavedGame();
+    if(saved) restoreSavedGame(saved);
+  });
+  document.getElementById('btnDiscardGame').addEventListener('click', () => {
+    document.getElementById('resumeOverlay').classList.remove('show');
+    clearSavedGame();
   });
   document.getElementById('btnAgeNo').addEventListener('click', () => {
     document.getElementById('ageGateModal').innerHTML = `
@@ -1725,9 +1965,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('deckInfoOverlay').classList.remove('show');
   });
 
+  document.getElementById('btnImpressum').addEventListener('click', () => openLegal('impressum'));
+  document.getElementById('btnDatenschutz').addEventListener('click', () => openLegal('datenschutz'));
+  document.getElementById('btnCloseLegal').addEventListener('click', () => {
+    document.getElementById('legalOverlay').classList.remove('show');
+  });
+
   document.getElementById('btnEndGame').addEventListener('click', endGame);
   document.getElementById('btnCloseEnd').addEventListener('click', () => document.getElementById('endOverlay').classList.remove('show'));
   document.getElementById('btnNewGame').addEventListener('click', () => {
+    clearSavedGame();
+    state.players = [];
     document.getElementById('endOverlay').classList.remove('show');
     document.getElementById('gameScreen').style.display = 'none';
     document.getElementById('btnEndGame').style.display = 'none';
