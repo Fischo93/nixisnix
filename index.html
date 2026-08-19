@@ -220,11 +220,44 @@
   .turn-banner .who{font-size:13px;color:var(--ink-muted);}
   .turn-banner .name{font-size:22px;font-weight:800;text-shadow:0 0 16px var(--glow-pink);}
 
-  .action-zone{width:100%;max-width:520px;}
-  .action-panel{background:var(--surface-1);border:1px solid rgba(99,230,255,0.22);border-radius:var(--radius);padding:18px;display:none;box-shadow:0 0 26px rgba(99,230,255,0.10);}
-  .action-panel.show{display:block;}
+  /* ---- Aktions-Popup: Modal am Computer, Bottom-Sheet am Handy ---- */
+  .overlay.action-overlay{align-items:center;justify-content:center;padding:18px;}
+  .action-panel{
+    background:linear-gradient(180deg,var(--surface-1),var(--surface-0));
+    border:1px solid rgba(99,230,255,0.28);border-radius:var(--radius);padding:18px;display:none;
+    box-shadow:0 20px 50px rgba(0,0,0,.55), 0 0 34px rgba(99,230,255,0.13);
+    width:100%;max-width:520px;max-height:86vh;overflow-y:auto;overscroll-behavior:contain;
+  }
+  .action-panel.show{display:block;animation:popIn .22s cubic-bezier(.2,.8,.3,1);}
+  @keyframes popIn{from{opacity:0;transform:translateY(10px) scale(.97);}to{opacity:1;transform:none;}}
   .action-panel h4{margin:0 0 4px;font-size:15px;}
   .action-panel p.desc{color:var(--ink-secondary);font-size:13px;margin:0 0 14px;line-height:1.5;}
+
+  /* Kopf des Popups zeigt die gezogene Karte */
+  .card-head{
+    background:var(--cat);color:#141018;border-radius:12px;padding:13px 15px;margin:0 0 15px;
+    box-shadow:0 0 22px color-mix(in srgb, var(--cat) 45%, transparent);
+  }
+  .card-head .ch-cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;opacity:.75;}
+  .card-head .ch-text{font-size:15.5px;font-weight:800;line-height:1.35;margin-top:4px;}
+
+  @media (max-width:640px){
+    .overlay.action-overlay{align-items:flex-end;padding:0;}
+    .action-panel{
+      max-width:none;max-height:90vh;
+      border-radius:22px 22px 0 0;border-bottom:none;
+      padding:8px 15px calc(20px + env(safe-area-inset-bottom));
+    }
+    .action-panel.show{animation:sheetUp .28s cubic-bezier(.2,.8,.3,1);}
+    /* Greifleiste oben, wie bei nativen Bottom-Sheets */
+    .action-panel::before{
+      content:"";display:block;width:42px;height:4px;border-radius:99px;
+      background:rgba(255,255,255,0.28);margin:6px auto 12px;
+    }
+    .action-buttons{justify-content:stretch;}
+    .action-buttons .btn{flex:1;justify-content:center;text-align:center;}
+  }
+  @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
   .chip{
     padding:7px 13px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface-2);
@@ -292,12 +325,25 @@
   .call-row{display:flex;gap:8px;justify-content:center;margin-bottom:10px;}
   .call-row .chip.selected{background:rgba(255,95,162,0.26);}
 
-  .log-panel{display:flex;flex-direction:column;gap:10px;}
-  .log-panel h3, .rules-panel h3{margin:2px 0 8px;font-size:13px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.6px;}
+  /* Einklappbare Bereiche (Regeln / Protokoll) */
+  .fold{background:var(--surface-1);border:1px solid var(--line);border-radius:12px;padding:4px 12px;margin-top:14px;}
+  .fold > summary{
+    cursor:pointer;list-style:none;padding:9px 0;font-size:12.5px;color:var(--accent-2);
+    text-transform:uppercase;letter-spacing:.6px;font-weight:700;display:flex;align-items:center;gap:8px;
+  }
+  .fold > summary::-webkit-details-marker{display:none;}
+  .fold > summary::after{content:"▾";margin-left:auto;transition:transform .2s ease;color:var(--ink-muted);}
+  .fold[open] > summary::after{transform:rotate(180deg);}
+  .fold > summary:hover{color:var(--accent);}
+  .fold .fold-count{
+    font-size:10.5px;color:var(--ink-muted);background:var(--surface-2);
+    border-radius:99px;padding:2px 7px;letter-spacing:0;font-weight:700;
+  }
+  .fold > *:not(summary){padding-bottom:10px;}
+  .col-log .fold{margin-top:0;}
   .log-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:230px;overflow-y:auto;}
-  .log-list li{font-size:12.5px;background:var(--surface-1);border:1px solid var(--line);border-radius:8px;padding:7px 9px;color:var(--ink-secondary);}
+  .log-list li{font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;color:var(--ink-secondary);}
   .log-list li b{color:var(--ink-primary);}
-  .rules-panel{background:var(--surface-1);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:14px;}
   .rules-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;}
   .rules-list li{font-size:12px;color:var(--ink-secondary);background:var(--surface-2);border-radius:8px;padding:6px 8px;}
   .rules-list .empty{color:var(--ink-muted);font-style:italic;}
@@ -346,6 +392,57 @@
   ::-webkit-scrollbar{width:8px;}
   ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:8px;}
 
+  /* ---------- KOMPAKTES LAYOUT: HANDY & TABLET ----------
+     Ziel: Zug-Anzeige, Kartenstapel und alle Spieler:innen ohne Scrollen. */
+  @media (max-width:900px){
+    .app{padding:12px 12px 26px;}
+    .game-grid{display:flex;flex-direction:column;gap:12px;align-items:stretch;}
+    .col-center{order:1;}
+    .col-players{order:2;}
+    .col-log{order:3;}
+
+    /* Die gezogene Karte steht jetzt im Popup — die große Flip-Bühne entfällt */
+    .draw-stage{display:none;}
+    .center-col{gap:8px;}
+    .deck-zone{padding:2px 0;gap:0;}
+    .deck-pile{width:132px;height:184px;gap:3px;}
+    .deck-pile .dpile-logo{font-size:14px;}
+    .deck-pile .dpile-sub{font-size:10px;}
+    .deck-pile .dpile-count{font-size:11px;margin-top:3px;}
+    .turn-banner .who{font-size:11.5px;}
+    .turn-banner .name{font-size:20px;}
+
+    /* Spieler:innen zweispaltig statt untereinander */
+    .players-panel{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .player-card{padding:7px 8px;gap:7px;border-radius:11px;}
+    .player-card .name{font-size:12.5px;}
+    .player-card .turn-tag{font-size:9px;}
+    .player-card .sips{font-size:16px;min-width:24px;}
+    .player-card .sips small{font-size:8px;}
+    .player-card .glass-svg{width:22px;height:40px;}
+
+    .topbar{margin-bottom:10px;gap:8px;}
+  }
+
+  /* ---------- NUR HANDY: Bottom-Sheet & Symbol-Buttons ---------- */
+  @media (max-width:640px){
+    .topbar{flex-wrap:nowrap;}
+    .brand{min-width:0;}
+    .topbar-actions{gap:6px;flex-wrap:nowrap;}
+    .btn-label{display:none;}
+    .topbar-actions .btn.small{padding:9px 12px;font-size:15px;line-height:1;}
+  }
+
+  /* Sehr schmale Geräte (z.B. iPhone SE, 320px) */
+  @media (max-width:400px){
+    .app{padding:10px 10px 22px;}
+    .brand .logo{font-size:19px;}
+    .topbar-actions .btn.small{padding:8px 10px;font-size:14px;}
+    .players-panel{gap:6px;}
+    .player-card{padding:6px 7px;gap:6px;}
+    .player-card .name{font-size:12px;}
+  }
+
   /* Größere Touch-Ziele auf Touchscreens (Handy/Tablet) — bewusst am Ende,
      damit die Regel gegenüber den früheren Basis-Deklarationen gewinnt. */
   @media (pointer:coarse){
@@ -389,8 +486,8 @@
       <div class="tag">das Trinkspiel mit Karten, Münze &amp; Chaos</div>
     </div>
     <div class="topbar-actions">
-      <button class="btn ghost small" id="btnShowPrintFromTop" style="display:none;">🖨️ Kartenspiel &amp; Regelheft</button>
-      <button class="btn danger small" id="btnEndGame" style="display:none;">🏁 Spiel beenden</button>
+      <button class="btn ghost small" id="btnShowPrintFromTop" style="display:none;" title="Kartenspiel &amp; Regelheft">🖨️<span class="btn-label"> Kartenspiel &amp; Regelheft</span></button>
+      <button class="btn danger small" id="btnEndGame" style="display:none;" title="Spiel beenden">🏁<span class="btn-label"> Spiel beenden</span></button>
     </div>
   </div>
 
@@ -421,16 +518,16 @@
     <div class="game-grid">
 
       <!-- Players -->
-      <div>
+      <div class="col-players">
         <div class="players-panel" id="playersPanel"></div>
-        <div class="rules-panel">
-          <h3>Aktive Hausregeln</h3>
+        <details class="fold" id="rulesFold" open>
+          <summary>Aktive Hausregeln <span class="fold-count" id="rulesCount"></span></summary>
           <ul class="rules-list" id="rulesList"><li class="empty">Noch keine besonderen Regeln.</li></ul>
-        </div>
+        </details>
       </div>
 
       <!-- Center: deck + card + actions -->
-      <div class="center-col">
+      <div class="center-col col-center">
         <div class="turn-banner">
           <div class="who">Am Zug</div>
           <div class="name" id="turnName">–</div>
@@ -451,15 +548,14 @@
           </div>
         </div>
 
-        <div class="action-zone">
-          <div class="action-panel" id="actionPanel"></div>
-        </div>
       </div>
 
       <!-- Log -->
-      <div class="log-panel">
-        <h3>Protokoll</h3>
-        <ul class="log-list" id="logList"></ul>
+      <div class="col-log">
+        <details class="fold" id="logFold" open>
+          <summary>Protokoll <span class="fold-count" id="logCount"></span></summary>
+          <ul class="log-list" id="logList"></ul>
+        </details>
       </div>
     </div>
   </div>
@@ -505,6 +601,11 @@
       <button class="btn primary" id="btnNewGame">🔄 Neues Spiel</button>
     </div>
   </div>
+</div>
+
+<!-- Aktions-Popup: die Frage zur gezogenen Karte -->
+<div class="overlay action-overlay" id="actionOverlay">
+  <div class="action-panel" id="actionPanel"></div>
 </div>
 
 <!-- Deck-Info: zeigt, was im Kartenstapel steckt -->
@@ -917,12 +1018,19 @@ function renderPlayers(){
 }
 function renderRules(){
   const list = document.getElementById('rulesList');
+  const c = document.getElementById('rulesCount');
+  if(c) c.textContent = state.activeRules.length;
   if(state.activeRules.length === 0){ list.innerHTML = '<li class="empty">Noch keine besonderen Regeln.</li>'; return; }
   list.innerHTML = state.activeRules.map(r => `<li>${escapeHtml(r)}</li>`).join('');
+  // Neue Hausregel: auf dem Handy einmal aufklappen, damit sie nicht untergeht
+  const fold = document.getElementById('rulesFold');
+  if(fold && !fold.open) fold.open = true;
 }
 function renderLog(){
   const list = document.getElementById('logList');
   list.innerHTML = state.log.slice(0, 60).map(l => `<li>${l.text}</li>`).join('');
+  const c = document.getElementById('logCount');
+  if(c) c.textContent = state.log.length;
 }
 function renderAll(){
   renderPlayers();
@@ -961,6 +1069,7 @@ function drawCard(){
 }
 
 function finishTurn(){
+  document.getElementById('actionOverlay').classList.remove('show');
   document.getElementById('actionPanel').classList.remove('show');
   document.getElementById('actionPanel').innerHTML = '';
   state.currentIndex = (state.currentIndex + 1) % state.players.length;
@@ -1036,10 +1145,14 @@ function computeAutoTargets(card){
 
 function openActionForCard(card){
   const panel = document.getElementById('actionPanel');
+  document.getElementById('actionOverlay').classList.add('show');
   panel.className = 'action-panel show';
   panel.innerHTML = '';
   const header = document.createElement('div');
-  header.innerHTML = `<h4>${card.meta.icon} ${card.meta.label}</h4><p class="desc">${escapeHtml(card.text)}</p>`;
+  header.className = 'card-head';
+  header.style.setProperty('--cat', card.meta.color);
+  header.innerHTML = `<div class="ch-cat">${card.meta.icon} ${escapeHtml(card.meta.label)}</div>`
+    + `<div class="ch-text">${escapeHtml(card.text)}</div>`;
   panel.appendChild(header);
   const body = document.createElement('div');
   panel.appendChild(body);
@@ -1590,6 +1703,12 @@ document.addEventListener('DOMContentLoaded', () => {
       <p>NIXisNIX ist nur für Erwachsene ab 18 Jahren gedacht. Komm gerne zurück, sobald du volljährig bist.</p>
     `;
   });
+
+  // Auf schmalen Bildschirmen starten Regeln & Protokoll eingeklappt,
+  // damit Kartenstapel und Spieler:innen ohne Scrollen sichtbar sind.
+  if(window.matchMedia('(max-width:640px)').matches){
+    ['rulesFold','logFold'].forEach(id => { const f = document.getElementById(id); if(f) f.open = false; });
+  }
 
   addPlayerRow(); addPlayerRow(); addPlayerRow(); addPlayerRow();
   renumberPlaceholders();
