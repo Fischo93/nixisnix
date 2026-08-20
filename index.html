@@ -1044,16 +1044,24 @@
     50%{transform:rotate(6deg) translateY(-4px);}
     100%{transform:rotate(-7deg) translateY(0);}
   }
+  /* Würfel im Farbschema: Körper aus den Flächenfarben, Augen im Akzent */
   .die{
     width:62px;height:62px;border-radius:13px;
-    background:linear-gradient(160deg,#ffffff,#dfe3ee);
-    border:1px solid rgba(0,0,0,0.18);
-    box-shadow:0 5px 14px rgba(0,0,0,0.45), inset 0 -3px 6px rgba(0,0,0,0.10);
+    background:linear-gradient(160deg,var(--surface-2),var(--surface-1));
+    border:1.5px solid var(--accent-2);
+    box-shadow:0 5px 16px rgba(0,0,0,0.45), 0 0 16px var(--glow-cyan),
+               inset 0 -3px 8px rgba(0,0,0,0.22), inset 0 2px 4px rgba(255,255,255,0.07);
     display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
     gap:3px;padding:8px;
   }
   .die .pip{border-radius:50%;background:transparent;}
-  .die .pip.on{background:#1a1520;box-shadow:inset 0 1px 2px rgba(255,255,255,0.35);}
+  .die .pip.on{
+    background:var(--accent);
+    box-shadow:0 0 7px var(--glow-pink), inset 0 1px 2px rgba(255,255,255,0.28);
+  }
+  /* Der zweite Würfel bekommt den Gegenakzent, damit sie unterscheidbar bleiben */
+  .jum-dice .die:nth-child(2){border-color:var(--accent);box-shadow:0 5px 16px rgba(0,0,0,0.45), 0 0 16px var(--glow-pink), inset 0 -3px 8px rgba(0,0,0,0.22);}
+  .jum-dice .die:nth-child(2) .pip.on{background:var(--accent-2);box-shadow:0 0 7px var(--glow-cyan), inset 0 1px 2px rgba(255,255,255,0.28);}
 
   .jum-roll-info{text-align:center;font-size:15px;margin-bottom:8px;color:var(--ink-secondary);}
   .jum-score{color:var(--accent-2);font-size:18px;}
@@ -1082,7 +1090,14 @@
   .est-row.worst{border-color:var(--critical);}
 
   body.theme-light .jum-stat{background:transparent;}
-  body.theme-light .die{background:linear-gradient(160deg,#ffffff,#e8f5f2);box-shadow:0 4px 10px rgba(0,0,0,0.18);}
+  body.theme-light .die{
+    background:linear-gradient(160deg,#ffffff,var(--surface-1));
+    border-color:#0d9488;
+    box-shadow:0 4px 12px rgba(13,148,136,0.18), inset 0 -2px 5px rgba(0,0,0,0.06);
+  }
+  body.theme-light .die .pip.on{background:#0d9488;box-shadow:inset 0 1px 2px rgba(255,255,255,0.35);}
+  body.theme-light .jum-dice .die:nth-child(2){border-color:#ea580c;box-shadow:0 4px 12px rgba(234,88,12,0.18);}
+  body.theme-light .jum-dice .die:nth-child(2) .pip.on{background:#ea580c;box-shadow:none;}
 
   @media (max-width:640px){
     .die{width:54px;height:54px;border-radius:11px;padding:7px;}
@@ -1201,6 +1216,52 @@
   .coin-stake-side b{font-size:15.5px;}
   .coin-stake-side small{font-size:11.5px;color:var(--ink-muted);}
   .coin-stake-or{font-size:11.5px;margin:1px 0;color:var(--ink-muted);font-weight:700;text-transform:uppercase;letter-spacing:.8px;}
+
+
+  /* Quizfrage & geheime Zahl bei der Wette */
+  .quiz-box{margin-bottom:8px;}
+  .quiz-state{font-size:12.5px;color:var(--ink-muted);}
+  .quiz-q{font-size:16px;font-weight:800;line-height:1.35;}
+  .quiz-a{font-size:20px;font-weight:800;color:var(--good);margin-top:6px;}
+
+
+  /* ---------- Logo auf Karte und Münze ---------- */
+  .deck-pile .dpile-logo{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+  }
+  .dpile-coin{display:block;width:3.4em;line-height:0;color:var(--accent-2);}
+  .dpile-coin .nix-coin{width:100%;height:auto;position:static;filter:drop-shadow(0 0 8px var(--glow-cyan));}
+  .dpile-word{line-height:1.05;}
+
+  .coin-face.coin-front{gap:0.1em;}
+  .coin-mark{display:block;width:2.1em;line-height:0;color:#04222c;opacity:.92;margin-bottom:0.08em;}
+  .coin-mark .nix-coin{width:100%;height:auto;position:static;filter:none;}
+  .coin-word{font-size:0.6em;line-height:1;letter-spacing:0;}
+
+
+  .card-head .ch-top{display:flex;align-items:center;gap:10px;}
+  .card-head .ch-top .ch-cat{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .card-head .ch-turn{
+    flex:none;display:inline-flex;align-items:center;gap:6px;
+    background:rgba(20,16,24,0.16);border:1px solid rgba(20,16,24,0.22);
+    border-radius:999px;padding:3px 10px 3px 7px;
+    font-size:12px;font-weight:800;max-width:56%;min-width:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .card-head .ch-turn-dot{
+    width:9px;height:9px;border-radius:50%;flex:none;
+    box-shadow:0 0 0 1.5px rgba(255,255,255,0.55);
+  }
+  @media (max-width:400px){
+    .card-head .ch-turn{font-size:11px;padding:2px 8px 2px 6px;}
+  }
+
+
+  .card-head .ch-who{
+    display:inline-block;padding:1px 8px;margin-right:2px;border-radius:999px;
+    background:rgba(20,16,24,0.18);
+  }
+  .card-text .ch-who{color:var(--accent-2);}
 
 </style>
 </head>
@@ -1627,13 +1688,12 @@ const NHIE_PROMPTS = ["Ich hab noch nie im Sitzen geschlafen.","Ich hab noch nie
 const TRUTHS = ["Was war dein peinlichster Moment dieses Jahr?","Wen in dieser Runde würdest du am ehesten um Rat fragen?","Was ist deine größte, harmlose Angst?","Welche Notlüge hast du als Kind am längsten durchgezogen?","Was war dein schlechtestes Date?","Welches Talent hättest du gerne?","Was war der teuerste Fehler, den du je gemacht hast?","Wofür schämst du dich am wenigsten, obwohl du solltest?"];
 const DARES = ["Mach 10 Sekunden lang die peinlichste Tanzbewegung, die dir einfällt.","Sprich für die nächsten drei Runden mit einem Akzent deiner Wahl.","Lass dir von der Gruppe ein Foto-Motto vorgeben und posiere.","Imitiere ein Tier, bis jemand errät welches.","Erzähl einen Witz — lacht niemand, trinkst du extra.","Tausche für die nächste Runde Sitzplatz und Sprechweise mit deiner Nachbarsperson.","Sing die erste Strophe deines Lieblingslieds a cappella.","Mach eine 15-Sekunden-Werbung für den Gegenstand rechts von dir."];
 const TONGUE_TWISTERS = ["Fischers Fritz fischt frische Fische.","Blaukraut bleibt Blaukraut und Brautkleid bleibt Brautkleid.","Zwischen zwei Zwetschgenzweigen zwitschern zwei Schwalben.","In Ulm, um Ulm und um Ulm herum.","Zehn zahme Ziegen zogen zehn Zentner Zucker zum Zoo.","Wenn Fliegen hinter Fliegen fliegen, fliegen Fliegen Fliegen nach.","Der Whiskeymixer mixt Whiskey.","Acht alte Ameisen aßen am Abend Ananas.","Der Cottbuser Postkutscher putzt den Cottbuser Postkutschkasten.","Brautkleid bleibt Brautkleid und Blaukraut bleibt Blaukraut."];
-const SING_WORDS = ["Sonne","Liebe","Tanzen","Regen","Freiheit","Feuer","Party","Herz","Träume","Nacht","Sommer","Meer"];
 const MOST_LIKELY = ["…im Dschungel überleben?","…auf einer einsamen Insel verrückt werden?","…als Erstes einschlafen?","…zu spät zur eigenen Hochzeit kommen?","…ein Reality-TV-Star werden?","…versehentlich den Chef beleidigen?","…ein Startup gründen?","…beim Camping einen Bären anlocken?","…auf einer Party das ganze Buffet leer essen?","…nachts heimlich Serien schauen statt zu schlafen?"];
 const IMPRO_SCENES = ["Ein Bewerbungsgespräch als Pirat.","Wetterbericht für das Innere eines Kühlschranks.","Nachrichtensprecher:in berichtet über die eigene Frisur.","Ein:e Astronaut:in erklärt, warum sie zu spät zur Rakete kam.","Kellner serviert einem König unsichtbares Essen.","Tierärzt:in untersucht einen Drachen."];
 const TWENTY_Q_WORDS = ["Kühlschrank","Fußball","Regenschirm","Gitarre","Kamel","Zahnbürste","Ampel","Luftballon","Schneemann","Wecker","Skateboard","Taschenlampe"];
 
 const MINIGAMES = [
-  { bewegung:true, id:'pantomime', title:'Pantomime', icon:'🎭', timerSeconds:60, amount:3, promptBank:PANTOMIME_WORDS,
+  { bewegung:true, id:'pantomime', title:'Pantomime', icon:'🎭', timerSeconds:60, amount:3, promptBank:PANTOMIME_WORDS, reveal:'active',
     instructions:"Nur die aktive Person deckt das Wort auf und stellt es pantomimisch dar – reden verboten! Alle anderen raten laut, bis die Zeit abläuft." },
   { id:'reim', title:'Reimschmiede', icon:'📝', timerSeconds:0, amount:2, promptBank:RHYME_WORDS,
     instructions:"Reihum reimt jede Person auf das Wort. Wer nichts mehr findet oder zu lange zögert, scheidet aus und trinkt." },
@@ -1647,8 +1707,6 @@ const MINIGAMES = [
     instructions:"Die aktive Person führt die Aufgabe aus, bevor die Zeit abläuft – oder trinkt zur Strafe." },
   { id:'zungenbrecher', title:'Zungenbrecher', icon:'👅', timerSeconds:0, amount:2, promptBank:TONGUE_TWISTERS,
     instructions:"3× fehlerfrei und schnell hintereinander aufsagen. Verhaspelt? Trinken!" },
-  { id:'singbattle', title:'Sing-Battle', icon:'🎤', timerSeconds:10, amount:2, promptBank:SING_WORDS,
-    instructions:"Finde in 10 Sekunden ein Lied mit diesem Wort und sing eine Zeile davon." },
   { id:'bombe', title:'Bomben-Countdown', icon:'💣', timerSeconds:0, amount:3, promptBank:null,
     instructions:"Ein Gegenstand wird im Kreis weitergereicht. Startet den geheimen Countdown – wer ihn hält, wenn's knallt, trinkt." },
   { id:'rps', title:'Schnick-Schnack-Schnuck-Duell', icon:'✂️', timerSeconds:0, amount:2, promptBank:null,
@@ -1657,8 +1715,8 @@ const MINIGAMES = [
     instructions:"Reihum zählen: Jede Zahl mit einer 3 oder einem Vielfachen von 3 wird durch „Nix“ ersetzt. Wer sich vertut, trinkt." },
   { id:'wortkette', title:'Wortkette', icon:'🔗', timerSeconds:0, amount:1, promptBank:null,
     instructions:"Baut reihum Wort für Wort einen Satz. Wer zu lange zögert oder keinen Sinn mehr ergibt, trinkt." },
-  { id:'zwanzig', title:'20 Fragen', icon:'❓', timerSeconds:0, amount:3, promptBank:TWENTY_Q_WORDS,
-    instructions:"Zeigt allen außer einer Person das Wort. Diese Person stellt Ja/Nein-Fragen, um es in 20 Fragen zu erraten – sonst trinkt sie." },
+  { id:'zwanzig', title:'20 Fragen', icon:'❓', timerSeconds:0, amount:3, promptBank:TWENTY_Q_WORDS, reveal:'others',
+    instructions:"Die Person am Zug rät und schaut weg — alle anderen decken das Wort kurz auf. Danach darf sie 20 Ja/Nein-Fragen stellen. Errät sie es nicht, trinkt sie." },
   { id:'werwuerde', title:'Wer würde eher…', icon:'👉', timerSeconds:0, amount:1, promptBank:MOST_LIKELY,
     instructions:"Alle zeigen gleichzeitig auf die Person, auf die die Aussage am ehesten zutrifft. Die meistgezeigte Person trinkt." },
   { bewegung:true, id:'improszene', title:'Impro-Szene', icon:'🎬', timerSeconds:20, amount:2, promptBank:IMPRO_SCENES,
@@ -2178,7 +2236,7 @@ function renderFlip(card){
   const back = document.getElementById('flipBack');
   back.style.background = card.meta.color;
   back.style.color = '#141018';
-  back.innerHTML = `<div class="cat-icon">${card.meta.icon}</div><div class="cat-label">${card.meta.label}</div><div class="card-text">${escapeHtml(scaleSips(card.text, card))}</div>`;
+  back.innerHTML = `<div class="cat-icon">${card.meta.icon}</div><div class="cat-label">${card.meta.label}</div><div class="card-text">${cardTextWithName(card)}</div>`;
   flip.classList.remove('flipped');
   void flip.offsetWidth;
   requestAnimationFrame(() => flip.classList.add('flipped'));
@@ -2257,6 +2315,55 @@ function updateUndoButton(){
   btn.title = state.undoStack.length
     ? 'Letzte Karte zurücknehmen (' + state.undoStack.length + ' möglich)'
     : 'Nichts zum Rückgängigmachen';
+}
+
+/* ---------- Logo als wiederverwendbare Zeichnung ----------
+   Liefert die gekippte Münze aus der Wortmarke als SVG. Jede Instanz
+   bekommt eine eigene clipPath-Kennung, sonst würden sich mehrere
+   Vorkommen auf der Seite gegenseitig die Maske überschreiben. */
+function nixCoinSvg(uid, opts){
+  const o = opts || {};
+  const stroke = o.stroke || 'currentColor';
+  const fill   = o.fill   || 'none';
+  const motion = o.motion !== false;
+  const ghosts = motion ? `
+    <g fill="none" stroke="${stroke}" stroke-linecap="round">
+      <ellipse cx="166" cy="118" rx="100" ry="26" stroke-width="7" opacity="0.26"/>
+      <ellipse cx="162" cy="86" rx="96" ry="11" stroke-width="6" opacity="0.13"/>
+    </g>
+    <g fill="none" stroke="${stroke}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.7">
+      <path d="M46 268 C4 214 6 128 52 84"/><path d="M34 92 L56 76 L66 100"/>
+    </g>` : '';
+  let ridges = '';
+  for(let x = 80; x <= 260; x += 20){
+    ridges += `<line x1="${x}" y1="140" x2="${x}" y2="290"/>`;
+  }
+  return `<svg class="nix-coin" viewBox="0 0 340 340" aria-hidden="true">
+    <defs><clipPath id="edge_${uid}"><ellipse cx="170" cy="212" rx="104" ry="58"/></clipPath></defs>
+    ${ghosts}
+    <g transform="rotate(-14 170 190)">
+      <ellipse cx="170" cy="212" rx="104" ry="58" fill="${fill}" stroke="${stroke}" stroke-width="9"/>
+      <g clip-path="url(#edge_${uid})" stroke="${stroke}" stroke-width="5" stroke-linecap="round">${ridges}</g>
+      <ellipse cx="170" cy="176" rx="104" ry="58" fill="${fill}" stroke="${stroke}" stroke-width="9"/>
+      <ellipse cx="170" cy="176" rx="82" ry="40" fill="none" stroke="${stroke}" stroke-width="4"/>
+    </g>
+  </svg>`;
+}
+
+/* Setzt das Logo dorthin, wo es auf Karte und Münze erscheinen soll. */
+function paintBrandMarks(){
+  const pile = document.querySelector('.deck-pile .dpile-logo');
+  if(pile && !pile.dataset.branded){
+    pile.dataset.branded = '1';
+    pile.innerHTML = `<span class="dpile-coin">${nixCoinSvg('pile')}</span>`
+      + `<span class="dpile-word nix-wordmark">NIX<br><span class="lc">is</span><br>NIX</span>`;
+  }
+  document.querySelectorAll('.coin-face.coin-front').forEach((face, i) => {
+    if(face.dataset.branded) return;
+    face.dataset.branded = '1';
+    face.innerHTML = `<span class="coin-mark">${nixCoinSvg('face' + i, { motion:false, fill:'rgba(255,255,255,0.28)' })}</span>`
+      + `<span class="coin-word nix-wordmark on-gold">NIX<span class="lc">is</span>NIX</span>`;
+  });
 }
 
 function updateDeckCount(){
@@ -2382,6 +2489,43 @@ function computeAutoTargets(card){
   return [];
 }
 
+/* Kopfzeile jeder aufgedeckten Karte: links die Kartenart, rechts die
+   Person am Zug. Auf dem Handy verdeckt das Panel die Spielerliste, ohne
+   diesen Hinweis wüsste man mittendrin nicht mehr, wer dran ist. */
+/* Spricht die Karte die Person am Zug direkt an? Dann wird ihr Name
+   dem Kartentext vorangestellt — sonst bliebe unklar, wer gemeint ist.
+   Gruppenkarten („Alle trinken …") bekommen keinen Namen davor. */
+function cardAddressesCurrent(card){
+  if(!card || !currentPlayer()) return false;
+  switch(card.kind){
+    case 'choose': case 'free': case 'namelen':
+    case 'duel':   case 'bet':  case 'coin':
+      return true;
+    case 'auto':
+      return card.target !== 'all';
+    case 'narrative':
+      return !!card.narrativePartner;
+    default:
+      return false;   // manual, estimate, newrule, minigame
+  }
+}
+
+/* Gedankenstrich statt Komma: der Kartentext beginnt mit einem großen
+   Buchstaben, und ein Komma davor wäre schlicht falsch geschrieben. */
+function cardTextWithName(card){
+  const body = escapeHtml(scaleSips(card.text, card));
+  if(!cardAddressesCurrent(card)) return body;
+  return `<b class="ch-who">${escapeHtml(currentPlayer().name)}</b> — ${body}`;
+}
+
+function cardHeadTop(label, withBadge){
+  const p = currentPlayer();
+  const who = (p && withBadge !== false)
+    ? `<span class="ch-turn"><span class="ch-turn-dot" style="background:${p.color}"></span>${escapeHtml(p.name)}</span>`
+    : '';
+  return `<div class="ch-top"><span class="ch-cat">${escapeHtml(label)}</span>${who}</div>`;
+}
+
 function openActionForCard(card){
   const panel = document.getElementById('actionPanel');
   document.getElementById('actionOverlay').classList.add('show');
@@ -2395,8 +2539,9 @@ function openActionForCard(card){
   header.style.setProperty('--cat', card.meta.color);
   // Bei Minispielen steht der Spielname gleich darunter — der Zwischentext
   // („Überraschung: ein Minispiel wartet") wäre dort nur doppelt gemoppelt.
-  header.innerHTML = `<div class="ch-cat">${card.meta.icon} ${escapeHtml(card.meta.label)}</div>`
-    + (card.kind === 'minigame' ? '' : `<div class="ch-text">${escapeHtml(scaleSips(card.text, card))}</div>`);
+  const named = cardAddressesCurrent(card);
+  header.innerHTML = cardHeadTop(card.meta.icon + ' ' + card.meta.label, !named)
+    + (card.kind === 'minigame' ? '' : `<div class="ch-text">${cardTextWithName(card)}</div>`);
   inner.appendChild(header);
   const body = document.createElement('div');
   inner.appendChild(body);
@@ -2794,13 +2939,55 @@ function renderCoinPanel(card, body){
   };
 }
 
+
+/* Quizfragen für die Wette „Schnellste richtige Antwort" —
+   Frage und Antwort werden nacheinander aufgedeckt, damit eine Person
+   fragen kann, ohne die Lösung vorher laut vorlesen zu müssen. */
+const QUIZ_FRAGEN = [
+  { q:"Wie viele Bundesländer hat Deutschland?", a:"16" },
+  { q:"Welcher Planet ist der Sonne am nächsten?", a:"Merkur" },
+  { q:"Welches Element hat das chemische Symbol „Au“?", a:"Gold" },
+  { q:"Wie heißt die Hauptstadt von Australien?", a:"Canberra" },
+  { q:"Wie viele Saiten hat eine klassische Gitarre?", a:"6" },
+  { q:"Welcher Ozean ist der größte?", a:"Der Pazifik" },
+  { q:"Wie viele Felder hat ein Schachbrett?", a:"64" },
+  { q:"Wie viele Kammern hat das menschliche Herz?", a:"4 — zwei Vorhöfe, zwei Herzkammern" },
+  { q:"Welche Farbe entsteht aus Blau und Gelb?", a:"Grün" },
+  { q:"Wie viele Buchstaben hat das deutsche Grundalphabet?", a:"26 (ohne Umlaute und ß)" },
+  { q:"Welches ist das größte lebende Landtier?", a:"Der Afrikanische Elefant" },
+  { q:"Wie viele Ecken hat ein Würfel?", a:"8" },
+  { q:"Welcher Fluss fließt durch Köln?", a:"Der Rhein" },
+  { q:"Wie viele Sekunden hat eine Stunde?", a:"3600" },
+  { q:"Wie heißt der höchste Berg Deutschlands?", a:"Die Zugspitze" },
+  { q:"Wie viele Planeten hat unser Sonnensystem?", a:"8" },
+  { q:"Was misst ein Barometer?", a:"Den Luftdruck" },
+  { q:"Wie viele Spieler einer Volleyball-Mannschaft stehen auf dem Feld?", a:"6" },
+  { q:"Welches Land gewann die Fußball-WM 2014?", a:"Deutschland" },
+  { q:"Wie viele Streifen hat die Flagge der USA?", a:"13" },
+];
+
+const CHALLENGE_QUIZ  = "Schnellste richtige Antwort auf eine Quizfrage";
+const CHALLENGE_ZAHL  = "Wer errät zuerst eine Zahl zwischen 1 und 10";
+
 function renderBetPanel(card, body){
-  const challengeTypes = ["Armdrücken", "Wer hält die Luft länger an", "Schnick-Schnack-Schnuck (Best-of-3)", "Würfel-Duell: höchste Zahl gewinnt", "Schnellste richtige Antwort auf eine Quizfrage", "Wer errät zuerst eine Zahl zwischen 1 und 10", "Grimassen-Contest: wer lacht zuerst", "Daumenkrieg", "Wer steht am längsten auf einem Bein", "Reaktionsspiel: wer schnappt zuerst nach dem Glas"];
+  const challengeTypes = ["Armdrücken", "Wer hält die Luft länger an", "Schnick-Schnack-Schnuck (Best-of-3)", "Würfel-Duell: höchste Zahl gewinnt", CHALLENGE_QUIZ, CHALLENGE_ZAHL, "Grimassen-Contest: wer lacht zuerst", "Daumenkrieg", "Wer steht am längsten auf einem Bein"];
   // Manchmal wird Gegner:in bzw. Herausforderung frei gewählt, manchmal
   // zufällig ausgelost — bei jeder Wette neu und unabhängig voneinander.
   const opponentIsRandom = Math.random() < 0.5;
   const challengeIsRandom = Math.random() < 0.5;
   const others = activePlayers().filter(p => p.id !== currentPlayer().id);
+
+  // Sicherheitsnetz: ohne Gegner:in ergibt die Wette keinen Sinn
+  if(others.length === 0){
+    const box = document.createElement('div'); box.className = 'free-total'; box.style.textAlign = 'center';
+    box.textContent = 'Für eine Wette fehlt eine zweite mitspielende Person — die Karte verfällt.';
+    body.appendChild(box);
+    const acts = document.createElement('div'); acts.className = 'action-buttons';
+    const skip = document.createElement('button'); skip.className = 'btn primary'; skip.textContent = '➡️ Weiter';
+    skip.onclick = () => { addLogNarrative('🤝 Wette verfällt — keine Gegner:in verfügbar.'); finishTurn(); };
+    acts.appendChild(skip); body.appendChild(acts);
+    return;
+  }
 
   let sel = null;
   let fixedOpponentId = null;
@@ -2814,24 +3001,78 @@ function renderBetPanel(card, body){
     const info = document.createElement('div'); info.className = 'free-total'; info.textContent = 'Wähle deine:n Gegner:in:';
     body.appendChild(info);
     const chipWrap = document.createElement('div'); body.appendChild(chipWrap);
-    sel = buildChipSelector(chipWrap, others, { max: 1, onChange: ids => { resultsWrap.style.display = ids.length ? 'block' : 'none'; } });
+    sel = buildChipSelector(chipWrap, others, { max: 1, onChange: () => refresh() });
   }
 
   let fixedChallenge = null;
+  let select = null;
   if(challengeIsRandom){
     fixedChallenge = pick(challengeTypes);
     const lbl2 = document.createElement('div'); lbl2.className = 'field-label'; lbl2.textContent = 'Herausforderung (zufällig ausgelost)';
     body.appendChild(lbl2);
     const box = document.createElement('div'); box.className = 'prompt-box'; box.innerHTML = `🎲 <b>${escapeHtml(fixedChallenge)}</b>`;
     body.appendChild(box);
-  }
-  const select = challengeIsRandom ? null : document.createElement('select');
-  if(select){
+  } else {
+    select = document.createElement('select');
     select.className = 'styled-select';
     const lbl2 = document.createElement('div'); lbl2.className = 'field-label'; lbl2.textContent = 'Herausforderung';
     body.appendChild(lbl2);
     challengeTypes.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; select.appendChild(o); });
     body.appendChild(select);
+    select.addEventListener('change', () => refresh());
+  }
+
+  function challengeLabel(){ return challengeIsRandom ? fixedChallenge : select.value; }
+  function opponentId(){ return opponentIsRandom ? fixedOpponentId : (sel ? sel.getSelected()[0] : null); }
+
+  // Platz für Zusatzmaterial: Quizfrage bzw. geheime Zahl
+  const extra = document.createElement('div');
+  body.appendChild(extra);
+
+  function buildExtra(){
+    extra.innerHTML = '';
+    const label = challengeLabel();
+    if(label === CHALLENGE_QUIZ){
+      const frage = pick(QUIZ_FRAGEN);
+      const box = document.createElement('div'); box.className = 'prompt-box quiz-box';
+      box.innerHTML = '<div class="quiz-state">Eine Person liest die Frage vor — die anderen antworten.</div>';
+      extra.appendChild(box);
+      const acts = document.createElement('div'); acts.className = 'action-buttons';
+      const btn = document.createElement('button'); btn.className = 'btn small';
+      btn.textContent = '❓ Frage aufdecken';
+      acts.appendChild(btn); extra.appendChild(acts);
+      let stage = 0;
+      btn.onclick = () => {
+        stage++;
+        if(stage === 1){
+          box.innerHTML = `<div class="quiz-q">${escapeHtml(frage.q)}</div>`;
+          btn.textContent = '💡 Antwort zeigen';
+        } else {
+          box.innerHTML = `<div class="quiz-q">${escapeHtml(frage.q)}</div>`
+            + `<div class="quiz-a">${escapeHtml(frage.a)}</div>`;
+          btn.disabled = true;
+        }
+        fitPanel();
+      };
+    } else if(label === CHALLENGE_ZAHL){
+      const zahl = 1 + Math.floor(Math.random() * 10);
+      const box = document.createElement('div'); box.className = 'prompt-box quiz-box';
+      box.innerHTML = '<div class="quiz-state">Nur eine Person schaut auf die Zahl — die anderen raten.</div>';
+      extra.appendChild(box);
+      const acts = document.createElement('div'); acts.className = 'action-buttons';
+      const btn = document.createElement('button'); btn.className = 'btn small';
+      btn.textContent = '🔢 Zahl geheim ansehen';
+      acts.appendChild(btn); extra.appendChild(acts);
+      let shown = false;
+      btn.onclick = () => {
+        shown = !shown;
+        box.innerHTML = shown
+          ? `<div class="quiz-a">${zahl}</div><div class="quiz-state">Zum Verdecken nochmal tippen.</div>`
+          : '<div class="quiz-state">Nur eine Person schaut auf die Zahl — die anderen raten.</div>';
+        btn.textContent = shown ? '🙈 Zahl verdecken' : '🔢 Zahl geheim ansehen';
+        fitPanel();
+      };
+    }
   }
 
   const lbl3 = document.createElement('div'); lbl3.className = 'field-label'; lbl3.textContent = 'Einsatz (Schlücke)';
@@ -2839,28 +3080,42 @@ function renderBetPanel(card, body){
   const stepper = makeStepper(2, 1, 8, () => {});
   body.appendChild(stepper.el);
 
-  const resultsWrap = document.createElement('div'); resultsWrap.style.display = opponentIsRandom ? 'block' : 'none'; resultsWrap.style.marginTop = '12px';
   const lbl4 = document.createElement('div'); lbl4.className = 'field-label'; lbl4.textContent = 'Ergebnis nach der Wette';
-  resultsWrap.appendChild(lbl4);
+  body.appendChild(lbl4);
+  const hint = document.createElement('div'); hint.className = 'reveal-hint';
+  hint.textContent = 'Wähle zuerst eine:n Gegner:in.';
+  body.appendChild(hint);
+
   const actions = document.createElement('div'); actions.className = 'action-buttons';
   const winBtn = document.createElement('button'); winBtn.className = 'btn primary'; winBtn.textContent = '🏆 Herausforderer:in gewinnt';
   const loseBtn = document.createElement('button'); loseBtn.className = 'btn danger'; loseBtn.textContent = '💀 Herausforderer:in verliert';
   actions.appendChild(loseBtn); actions.appendChild(winBtn);
-  resultsWrap.appendChild(actions);
-  body.appendChild(resultsWrap);
+  body.appendChild(actions);
 
-  function opponentId(){ return opponentIsRandom ? fixedOpponentId : (sel ? sel.getSelected()[0] : null); }
-  function challengeLabel(){ return challengeIsRandom ? fixedChallenge : select.value; }
+  /* Die Ergebnis-Knöpfe bleiben sichtbar, sind aber gesperrt, solange
+     keine Gegner:in feststeht — vorher konnte man ins Leere tippen. */
+  function refresh(){
+    const has = !!opponentId();
+    winBtn.disabled = !has;
+    loseBtn.disabled = !has;
+    hint.style.display = has ? 'none' : '';
+    buildExtra();
+    fitPanel();
+  }
 
   winBtn.onclick = () => {
-    const id = opponentId(); if(!id) return;
+    const id = opponentId();
+    if(!id){ toast('Bitte zuerst eine:n Gegner:in wählen.'); return; }
     addSips(id, stepper.get(), `Wette verloren (${challengeLabel()}) gegen ${currentPlayer().name}`);
     finishTurn();
   };
   loseBtn.onclick = () => {
+    if(!opponentId()){ toast('Bitte zuerst eine:n Gegner:in wählen.'); return; }
     addSips(currentPlayer().id, stepper.get(), `Wette verloren (${challengeLabel()})`);
     finishTurn();
   };
+
+  refresh();
 }
 
 
@@ -3378,8 +3633,13 @@ function renderMinigamePanel(card, body){
   if(mg.promptBank){
     const promptText = pick(mg.promptBank);
     const pbox = document.createElement('div'); pbox.className = 'prompt-box';
-    if(mg.id === 'pantomime'){
-      pbox.innerHTML = `<div class="word reveal-hidden" id="mgWord">${escapeHtml(promptText)}</div><div class="reveal-hint">Nur die aktive Person schaut hin – zum Auf-/Verdecken antippen.</div>`;
+    if(mg.reveal){
+      // Manche Spiele leben davon, dass genau eine Seite das Wort nicht sieht.
+      const hint = mg.reveal === 'active'
+        ? 'Nur <b>' + escapeHtml(currentPlayer().name) + '</b> schaut hin — zum Auf- und Verdecken antippen.'
+        : '<b>' + escapeHtml(currentPlayer().name) + '</b> schaut weg! Alle anderen tippen zum Aufdecken.';
+      pbox.innerHTML = `<div class="word reveal-hidden" id="mgWord">${escapeHtml(promptText)}</div>`
+        + `<div class="reveal-hint">${hint}</div>`;
       pbox.querySelector('#mgWord').addEventListener('click', function(){ this.classList.toggle('reveal-hidden'); });
     } else {
       pbox.innerHTML = `<div class="word">${escapeHtml(promptText)}</div>`;
@@ -3741,7 +4001,7 @@ function openFinalePanel(duo){
   const header = document.createElement('div');
   header.className = 'card-head';
   header.style.setProperty('--cat', '#ffcf4d');
-  header.innerHTML = '<div class="ch-cat">🏁 Finale</div>'
+  header.innerHTML = cardHeadTop('🏁 Finale')
     + '<div class="ch-text">Der Stapel ist durch — Würfelduell, beste aus drei Würfen.</div>';
   inner.appendChild(header);
 
@@ -4325,6 +4585,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  paintBrandMarks();
   const u = document.getElementById('btnUndo');
   if(u) u.addEventListener('click', undoLast);
   updateUndoButton();
