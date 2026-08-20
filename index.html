@@ -1065,6 +1065,7 @@
   .jum-verdict b{color:var(--accent);}
   .jum-sub{font-size:12.5px;color:var(--ink-muted);margin-top:6px;}
   .jum-tie-head{font-size:17px;font-weight:800;color:var(--warning);margin-bottom:2px;}
+  .deck-pile .dpile-sub.finale-soon{color:var(--warning);font-weight:800;}
   .jum-compact{
     display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
     gap:4px 6px;font-size:12.5px;color:var(--ink-muted);
@@ -1094,6 +1095,46 @@
     .die{width:44px;height:44px;border-radius:9px;padding:5px;gap:2px;}
     .jum-stat-val{font-size:20px;}
     .jum-dice{margin:6px 0 4px;}
+  }
+
+
+  /* ---------- Finale ---------- */
+  .finale-kicker{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;color:rgba(255,255,255,0.55);font-weight:700;}
+  .finale-title{
+    font-size:40px;font-weight:800;line-height:1.1;margin:4px 0 14px;
+    color:#ffcf4d;text-shadow:0 0 26px rgba(255,207,77,0.55);
+  }
+  .finale-vs{
+    display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+    font-size:22px;font-weight:800;margin-bottom:14px;
+  }
+  .finale-vs .fin-name{display:flex;align-items:center;gap:8px;}
+  .finale-vs .fin-dot{width:13px;height:13px;border-radius:50%;flex:none;}
+  .finale-vs .fin-vs{color:#ff6b81;font-size:17px;}
+  .finale-vs .fin-sips{font-size:12.5px;color:rgba(255,255,255,0.55);font-weight:600;}
+  .finale-sub{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,0.72);margin-bottom:16px;}
+
+  .fin-board{display:flex;align-items:center;justify-content:center;gap:12px;margin:2px 0 10px;}
+  .fin-slot{
+    flex:1;min-width:0;text-align:center;padding:9px 8px;
+    border:1px solid var(--line);border-radius:12px;background:var(--surface-2);
+  }
+  .fin-slot.lead{border-color:var(--good);}
+  .fin-slot .fin-slot-name{font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .fin-slot .fin-slot-score{font-size:28px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;}
+  .fin-mid{font-size:13px;color:var(--ink-muted);font-weight:700;flex:none;}
+  .fin-round{text-align:center;font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-muted);font-weight:800;margin-bottom:4px;}
+  .fin-champ{font-size:20px;font-weight:800;color:var(--good);margin-bottom:2px;}
+  body.theme-light .fin-slot{background:transparent;}
+
+  @media (max-width:640px){
+    .finale-title{font-size:33px;}
+    .finale-vs{font-size:19px;gap:10px;}
+    .fin-slot .fin-slot-score{font-size:24px;}
+  }
+  @media (max-height:520px){
+    .finale-title{font-size:26px;margin:2px 0 8px;}
+    .finale-sub{font-size:12.5px;margin-bottom:10px;}
   }
 
 </style>
@@ -1277,6 +1318,17 @@
 <!-- Rechtstexte -->
 <!-- Intensität während des Spiels ändern -->
 <!-- Münzwurf: eigene Bühne über allem, verschwindet nach dem Ergebnis -->
+<!-- Finale: dramatische Ankündigung, wenn der Stapel leer ist -->
+<div class="coin-stage" id="finaleStage" aria-live="polite">
+  <div class="coin-stage-inner">
+    <div class="finale-kicker">Der Stapel ist leer</div>
+    <div class="finale-title">🏁 DAS FINALE</div>
+    <div class="finale-vs" id="finaleVs"></div>
+    <div class="finale-sub">Die beiden mit den wenigsten Schlücken duellieren sich.<br>Beste aus drei Würfen — wer verliert, muss nachlegen.</div>
+    <div class="coin-stage-hint">Tippen zum Starten</div>
+  </div>
+</div>
+
 <div class="coin-stage" id="coinStage" aria-live="polite">
   <div class="coin-stage-inner">
     <div class="coin-stage-call" id="coinStageCall"></div>
@@ -1643,6 +1695,7 @@ function toggleInList(list, key){
 const state = {
   players: [],
   intensity: 0,
+  finaleDone: false,
   offCats: [],    // abgewählte Kartenarten
   offMinis: [],   // abgewählte Minispiele
   currentIndex: 0,
@@ -1674,6 +1727,7 @@ function saveState(){
       players: state.players,
       currentIndex: state.currentIndex,
       intensity: state.intensity,
+      finaleDone: state.finaleDone,
       offCats: state.offCats,
       offMinis: state.offMinis,
       deck: state.deck.map(c => c.uid),
@@ -1707,6 +1761,7 @@ function restoreSavedGame(d){
   state.players      = d.players;
   state.currentIndex = Math.min(d.currentIndex || 0, d.players.length - 1);
   state.intensity    = Math.min(Math.max(0, d.intensity | 0), INTENSITY_LEVELS.length - 1);
+  state.finaleDone   = !!d.finaleDone;
   state.offCats      = Array.isArray(d.offCats) ? d.offCats : [];
   state.offMinis     = Array.isArray(d.offMinis) ? d.offMinis : [];
   state.deck         = toCards(d.deck);
@@ -1899,6 +1954,7 @@ function startGame(){
   state.discard = [];
   state.activeRules = [];
   state.log = [];
+  state.finaleDone = false;
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
@@ -1972,7 +2028,7 @@ function renderAll(){
   renderPlayers();
   renderRules();
   renderLog();
-  document.getElementById('deckCount').textContent = state.deck.length + ' Karten';
+  updateDeckCount();
   syncIntensityUI();
 }
 
@@ -1989,18 +2045,36 @@ function renderFlip(card){
   requestAnimationFrame(() => flip.classList.add('flipped'));
 }
 
+function updateDeckCount(){
+  const c = document.getElementById('deckCount');
+  if(c) c.textContent = state.deck.length + ' Karten';
+  // Kurz vor Schluss auf das Finale hinweisen
+  const sub = document.querySelector('.deck-pile .dpile-sub');
+  if(!sub) return;
+  const left = state.deck.length;
+  if(!state.finaleDone && left > 0 && left <= 5){
+    sub.textContent = left === 1 ? 'Finale nach dieser Karte' : 'Finale in ' + left + ' Karten';
+    sub.classList.add('finale-soon');
+  } else {
+    sub.textContent = 'Kartenstapel';
+    sub.classList.remove('finale-soon');
+  }
+}
+
 function drawCard(){
   const panel = document.getElementById('actionPanel');
   if(panel.classList.contains('show')){ toast('Bitte zuerst die aktuelle Karte auflösen!'); return; }
   if(state.deck.length === 0){
     if(state.discard.length === 0){ toast('Keine Karten mehr im Spiel!'); return; }
+    // Stapel zum ersten Mal durch: statt einfach neu zu mischen gibt es das Finale
+    if(!state.finaleDone && state.players.length >= 2){ startFinale(); return; }
     state.deck = shuffle(state.discard);
     state.discard = [];
     toast('🔀 Alle Karten wurden neu gemischt!');
   }
   const card = state.deck.pop();
   state.discard.push(card);
-  document.getElementById('deckCount').textContent = state.deck.length + ' Karten';
+  updateDeckCount();
   renderFlip(card);
   openActionForCard(card);
 }
@@ -3272,6 +3346,253 @@ function renderNewRulePanel(card, body){
 }
 
 /* ---------- Spielende ---------- */
+
+/* ================= FINALE =================
+   Ist der Kartenstapel einmal komplett durch, endet das Spiel nicht einfach,
+   sondern die beiden Personen mit den wenigsten Schlücken treten gegeneinander an:
+   ein Würfelduell, beste aus drei Würfen. Wer verliert, muss nachlegen.
+   Danach kommt der Endstand — Weiterspielen bleibt aber möglich. */
+const FINALE_PENALTY = 5;   // Basiswert, wird über den Intensitätsregler skaliert
+
+function pickFinalists(){
+  // Nach Schlücken aufsteigend; bei Gleichstand entscheidet der Zufall,
+  // damit nicht immer dieselbe Sitzposition bevorzugt wird.
+  return shuffle(state.players).sort((a, b) => a.sips - b.sips).slice(0, 2);
+}
+
+function startFinale(){
+  state.finaleDone = true;
+  saveState();
+  const duo = pickFinalists();
+  const stage = document.getElementById('finaleStage');
+  const vs = document.getElementById('finaleVs');
+
+  if(!stage || !vs){ openFinalePanel(duo); return; }
+
+  vs.innerHTML = duo.map(p =>
+    `<span class="fin-name"><span class="fin-dot" style="background:${p.color}"></span>`
+    + `${escapeHtml(p.name)} <span class="fin-sips">${p.sips}</span></span>`
+  ).join('<span class="fin-vs">vs.</span>');
+
+  stage.classList.remove('leaving');
+  stage.classList.add('show');
+
+  let closed = false;
+  function close(){
+    if(closed) return;
+    closed = true;
+    stage.removeEventListener('click', close);
+    stage.classList.add('leaving');
+    setTimeout(() => {
+      stage.classList.remove('show', 'leaving');
+      openFinalePanel(duo);
+    }, 300);
+  }
+  stage.addEventListener('click', close);
+  setTimeout(close, 4000);
+}
+
+function openFinalePanel(duo){
+  const overlay = document.getElementById('actionOverlay');
+  const panel = document.getElementById('actionPanel');
+  overlay.classList.add('show');
+  panel.className = 'action-panel show';
+  panel.innerHTML = '';
+
+  const inner = document.createElement('div');
+  inner.className = 'panel-inner';
+  panel.appendChild(inner);
+
+  const header = document.createElement('div');
+  header.className = 'card-head';
+  header.style.setProperty('--cat', '#ffcf4d');
+  header.innerHTML = '<div class="ch-cat">🏁 Finale</div>'
+    + '<div class="ch-text">Der Stapel ist durch — Würfelduell, beste aus drei Würfen.</div>';
+  inner.appendChild(header);
+
+  const body = document.createElement('div');
+  inner.appendChild(body);
+
+  observePanelFit(panel);
+  renderFinaleDuel(duo, body);
+  fitPanel();
+}
+
+function renderFinaleDuel(duo, body){
+  const wins = [0, 0];
+  let round = 1;
+
+  const board = document.createElement('div');
+  board.className = 'fin-board';
+  body.appendChild(board);
+
+  const stage = document.createElement('div');
+  body.appendChild(stage);
+
+  function drawBoard(){
+    board.innerHTML = duo.map((p, i) =>
+      `<div class="fin-slot${wins[i] === Math.max(wins[0], wins[1]) && wins[0] !== wins[1] ? ' lead' : ''}">`
+      + `<div class="fin-slot-score" style="color:${p.color}">${wins[i]}</div>`
+      + `<div class="fin-slot-name">${escapeHtml(p.name)}</div></div>`
+      + (i === 0 ? '<div class="fin-mid">:</div>' : '')
+    ).join('');
+  }
+
+  /* Eine Duellrunde: beide würfeln einen Würfel, höhere Augenzahl gewinnt.
+     Gleichstand innerhalb der Runde wird sofort neu gewürfelt. */
+  function playRound(){
+    stage.innerHTML = '';
+    const lbl = document.createElement('div');
+    lbl.className = 'fin-round';
+    lbl.textContent = 'Runde ' + round + ' · erster auf 2 Siege';
+    stage.appendChild(lbl);
+
+    const results = [];
+    let idx = 0;
+
+    function askRoll(){
+      const holder = document.createElement('div');
+      stage.appendChild(holder);
+      step(holder);
+    }
+
+    function step(holder){
+      holder.innerHTML = '';
+      if(idx >= duo.length){ evaluate(); return; }
+      const p = duo[idx];
+
+      const head = document.createElement('div');
+      head.className = 'est-turn';
+      head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
+        + `<b>${escapeHtml(p.name)}</b> würfelt`
+        + `<span class="est-progress">${idx + 1} / 2</span>`;
+      holder.appendChild(head);
+
+      const diceRow = document.createElement('div');
+      diceRow.className = 'jum-dice single';
+      diceRow.innerHTML = diceFaceHtml(1);
+      holder.appendChild(diceRow);
+
+      const info = document.createElement('div');
+      info.className = 'jum-roll-info';
+      info.textContent = results.length
+        ? results[0].player.name + ' hat eine ' + results[0].die
+        : 'Höhere Augenzahl gewinnt die Runde';
+      holder.appendChild(info);
+
+      const acts = document.createElement('div');
+      acts.className = 'action-buttons';
+      const rollBtn = document.createElement('button');
+      rollBtn.className = 'btn primary';
+      rollBtn.textContent = '🎲 Würfeln';
+      acts.appendChild(rollBtn);
+      holder.appendChild(acts);
+
+      rollBtn.onclick = () => {
+        rollBtn.disabled = true;
+        const die = 1 + Math.floor(Math.random() * 6);
+        diceRow.classList.add('rolling');
+        let ticks = 0;
+        const spin = setInterval(() => {
+          ticks++;
+          diceRow.innerHTML = diceFaceHtml(1 + Math.floor(Math.random() * 6));
+          if(ticks >= 8){
+            clearInterval(spin);
+            diceRow.classList.remove('rolling');
+            diceRow.innerHTML = diceFaceHtml(die);
+            results.push({ player: p, die: die, index: idx });
+            info.innerHTML = `<b>${escapeHtml(p.name)}</b>: <b class="jum-score">${die}</b>`;
+            acts.innerHTML = '';
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'btn primary';
+            nextBtn.textContent = idx === duo.length - 1 ? '🏁 Runde auswerten' : '➡️ Weiter';
+            nextBtn.onclick = () => { idx++; step(holder); };
+            acts.appendChild(nextBtn);
+          }
+        }, 90);
+      };
+    }
+
+    function evaluate(){
+      stage.innerHTML = '';
+      const [r0, r1] = results;
+      const summary = document.createElement('div');
+      summary.className = 'jum-verdict';
+
+      const acts = document.createElement('div');
+      acts.className = 'action-buttons';
+      const btn = document.createElement('button');
+      btn.className = 'btn primary';
+      acts.appendChild(btn);
+
+      if(r0.die === r1.die){
+        summary.innerHTML = `<div class="jum-tie-head">Unentschieden!</div>`
+          + `<div class="jum-sub">Beide haben eine ${r0.die} — Runde ${round} wird wiederholt.</div>`;
+        stage.appendChild(summary); stage.appendChild(acts);
+        btn.textContent = '🎲 Nochmal';
+        btn.onclick = () => playRound();
+        fitPanel();
+        return;
+      }
+
+      const winIdx = r0.die > r1.die ? r0.index : r1.index;
+      wins[winIdx]++;
+      drawBoard();
+
+      summary.innerHTML = `<div><b>${escapeHtml(duo[winIdx].name)}</b> gewinnt Runde ${round}`
+        + ` (${r0.die} zu ${r1.die}).</div>`;
+      stage.appendChild(summary);
+      stage.appendChild(acts);
+
+      if(wins[winIdx] >= 2){
+        btn.textContent = '🏆 Ergebnis';
+        btn.onclick = () => finish(winIdx);
+      } else {
+        btn.textContent = '➡️ Runde ' + (round + 1);
+        btn.onclick = () => { round++; playRound(); };
+      }
+      fitPanel();
+    }
+
+    askRoll();
+    fitPanel();
+  }
+
+  function finish(winIdx){
+    stage.innerHTML = '';
+    const champ = duo[winIdx];
+    const loser = duo[1 - winIdx];
+    const penalty = sip(FINALE_PENALTY);
+
+    const box = document.createElement('div');
+    box.className = 'jum-verdict';
+    box.innerHTML = `<div class="fin-champ">🏆 ${escapeHtml(champ.name)} gewinnt das Finale</div>`
+      + `<div><b>${escapeHtml(loser.name)}</b> verliert und trinkt <b>${penalty}</b> Schlücke.</div>`;
+    stage.appendChild(box);
+
+    const acts = document.createElement('div');
+    acts.className = 'action-buttons';
+    const btn = document.createElement('button');
+    btn.className = 'btn primary';
+    btn.textContent = '🏁 Endstand ansehen';
+    acts.appendChild(btn);
+    stage.appendChild(acts);
+
+    btn.onclick = () => {
+      addSips(loser.id, penalty, 'Finale gegen ' + champ.name + ' verloren');
+      addLogNarrative('🏁 Finale: ' + champ.name + ' schlägt ' + loser.name + ' mit ' + wins[winIdx] + ':' + wins[1 - winIdx] + '.');
+      document.getElementById('actionOverlay').classList.remove('show');
+      document.getElementById('actionPanel').classList.remove('show');
+      document.getElementById('actionPanel').innerHTML = '';
+      saveState();
+      endGame();
+    };
+    fitPanel();
+  }
+
+  drawBoard();
+  playRound();
+}
 
 function endGame(){
   const sorted = [...state.players].sort((a, b) => b.sips - a.sips);
