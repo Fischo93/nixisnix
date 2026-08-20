@@ -184,7 +184,7 @@
   }
   .app{max-width:1180px;margin:0 auto;padding:20px 16px 64px;}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
-  .brand{display:flex;align-items:center;gap:12px;}
+  .brand{display:flex;align-items:center;gap:12px;min-width:0;}
   .brand .logo{
     font-size:30px;
   }
@@ -193,7 +193,7 @@
     .brand .tag{display:none;}
     .brand .logo{font-size:24px;}
   }
-  .topbar-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .topbar-actions{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:5;flex:none;}
 
   button{font-family:inherit;cursor:pointer;touch-action:manipulation;}
   .btn{
@@ -262,7 +262,7 @@
 
   /* ---------- GAME SCREEN ---------- */
   #gameScreen{display:none;}
-  .game-grid{display:grid;grid-template-columns:276px 1fr 270px;gap:16px;align-items:start;}
+  .game-grid{display:grid;grid-template-columns:300px 1fr;gap:18px;align-items:start;}
   .game-grid > *{min-width:0;}
   @media (max-width:980px){.game-grid{grid-template-columns:1fr;}}
 
@@ -292,7 +292,7 @@
   .center-col{display:flex;flex-direction:column;align-items:center;gap:16px;}
   .deck-zone{display:flex;align-items:center;justify-content:center;gap:34px;flex-wrap:wrap;padding:26px 10px;}
   .deck-pile{
-    width:150px;height:210px;border-radius:14px;
+    width:186px;height:262px;border-radius:16px;
     background:
       repeating-linear-gradient(135deg, rgba(99,230,255,0.06) 0 8px, transparent 8px 16px),
       linear-gradient(160deg,#2a1f4d,#150f2a);
@@ -304,7 +304,7 @@
   }
   .deck-pile:hover{transform:translateY(-4px) scale(1.02);}
   .deck-pile:active{transform:translateY(0) scale(0.99);}
-  .deck-pile .dpile-logo{font-size:16px;letter-spacing:1px;}
+  .deck-pile .dpile-logo{font-size:19px;letter-spacing:1px;}
   .deck-pile .dpile-sub{font-size:12px;color:#a99ddb;}
   .deck-pile .dpile-count{font-size:12px;color:#7d72ab;margin-top:6px;}
   .deck-pile.disabled{opacity:.55;cursor:default;}
@@ -430,6 +430,29 @@
   .mg-title{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:800;color:var(--ink-primary);margin-bottom:8px;line-height:1.2;}
   .mg-title .mg-icon{font-size:24px;line-height:1;flex:none;}
   .mg-instructions{font-size:13.5px;line-height:1.5;color:var(--ink-secondary);}
+  /* Verdeckt heißt wirklich verdeckt: Ein Weichzeichner ließe die Wortlänge
+     erkennen, deshalb wird das Wort komplett gegen einen gleich breiten
+     Platzhalter getauscht. */
+  .word-wrap{width:100%;}
+  .word-hide{position:relative;display:block;width:100%;min-height:2.9em;cursor:pointer;}
+  /* Solange verdeckt, ist das Wort komplett aus dem Layout genommen —
+     sonst würden Breite und Zeilenzahl die Wortlänge verraten. */
+  .word-hide .word-real{
+    visibility:hidden;position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+  }
+  .word-hide.open .word-real{
+    visibility:visible;position:relative;inset:auto;min-height:2.9em;
+  }
+  .word-hide .word-mask{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    gap:7px;border-radius:10px;
+    background:repeating-linear-gradient(135deg, var(--surface-3) 0 10px, var(--surface-2) 10px 20px);
+    border:1px dashed var(--line);
+    font-size:13px;font-weight:700;color:var(--ink-secondary);
+    letter-spacing:.4px;user-select:none;
+  }
+  .word-hide.open .word-mask{display:none;}
   .reveal-hidden{filter:blur(7px);user-select:none;transition:filter .15s ease;}
   .reveal-hint{font-size:11px;color:var(--ink-muted);margin-top:6px;}
   .action-buttons{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap;}
@@ -555,14 +578,13 @@
     .game-grid{display:flex;flex-direction:column;gap:12px;align-items:stretch;}
     .col-center{order:1;}
     .col-players{order:2;}
-    .col-log{order:3;}
 
     /* Die gezogene Karte steht jetzt im Popup — die große Flip-Bühne entfällt */
     .draw-stage{display:none;}
     .center-col{gap:8px;}
     .deck-zone{padding:2px 0;gap:0;}
-    .deck-pile{width:132px;height:184px;gap:3px;}
-    .deck-pile .dpile-logo{font-size:14px;}
+    .deck-pile{width:166px;height:232px;gap:4px;}
+    .deck-pile .dpile-logo{font-size:17px;}
     .deck-pile .dpile-sub{font-size:11.5px;}
     .deck-pile .dpile-count{font-size:12px;margin-top:3px;}
     .turn-banner .who{font-size:11.5px;}
@@ -585,17 +607,28 @@
   /* ---------- NUR HANDY: Bottom-Sheet & Symbol-Buttons ---------- */
   @media (max-width:640px){
     .topbar{flex-wrap:nowrap;}
-    .brand{min-width:0;}
-    .topbar-actions{gap:6px;flex-wrap:nowrap;}
+    .brand{min-width:0;flex:1 1 auto;}
+    .brand .logo{font-size:20px;}
+    .topbar-actions{gap:5px;flex-wrap:nowrap;}
     .btn-label{display:none;}
+    .log-badge{min-width:16px;height:16px;font-size:10px;margin-left:4px;padding:0 4px;}
     .topbar-actions .btn.small{padding:9px 12px;font-size:15px;line-height:1;}
+  }
+
+  /* Vier Knöpfe und der Schriftzug passen unter ~430px nicht nebeneinander:
+     die Knopfleiste rutscht dann in eine eigene Zeile darunter. */
+  @media (max-width:430px){
+    .topbar{flex-wrap:wrap;gap:6px;}
+    .brand{flex:1 1 100%;}
+    .brand .logo{font-size:24px;}
+    .topbar-actions{width:100%;justify-content:flex-end;flex-wrap:nowrap;}
   }
 
   /* Sehr schmale Geräte (z.B. iPhone SE, 320px) */
   @media (max-width:400px){
     .app{padding:10px 10px 22px;}
-    .brand .logo{font-size:19px;}
-    .topbar-actions .btn.small{padding:8px 10px;font-size:14px;}
+    .brand .logo{font-size:22px;}
+    .topbar-actions .btn.small{padding:7px 9px;font-size:13.5px;}
     .players-panel{gap:6px;}
     .player-card{padding:6px 7px;gap:6px;}
     .player-card .name{font-size:12.5px;}
@@ -1229,7 +1262,7 @@
   .deck-pile .dpile-logo{
     display:flex;flex-direction:column;align-items:center;gap:2px;
   }
-  .dpile-coin{display:block;width:3.4em;line-height:0;color:var(--accent-2);}
+  .dpile-coin{display:block;width:3.6em;line-height:0;color:var(--accent-2);}
   .dpile-coin .nix-coin{width:100%;height:auto;position:static;filter:drop-shadow(0 0 8px var(--glow-cyan));}
   .dpile-word{line-height:1.05;}
 
@@ -1262,6 +1295,27 @@
     background:rgba(20,16,24,0.18);
   }
   .card-text .ch-who{color:var(--accent-2);}
+
+
+  .chip.chip-fixed{cursor:default;opacity:1;}
+
+
+  /* Protokoll-Knopf in der Kopfleiste */
+  .log-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:18px;height:18px;padding:0 5px;margin-left:6px;
+    border-radius:999px;background:var(--accent);color:var(--accent-ink);
+    font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;
+  }
+  #logOverlay .log-modal{display:flex;flex-direction:column;max-height:calc(100dvh - 44px);max-width:520px;}
+  #logOverlay .log-modal h2,#logOverlay .log-modal .action-buttons{flex:none;}
+  #logOverlay .log-list{
+    flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;
+    text-align:left;margin-top:10px;
+  }
+  @media (max-width:640px){
+    #logOverlay .log-modal{max-height:calc(100dvh - 30px);padding:18px 16px;}
+  }
 
 </style>
 </head>
@@ -1298,6 +1352,7 @@
       <div class="tag">das Trinkspiel mit Karten, Münze &amp; Chaos</div>
     </div>
     <div class="topbar-actions">
+      <button class="btn small" id="btnLog" style="display:none;" title="Protokoll ansehen">📜<span class="btn-label"> Protokoll</span><span class="log-badge" id="logCount">0</span></button>
       <button class="btn small" id="btnUndo" style="display:none;" title="Letzte Karte zurücknehmen" disabled>↩️<span class="btn-label"> Rückgängig</span></button>
       <button class="btn theme-toggle" id="btnThemeToggle" title="Design-Modus wechseln">🌙</button>
       <button class="btn danger small" id="btnEndGame" style="display:none;" title="Spiel beenden">🏁<span class="btn-label"> Spiel beenden</span></button>
@@ -1409,13 +1464,6 @@
 
       </div>
 
-      <!-- Log -->
-      <div class="col-log">
-        <details class="fold" id="logFold" open>
-          <summary>Protokoll <span class="fold-count" id="logCount"></span></summary>
-          <ul class="log-list" id="logList"></ul>
-        </details>
-      </div>
     </div>
   </div>
 
@@ -1476,6 +1524,17 @@
 </div>
 
 <!-- Spieler-Optionen: aussetzen bzw. zurückholen -->
+<!-- Protokoll -->
+<div class="overlay" id="logOverlay">
+  <div class="modal log-modal">
+    <h2>📜 Protokoll</h2>
+    <ul class="log-list" id="logList"></ul>
+    <div class="action-buttons" style="justify-content:center;margin-top:14px;">
+      <button class="btn primary" id="btnCloseLog">Schließen</button>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="playerOverlay">
   <div class="modal">
     <h2 id="playerOptName">Spieler:in</h2>
@@ -1922,6 +1981,7 @@ function restoreSavedGame(d){
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
   document.getElementById('btnUndo').style.display = 'inline-flex';
+  document.getElementById('btnLog').style.display = 'inline-flex';
   renderAll();
 }
 
@@ -2151,6 +2211,7 @@ function startGame(){
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
   document.getElementById('btnUndo').style.display = 'inline-flex';
+  document.getElementById('btnLog').style.display = 'inline-flex';
   renderAll();
   addLogNarrative('🎉 Spiel gestartet mit ' + state.players.length + ' Spieler:innen — ' + chosen.length + ' Karten im Stapel.');
   const offInfo = [];
@@ -2457,6 +2518,19 @@ function buildChipSelector(container, players, opts){
     wrap.appendChild(chip);
   });
   container.appendChild(wrap);
+  /* Steht die Auswahl ohnehin fest — etwa zu zweit, wo es nur eine
+     Gegner:in geben kann —, wird sie gleich vorbelegt. Ein Pflichtklick
+     ohne Alternative wäre reine Beschäftigung. */
+  if(players.length === 1 && max >= 1 && opts.autoSingle !== false){
+    const only = wrap.querySelector('.chip');
+    if(only){
+      selected = [players[0].id];
+      only.classList.add('selected');
+      only.classList.add('chip-fixed');
+      only.title = 'Steht fest — es gibt keine andere Auswahl';
+      setTimeout(() => onChange(selected.slice()), 0);
+    }
+  }
   return { getSelected: () => selected.slice() };
 }
 
@@ -3638,9 +3712,11 @@ function renderMinigamePanel(card, body){
       const hint = mg.reveal === 'active'
         ? 'Nur <b>' + escapeHtml(currentPlayer().name) + '</b> schaut hin — zum Auf- und Verdecken antippen.'
         : '<b>' + escapeHtml(currentPlayer().name) + '</b> schaut weg! Alle anderen tippen zum Aufdecken.';
-      pbox.innerHTML = `<div class="word reveal-hidden" id="mgWord">${escapeHtml(promptText)}</div>`
+      pbox.innerHTML = `<div class="word-wrap"><div class="word-hide" id="mgWord">`
+        + `<span class="word word-real">${escapeHtml(promptText)}</span>`
+        + `<span class="word-mask">👁️ Antippen zum Aufdecken</span></div></div>`
         + `<div class="reveal-hint">${hint}</div>`;
-      pbox.querySelector('#mgWord').addEventListener('click', function(){ this.classList.toggle('reveal-hidden'); });
+      pbox.querySelector('#mgWord').addEventListener('click', function(){ this.classList.toggle('open'); });
     } else {
       pbox.innerHTML = `<div class="word">${escapeHtml(promptText)}</div>`;
     }
@@ -4380,6 +4456,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('gameScreen').style.display = 'none';
     document.getElementById('btnEndGame').style.display = 'none';
     document.getElementById('btnUndo').style.display = 'none';
+    document.getElementById('btnLog').style.display = 'none';
     document.getElementById('setupScreen').style.display = 'block';
   });
 });
@@ -4589,6 +4666,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const u = document.getElementById('btnUndo');
   if(u) u.addEventListener('click', undoLast);
   updateUndoButton();
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ov = document.getElementById('logOverlay');
+  const open = document.getElementById('btnLog');
+  const close = document.getElementById('btnCloseLog');
+  if(open && ov) open.addEventListener('click', () => { renderLog(); ov.classList.add('show'); });
+  if(close && ov) close.addEventListener('click', () => ov.classList.remove('show'));
+  if(ov) ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); });
 });
 
 </script>
