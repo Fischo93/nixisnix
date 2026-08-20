@@ -351,21 +351,49 @@
   .card-head .ch-cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;opacity:.75;}
   .card-head .ch-text{font-size:15.5px;font-weight:800;line-height:1.35;margin-top:4px;}
 
+  /* Inhalt des Panels — wird bei Bedarf passend skaliert (siehe fitPanel) */
+  .panel-inner{transform-origin:top center;width:100%;}
+  .action-panel.is-fitted{overflow:hidden;}
+
   @media (max-width:640px){
+    /* Vollbild-Sheet: der Inhalt passt sich der Höhe an, nie scrollen müssen */
     .overlay.action-overlay{align-items:flex-end;padding:0;}
     .action-panel{
-      max-width:none;max-height:90vh;
-      border-radius:22px 22px 0 0;border-bottom:none;
-      padding:8px 15px calc(20px + env(safe-area-inset-bottom));
+      max-width:none;
+      height:100dvh;max-height:100dvh;
+      border-radius:0;border:none;
+      display:flex;flex-direction:column;justify-content:center;
+      padding:calc(10px + env(safe-area-inset-top)) 15px calc(14px + env(safe-area-inset-bottom));
+      overflow-y:auto;
     }
     .action-panel.show{animation:sheetUp .28s cubic-bezier(.2,.8,.3,1);}
-    /* Greifleiste oben, wie bei nativen Bottom-Sheets */
-    .action-panel::before{
-      content:"";display:block;width:42px;height:4px;border-radius:99px;
-      background:rgba(255,255,255,0.28);margin:6px auto 12px;
-    }
+    .action-panel::before{content:none;}
     .action-buttons{justify-content:stretch;}
     .action-buttons .btn{flex:1;justify-content:center;text-align:center;}
+
+    /* Kompakter auf dem Handy, damit Skalieren selten nötig wird */
+    .card-head{padding:9px 11px;}
+    .card-head .ch-text{font-size:15px;margin-top:2px;}
+    .prompt-box{padding:11px;margin-bottom:9px;}
+    .chip-row{gap:7px;margin-bottom:9px;}
+  }
+
+  /* Sehr flache Fenster (Querformat / offene Tastatur) */
+  @media (max-height:520px){
+    .card-head{padding:7px 10px;}
+    .card-head .ch-text{font-size:14px;}
+    .prompt-box{padding:9px;margin-bottom:7px;}
+    .coin-toss-zone{height:118px;margin:0 0 6px;}
+    .coin3d{width:72px;height:72px;}
+    .coin-back{font-size:20px;}
+    @keyframes coinToss3D{
+      0%{transform:translateY(0) rotateY(0deg);}
+      50%{transform:translateY(-72px) rotateY(720deg);}
+      100%{transform:translateY(0) rotateY(1260deg);}
+    }
+    .numpad{gap:5px;}
+    .numkey{padding:8px 0;font-size:17px;}
+    .numfield .est-input{font-size:20px !important;padding:9px 10px;}
   }
   @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
@@ -841,6 +869,91 @@
     .numfield .est-input{font-size:23px !important;padding:12px 10px;}
   }
 
+
+  /* ---------- Kartenauswahl im Setup ---------- */
+  .pick-summary{
+    font-size:13px;color:var(--accent-2);font-weight:700;
+    margin:-4px 0 12px;
+  }
+  .pick-label{
+    font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--ink-muted);margin-bottom:8px;font-weight:700;
+  }
+  .pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+  .pick-grid-mini{grid-template-columns:repeat(auto-fill,minmax(195px,1fr));margin-top:10px;}
+  .pick-item{
+    display:flex;align-items:center;gap:9px;
+    padding:9px 11px;border-radius:11px;
+    background:var(--surface-2);border:1px solid var(--line);
+    cursor:pointer;font-size:13px;font-weight:600;
+    color:var(--ink-primary);text-align:left;font-family:inherit;
+    touch-action:manipulation;transition:border-color .15s,opacity .15s,background .15s;
+  }
+  .pick-item:hover{border-color:var(--accent);}
+  .pick-item .pick-box{
+    flex:none;width:19px;height:19px;border-radius:6px;
+    border:2px solid var(--ink-muted);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;line-height:1;color:transparent;
+  }
+  .pick-item.on .pick-box{
+    background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+  }
+  .pick-item.off{opacity:.5;}
+  .pick-item.off .pick-name{text-decoration:line-through;}
+  .pick-name{flex:1;min-width:0;line-height:1.25;overflow-wrap:break-word;}
+  .pick-num{font-size:11.5px;color:var(--ink-muted);font-variant-numeric:tabular-nums;}
+  .pick-move{font-size:12px;}
+  .pick-fold{
+    margin-top:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--surface-1);padding:0;
+  }
+  .pick-fold summary{
+    cursor:pointer;padding:11px 13px;font-size:13px;font-weight:700;
+    display:flex;align-items:center;gap:8px;list-style:none;
+  }
+  .pick-fold summary::-webkit-details-marker{display:none;}
+  .pick-fold summary::after{content:'▾';margin-left:auto;color:var(--ink-muted);}
+  .pick-fold[open] summary::after{content:'▴';}
+  .pick-fold > div:not(.pick-actions){padding:0 13px 13px;}
+  .pick-actions{display:flex;gap:7px;flex-wrap:wrap;padding:0 13px 4px;}
+  body.theme-light .pick-item{background:transparent;border-color:#0d9488;color:#0a0a0a;}
+  body.theme-light .pick-item .pick-box{border-color:#0d9488;}
+  body.theme-light .pick-fold{background:transparent;border-color:#0d9488;}
+  body.theme-light .pick-summary{color:#0f5047;}
+  @media (max-width:520px){
+    .pick-grid,.pick-grid-mini{grid-template-columns:1fr;}
+    .pick-item{font-size:13px;padding:10px 11px;gap:9px;}
+    .pick-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+    .pick-actions .btn.small{min-width:0;white-space:nowrap;}
+    .pick-actions #btnMiniCalm{grid-column:1 / -1;}
+  }
+
+
+  /* Endstand & andere Dialoge: Kopf und Buttons bleiben sichtbar,
+     nur eine sehr lange Liste rollt in sich selbst. */
+  #endOverlay .modal{
+    display:flex;flex-direction:column;
+    max-height:calc(100dvh - 44px);
+  }
+  #endOverlay .modal h2,
+  #endOverlay .modal p,
+  #endOverlay .modal .action-buttons{flex:none;}
+  #endOverlay .ranking{
+    flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+    padding-right:2px;
+  }
+  @media (max-width:640px){
+    #endOverlay .modal{max-height:calc(100dvh - 30px);padding:18px 16px;}
+    .overlay{padding:14px;}
+    #endOverlay .ranking{margin:12px 0;gap:6px;}
+    #endOverlay .ranking li{padding:7px 10px;}
+  }
+  /* Rechtstexte dürfen rollen, aber der Schließen-Knopf bleibt sichtbar */
+  #legalOverlay .modal{display:flex;flex-direction:column;max-height:calc(100dvh - 44px);}
+  #legalOverlay .legal-body{flex:1 1 auto;min-height:0;overflow-y:auto;}
+  #legalOverlay .modal h2,#legalOverlay .modal .action-buttons{flex:none;}
+
 </style>
 </head>
 <body>
@@ -894,6 +1007,28 @@
         <div class="player-rows" id="playerRows"></div>
         <button class="add-player-btn" id="btnAddPlayer">+ Spieler:in hinzufügen</button>
         <div class="setup-hint">Mindestens 2, maximal 12 Personen. Die Reihenfolge bestimmt später die Sitzordnung (Nachbarn für Karten wie „linker Nachbar trinkt“). Wählt außerdem für jede Person ein Glas – der Schluck-Counter füllt sich im Spiel passend dazu.</div>
+      </div>
+    </div>
+
+    <div class="setup-single">
+      <div class="card-panel">
+        <h3 style="margin-top:0;font-size:14px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.6px;">Was soll mitspielen?</h3>
+        <div class="pick-summary" id="pickSummary">66 Karten im Stapel</div>
+
+        <div class="pick-label">Kartenarten</div>
+        <div class="pick-grid" id="catPicker"></div>
+
+        <details class="pick-fold" id="miniFold">
+          <summary>Einzelne Minispiele auswählen <span class="fold-count" id="miniCount">18 / 18</span></summary>
+          <div class="pick-actions">
+            <button type="button" class="btn small" id="btnMiniAll">Alle an</button>
+            <button type="button" class="btn small" id="btnMiniNone">Alle aus</button>
+            <button type="button" class="btn small" id="btnMiniCalm">🪑 Ohne Bewegungsspiele</button>
+          </div>
+          <div class="pick-grid pick-grid-mini" id="miniPicker"></div>
+        </details>
+
+        <div class="setup-hint">Abgewählte Karten kommen gar nicht erst in den Stapel. Praktisch, wenn jemand nicht gut aufstehen kann oder eine Kategorie einfach nicht mag.</div>
       </div>
     </div>
 
@@ -1206,7 +1341,7 @@ const IMPRO_SCENES = ["Ein Bewerbungsgespräch als Pirat.","Wetterbericht für d
 const TWENTY_Q_WORDS = ["Kühlschrank","Fußball","Regenschirm","Gitarre","Kamel","Zahnbürste","Ampel","Luftballon","Schneemann","Wecker","Skateboard","Taschenlampe"];
 
 const MINIGAMES = [
-  { id:'pantomime', title:'Pantomime', icon:'🎭', timerSeconds:60, amount:3, promptBank:PANTOMIME_WORDS,
+  { bewegung:true, id:'pantomime', title:'Pantomime', icon:'🎭', timerSeconds:60, amount:3, promptBank:PANTOMIME_WORDS,
     instructions:"Nur die aktive Person deckt das Wort auf und stellt es pantomimisch dar – reden verboten! Alle anderen raten laut, bis die Zeit abläuft." },
   { id:'reim', title:'Reimschmiede', icon:'📝', timerSeconds:0, amount:2, promptBank:RHYME_WORDS,
     instructions:"Reihum reimt jede Person auf das Wort. Wer nichts mehr findet oder zu lange zögert, scheidet aus und trinkt." },
@@ -1216,7 +1351,7 @@ const MINIGAMES = [
     instructions:"Wer die Aussage schon erlebt hat, trinkt einen Schluck. Ehrlichkeit zählt!" },
   { id:'wahrheit', title:'Wahrheit', icon:'🗣️', timerSeconds:0, amount:2, promptBank:TRUTHS,
     instructions:"Die aktive Person muss ehrlich antworten – oder trinkt zur Strafe." },
-  { id:'pflicht', title:'Pflicht', icon:'🎯', timerSeconds:20, amount:2, promptBank:DARES,
+  { bewegung:true, id:'pflicht', title:'Pflicht', icon:'🎯', timerSeconds:20, amount:2, promptBank:DARES,
     instructions:"Die aktive Person führt die Aufgabe aus, bevor die Zeit abläuft – oder trinkt zur Strafe." },
   { id:'zungenbrecher', title:'Zungenbrecher', icon:'👅', timerSeconds:0, amount:2, promptBank:TONGUE_TWISTERS,
     instructions:"3× fehlerfrei und schnell hintereinander aufsagen. Verhaspelt? Trinken!" },
@@ -1234,11 +1369,11 @@ const MINIGAMES = [
     instructions:"Zeigt allen außer einer Person das Wort. Diese Person stellt Ja/Nein-Fragen, um es in 20 Fragen zu erraten – sonst trinkt sie." },
   { id:'werwuerde', title:'Wer würde eher…', icon:'👉', timerSeconds:0, amount:1, promptBank:MOST_LIKELY,
     instructions:"Alle zeigen gleichzeitig auf die Person, auf die die Aussage am ehesten zutrifft. Die meistgezeigte Person trinkt." },
-  { id:'improszene', title:'Impro-Szene', icon:'🎬', timerSeconds:20, amount:2, promptBank:IMPRO_SCENES,
+  { bewegung:true, id:'improszene', title:'Impro-Szene', icon:'🎬', timerSeconds:20, amount:2, promptBank:IMPRO_SCENES,
     instructions:"Spiel die Szene vor, bis die Zeit abläuft. Die Gruppe kürt per Applaus die schwächste Vorstellung." },
   { id:'gedaechtnis', title:'Ich packe meinen Koffer', icon:'🧳', timerSeconds:0, amount:2, promptBank:null,
     instructions:"Reihum wiederholt jede Person alle bisherigen Gegenstände und fügt einen neuen hinzu. Erster Aussetzer trinkt." },
-  { id:'freeze', title:'Freeze!', icon:'🧊', timerSeconds:0, amount:2, promptBank:null,
+  { bewegung:true, id:'freeze', title:'Freeze!', icon:'🧊', timerSeconds:0, amount:2, promptBank:null,
     instructions:"Auf „Start“ erstarren alle sofort in ihrer Position. Wer sich zuerst bewegt oder lacht, trinkt." },
   { id:'zweiwahrheiten', title:'Zwei Wahrheiten, eine Lüge', icon:'🎲', timerSeconds:0, amount:2, promptBank:null,
     instructions:"Die aktive Person nennt drei Aussagen über sich – zwei wahr, eine gelogen. Wer falsch tippt, trinkt." },
@@ -1316,11 +1451,40 @@ function buildDeckTemplates(){
 }
 const DECK_TEMPLATE = buildDeckTemplates();
 
+/* ---------- Auswahl: welche Karten & Minispiele spielen mit? ---------- */
+const CAT_ORDER = ['trink','muenze','wette','mini','twist','regel','schaetz'];
+
+function catOn(cat){ return state.offCats.indexOf(cat) === -1; }
+function miniOn(id){ return state.offMinis.indexOf(id) === -1; }
+function activeMinigames(){ return MINIGAMES.filter(m => miniOn(m.id)); }
+
+/* Karten des aktuellen Stapels — abgewählte Arten fliegen raus.
+   Sind alle Minispiele abgewählt, verschwinden auch die Minispiel-Karten. */
+function activeDeckTemplate(){
+  const noMinis = activeMinigames().length === 0;
+  return DECK_TEMPLATE.filter(c => {
+    if(!catOn(c.cat)) return false;
+    if(c.cat === 'mini' && noMinis) return false;
+    return true;
+  });
+}
+
+function countForCat(cat){ return DECK_TEMPLATE.filter(c => c.cat === cat).length; }
+
+function toggleInList(list, key){
+  const i = list.indexOf(key);
+  if(i === -1) list.push(key); else list.splice(i, 1);
+}
+
+
+
 /* ---------- State & Utilities ---------- */
 
 const state = {
   players: [],
   intensity: 0,
+  offCats: [],    // abgewählte Kartenarten
+  offMinis: [],   // abgewählte Minispiele
   currentIndex: 0,
   deck: [],
   discard: [],
@@ -1350,6 +1514,8 @@ function saveState(){
       players: state.players,
       currentIndex: state.currentIndex,
       intensity: state.intensity,
+      offCats: state.offCats,
+      offMinis: state.offMinis,
       deck: state.deck.map(c => c.uid),
       discard: state.discard.map(c => c.uid),
       activeRules: state.activeRules,
@@ -1381,12 +1547,14 @@ function restoreSavedGame(d){
   state.players      = d.players;
   state.currentIndex = Math.min(d.currentIndex || 0, d.players.length - 1);
   state.intensity    = Math.min(Math.max(0, d.intensity | 0), INTENSITY_LEVELS.length - 1);
+  state.offCats      = Array.isArray(d.offCats) ? d.offCats : [];
+  state.offMinis     = Array.isArray(d.offMinis) ? d.offMinis : [];
   state.deck         = toCards(d.deck);
   state.discard      = toCards(d.discard);
   state.activeRules  = Array.isArray(d.activeRules) ? d.activeRules : [];
   state.log          = Array.isArray(d.log) ? d.log : [];
   // Sicherheitsnetz: ohne Karten im Stapel wäre das Spiel nicht spielbar
-  if(state.deck.length === 0 && state.discard.length === 0) state.deck = shuffle(DECK_TEMPLATE);
+  if(state.deck.length === 0 && state.discard.length === 0) state.deck = shuffle(activeDeckTemplate());
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
@@ -1563,9 +1731,11 @@ function startGame(){
     return { name: input.value.trim() || input.placeholder, glassType: select ? select.value : 'bier' };
   });
   if(entries.length < 2){ toast('Mindestens 2 Spieler:innen nötig.'); return; }
+  const chosen = activeDeckTemplate();
+  if(chosen.length === 0){ toast('Wählt mindestens eine Kartenart aus.'); return; }
   state.players = entries.map((e, i) => ({ id: 'p' + i + '_' + Date.now(), name: e.name, glassType: e.glassType, color: PLAYER_COLORS[i % PLAYER_COLORS.length], sips: 0 }));
   state.currentIndex = 0;
-  state.deck = shuffle(DECK_TEMPLATE);
+  state.deck = shuffle(chosen);
   state.discard = [];
   state.activeRules = [];
   state.log = [];
@@ -1573,7 +1743,11 @@ function startGame(){
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
   renderAll();
-  addLogNarrative('🎉 Spiel gestartet mit ' + state.players.length + ' Spieler:innen.');
+  addLogNarrative('🎉 Spiel gestartet mit ' + state.players.length + ' Spieler:innen — ' + chosen.length + ' Karten im Stapel.');
+  const offInfo = [];
+  if(state.offCats.length) offInfo.push(state.offCats.map(c => CAT_META[c].label).join(', '));
+  if(state.offMinis.length) offInfo.push(state.offMinis.length + ' Minispiel' + (state.offMinis.length === 1 ? '' : 'e'));
+  if(offInfo.length) addLogNarrative('🚫 Abgewählt: ' + offInfo.join(' · '));
   saveState();
 }
 
@@ -1600,12 +1774,30 @@ function renderPlayers(){
   const tn = document.getElementById('turnName');
   tn.textContent = state.players[state.currentIndex] ? state.players[state.currentIndex].name : '–';
 }
+/* Passt Zahlen in Kartentexten an die eingestellte Intensität an.
+   Es werden ausschließlich Schluck-Angaben angefasst ("3 Schlücke"),
+   plus ein optionales "(max. N)", wenn N dem Höchstwert der Karte entspricht.
+   Alle anderen Zahlen (Zeiten, "Best-of-3", "20 Fragen") bleiben unberührt. */
+function scaleSips(text, card){
+  if(!text) return text;
+  if(intensity().mult === 1) return text;
+  let out = String(text).replace(/(\d+)(\s*)(Schlücke|Schlucke|Schluck)\b/g, (m, num, sp, word) => {
+    const v = sip(parseInt(num, 10));
+    return v + sp + (v === 1 ? 'Schluck' : 'Schlücke');
+  });
+  const cap = card && card.capAmount;
+  if(cap){
+    out = out.replace(new RegExp('(max\\.\\s*)' + cap + '(?!\\d)', 'g'), (m, pre) => pre + sip(cap));
+  }
+  return out;
+}
+
 function renderRules(){
   const list = document.getElementById('rulesList');
   const c = document.getElementById('rulesCount');
   if(c) c.textContent = state.activeRules.length;
   if(state.activeRules.length === 0){ list.innerHTML = '<li class="empty">Noch keine besonderen Regeln.</li>'; return; }
-  list.innerHTML = state.activeRules.map(r => `<li>${escapeHtml(r)}</li>`).join('');
+  list.innerHTML = state.activeRules.map(r => `<li>${escapeHtml(scaleSips(r))}</li>`).join('');
   // Neue Hausregel: auf dem Handy einmal aufklappen, damit sie nicht untergeht
   const fold = document.getElementById('rulesFold');
   if(fold && !fold.open) fold.open = true;
@@ -1631,7 +1823,7 @@ function renderFlip(card){
   const back = document.getElementById('flipBack');
   back.style.background = card.meta.color;
   back.style.color = '#141018';
-  back.innerHTML = `<div class="cat-icon">${card.meta.icon}</div><div class="cat-label">${card.meta.label}</div><div class="card-text">${escapeHtml(card.text)}</div>`;
+  back.innerHTML = `<div class="cat-icon">${card.meta.icon}</div><div class="cat-label">${card.meta.label}</div><div class="card-text">${escapeHtml(scaleSips(card.text, card))}</div>`;
   flip.classList.remove('flipped');
   void flip.offsetWidth;
   requestAnimationFrame(() => flip.classList.add('flipped'));
@@ -1734,14 +1926,17 @@ function openActionForCard(card){
   document.getElementById('actionOverlay').classList.add('show');
   panel.className = 'action-panel show';
   panel.innerHTML = '';
+  const inner = document.createElement('div');
+  inner.className = 'panel-inner';
+  panel.appendChild(inner);
   const header = document.createElement('div');
   header.className = 'card-head';
   header.style.setProperty('--cat', card.meta.color);
   header.innerHTML = `<div class="ch-cat">${card.meta.icon} ${escapeHtml(card.meta.label)}</div>`
-    + `<div class="ch-text">${escapeHtml(card.text)}</div>`;
-  panel.appendChild(header);
+    + `<div class="ch-text">${escapeHtml(scaleSips(card.text, card))}</div>`;
+  inner.appendChild(header);
   const body = document.createElement('div');
-  panel.appendChild(body);
+  inner.appendChild(body);
 
   switch(card.kind){
     case 'auto': renderAutoPanel(card, body); break;
@@ -1763,6 +1958,54 @@ function openActionForCard(card){
       body.appendChild(btn);
     }
   }
+  observePanelFit(panel);
+  fitPanel();
+}
+
+/* ---------- Panel immer ohne Scrollen anzeigen ----------
+   Der Inhalt wird gemessen und, falls nötig, so weit verkleinert,
+   dass er komplett in den sichtbaren Bereich passt. Läuft nach jedem
+   Aufbau und bei jeder Änderung im Panel (Münzwurf, Duell-Stufe 2,
+   Schätzrunden), außerdem bei Drehung und Tastatur-Ein-/Ausblenden. */
+let _fitRaf = null;
+function fitPanel(){
+  if(_fitRaf) cancelAnimationFrame(_fitRaf);
+  _fitRaf = requestAnimationFrame(() => {
+    _fitRaf = null;
+    const panel = document.getElementById('actionPanel');
+    if(!panel || !panel.classList.contains('show')) return;
+    const inner = panel.querySelector('.panel-inner');
+    if(!inner) return;
+
+    // Erst zurücksetzen, dann frisch messen
+    inner.style.transform = '';
+    inner.style.height = '';
+    panel.classList.remove('is-fitted');
+
+    const cs = window.getComputedStyle(panel);
+    const avail = panel.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    const need = inner.scrollHeight;
+    if(!avail || !need || need <= avail + 1) return;
+
+    const scale = Math.max(0.62, avail / need);
+    inner.style.transformOrigin = 'top center';
+    inner.style.transform = 'scale(' + scale.toFixed(4) + ')';
+    inner.style.height = Math.ceil(need * scale) + 'px';
+    panel.classList.add('is-fitted');
+  });
+}
+
+let _panelObserver = null;
+function observePanelFit(panel){
+  if(_panelObserver || !('MutationObserver' in window)) return;
+  _panelObserver = new MutationObserver(() => fitPanel());
+  _panelObserver.observe(panel, { childList:true, subtree:true, characterData:true });
+}
+
+window.addEventListener('resize', fitPanel);
+window.addEventListener('orientationchange', () => setTimeout(fitPanel, 250));
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', fitPanel);
 }
 
 function renderAutoPanel(card, body){
@@ -1774,7 +2017,7 @@ function renderAutoPanel(card, body){
   body.appendChild(box);
   const actions = document.createElement('div'); actions.className = 'action-buttons';
   const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen';
-  btn.onclick = () => { targets.forEach(p => addSips(p.id, sip(card.amount), card.text)); finishTurn(); };
+  btn.onclick = () => { targets.forEach(p => addSips(p.id, sip(card.amount), scaleSips(card.text, card))); finishTurn(); };
   actions.appendChild(btn); body.appendChild(actions);
 
   // Betrifft die Karte nur die aktive Person selbst, darf sie wählen, statt
@@ -1796,8 +2039,8 @@ function renderChoosePanel(card, body){
   actions.appendChild(btn); body.appendChild(actions);
   const sel = buildChipSelector(chipWrap, others, { max: need, onChange: s => { btn.disabled = s.length !== need; } });
   btn.onclick = () => {
-    sel.getSelected().forEach(id => addSips(id, sip(card.amount), card.text));
-    if(card.alsoSelf) addSips(currentPlayer().id, sip(card.amount), card.text);
+    sel.getSelected().forEach(id => addSips(id, sip(card.amount), scaleSips(card.text, card)));
+    if(card.alsoSelf) addSips(currentPlayer().id, sip(card.amount), scaleSips(card.text, card));
     finishTurn();
   };
 }
@@ -1828,7 +2071,7 @@ function renderFreePanel(card, body){
   actions.appendChild(btn); body.appendChild(actions);
   updateTotal();
   btn.onclick = () => {
-    Object.entries(values).forEach(([id, v]) => { if(v > 0) addSips(id, v, card.text); });
+    Object.entries(values).forEach(([id, v]) => { if(v > 0) addSips(id, v, scaleSips(card.text, card)); });
     finishTurn();
   };
 }
@@ -1844,8 +2087,8 @@ function renderManualPanel(card, body){
   actions.appendChild(btn); body.appendChild(actions);
   btn.onclick = () => {
     const ids = sel.getSelected();
-    if(ids.length === 0) addLogNarrative('Niemand betroffen — ' + card.text);
-    else ids.forEach(id => addSips(id, sip(card.amount), card.text));
+    if(ids.length === 0) addLogNarrative('Niemand betroffen — ' + scaleSips(card.text, card));
+    else ids.forEach(id => addSips(id, sip(card.amount), scaleSips(card.text, card)));
     finishTurn();
   };
 }
@@ -1859,7 +2102,7 @@ function renderNameLenPanel(card, body){
   body.appendChild(box);
   const actions = document.createElement('div'); actions.className = 'action-buttons';
   const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen';
-  btn.onclick = () => { addSips(cur.id, amount, card.text); finishTurn(); };
+  btn.onclick = () => { addSips(cur.id, amount, scaleSips(card.text, card)); finishTurn(); };
   actions.appendChild(btn); body.appendChild(actions);
   renderCoinGambleWidget(body, cur, amount, card.text, finishTurn, btn);
 }
@@ -2123,7 +2366,7 @@ function renderBetPanel(card, body){
 }
 
 function renderMinigamePanel(card, body){
-  const mg = pick(MINIGAMES);
+  const mg = pick(activeMinigames());
   const head = document.createElement('div');
   head.innerHTML = `<div class="prompt-box" style="text-align:left;"><div class="mg-title"><span class="mg-icon">${mg.icon}</span>${escapeHtml(mg.title)}</div><div class="mg-instructions">${escapeHtml(mg.instructions)}</div></div>`;
   body.appendChild(head);
@@ -2419,14 +2662,14 @@ function renderNewRulePanel(card, body){
   const available = RULES.filter(r => !state.activeRules.includes(r));
   const rule = available.length ? pick(available) : pick(RULES);
   const box = document.createElement('div'); box.className = 'prompt-box';
-  box.innerHTML = `<b>${escapeHtml(rule)}</b>`;
+  box.innerHTML = `<b>${escapeHtml(scaleSips(rule))}</b>`;
   body.appendChild(box);
   const actions = document.createElement('div'); actions.className = 'action-buttons';
   const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Regel gilt ab jetzt';
   btn.onclick = () => {
     state.activeRules.push(rule);
     renderRules();
-    addLogNarrative('📜 Neue Hausregel: ' + rule);
+    addLogNarrative('📜 Neue Hausregel: ' + scaleSips(rule));
     finishTurn();
   };
   actions.appendChild(btn); body.appendChild(actions);
@@ -2649,6 +2892,81 @@ document.addEventListener('DOMContentLoaded', () => {
   if(close && ov) close.addEventListener('click', () => ov.classList.remove('show'));
   if(ov) ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); });
   syncIntensityUI();
+});
+
+
+
+/* ========== KARTENAUSWAHL VOR SPIELBEGINN ========== */
+function renderPickers(){
+  const catBox = document.getElementById('catPicker');
+  const miniBox = document.getElementById('miniPicker');
+  if(!catBox || !miniBox) return;
+
+  catBox.innerHTML = '';
+  CAT_ORDER.forEach(cat => {
+    const meta = CAT_META[cat];
+    const on = catOn(cat);
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'pick-item ' + (on ? 'on' : 'off');
+    el.innerHTML = `<span class="pick-box">✓</span>`
+      + `<span class="pick-name">${meta.icon} ${escapeHtml(meta.label)}</span>`
+      + `<span class="pick-num">${countForCat(cat)}</span>`;
+    el.addEventListener('click', () => { toggleInList(state.offCats, cat); renderPickers(); });
+    catBox.appendChild(el);
+  });
+
+  miniBox.innerHTML = '';
+  MINIGAMES.forEach(mg => {
+    const on = miniOn(mg.id);
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'pick-item ' + (on ? 'on' : 'off');
+    el.innerHTML = `<span class="pick-box">✓</span>`
+      + `<span class="pick-name">${mg.icon} ${escapeHtml(mg.title)}</span>`
+      + (mg.bewegung ? `<span class="pick-move" title="Bewegung nötig">🚶</span>` : '');
+    el.addEventListener('click', () => { toggleInList(state.offMinis, mg.id); renderPickers(); });
+    miniBox.appendChild(el);
+  });
+
+  const nMini = activeMinigames().length;
+  const mc = document.getElementById('miniCount');
+  if(mc) mc.textContent = nMini + ' / ' + MINIGAMES.length;
+
+  const total = activeDeckTemplate().length;
+  const sum = document.getElementById('pickSummary');
+  if(sum){
+    if(total === 0){
+      sum.textContent = '⚠️ Kein Kartenstapel — wählt mindestens eine Art aus.';
+    } else {
+      let txt = total + ' von ' + DECK_TEMPLATE.length + ' Karten im Stapel';
+      if(catOn('mini')){
+        if(nMini === 0) txt += ' · Minispiele pausieren';
+        else if(nMini < MINIGAMES.length) txt += ' · ' + nMini + ' von ' + MINIGAMES.length + ' Minispielen';
+      }
+      sum.textContent = txt;
+    }
+  }
+  const start = document.getElementById('btnStartGame');
+  if(start) start.disabled = total === 0;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const all  = document.getElementById('btnMiniAll');
+  const none = document.getElementById('btnMiniNone');
+  const calm = document.getElementById('btnMiniCalm');
+  if(all)  all.addEventListener('click',  () => { state.offMinis = []; renderPickers(); });
+  if(none) none.addEventListener('click', () => { state.offMinis = MINIGAMES.map(m => m.id); renderPickers(); });
+  if(calm) calm.addEventListener('click', () => {
+    MINIGAMES.forEach(m => {
+      const off = state.offMinis.indexOf(m.id) !== -1;
+      if(m.bewegung && !off) state.offMinis.push(m.id);
+      if(!m.bewegung && off) state.offMinis.splice(state.offMinis.indexOf(m.id), 1);
+    });
+    document.getElementById('miniFold').open = true;
+    renderPickers();
+  });
+  renderPickers();
 });
 
 </script>
