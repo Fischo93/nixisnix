@@ -939,10 +939,7 @@
   #endOverlay .modal h2,
   #endOverlay .modal p,
   #endOverlay .modal .action-buttons{flex:none;}
-  #endOverlay .ranking{
-    flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
-    padding-right:2px;
-  }
+  #endOverlay .ranking{flex:none;overflow:visible;padding-right:2px;}
   @media (max-width:640px){
     #endOverlay .modal{max-height:calc(100dvh - 30px);padding:18px 16px;}
     .overlay{padding:14px;}
@@ -1137,6 +1134,60 @@
     .finale-sub{font-size:12.5px;margin-bottom:10px;}
   }
 
+
+  /* ---------- Zeitgefühl ---------- */
+  .zeit-goal{font-size:34px;font-weight:800;color:var(--accent-2);line-height:1.1;}
+  .zeit-dial{
+    width:110px;height:110px;margin:12px auto 8px;border-radius:50%;
+    border:3px solid var(--line);display:flex;align-items:center;justify-content:center;
+    background:var(--surface-2);
+  }
+  .zeit-dial-icon{font-size:44px;line-height:1;}
+  .zeit-dial.running{
+    border-color:var(--critical);
+    animation:zeitPulse 1s ease-in-out infinite;
+  }
+  @keyframes zeitPulse{
+    0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,77,109,0.45);}
+    50%{transform:scale(1.05);box-shadow:0 0 0 14px rgba(255,77,109,0);}
+  }
+  body.theme-light .zeit-dial{background:transparent;}
+  @media (max-height:520px){
+    .zeit-dial{width:78px;height:78px;margin:7px auto 5px;}
+    .zeit-dial-icon{font-size:32px;}
+    .zeit-goal{font-size:27px;}
+  }
+
+
+  /* ---------- Aussetzende Personen ---------- */
+  .player-card{cursor:pointer;}
+  .player-card.paused{opacity:.45;}
+  .player-card.paused .name{text-decoration:line-through;}
+  .player-card .turn-tag.pause-tag{background:var(--surface-3);color:var(--ink-muted);}
+
+
+  #btnUndo:disabled{opacity:.4;cursor:default;}
+
+
+  /* ---------- Abschlussstatistik ---------- */
+  .awards{text-align:left;margin:4px 0 8px;}
+  .awards-head{
+    font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;
+    color:var(--ink-muted);font-weight:800;text-align:center;
+    margin:10px 0 8px;padding-top:10px;border-top:1px dashed var(--line);
+  }
+  .award{display:flex;align-items:flex-start;gap:10px;padding:6px 2px;}
+  .award-icon{font-size:20px;line-height:1.2;flex:none;}
+  .award-body{display:flex;flex-direction:column;min-width:0;}
+  .award-body b{font-size:13.5px;}
+  .award-name{font-size:13px;font-weight:700;}
+  .award-detail{font-size:11.5px;color:var(--ink-muted);}
+  .end-summary{font-size:12px;color:var(--ink-muted);margin-top:6px;}
+  .ranking li.paused{opacity:.55;}
+  .ranking li.paused em{font-size:11px;font-style:normal;color:var(--ink-muted);}
+  #endOverlay .end-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;}
+  #endOverlay .end-summary{flex:none;}
+
 </style>
 </head>
 <body>
@@ -1172,6 +1223,7 @@
       <div class="tag">das Trinkspiel mit Karten, Münze &amp; Chaos</div>
     </div>
     <div class="topbar-actions">
+      <button class="btn small" id="btnUndo" style="display:none;" title="Letzte Karte zurücknehmen" disabled>↩️<span class="btn-label"> Rückgängig</span></button>
       <button class="btn theme-toggle" id="btnThemeToggle" title="Design-Modus wechseln">🌙</button>
       <button class="btn danger small" id="btnEndGame" style="display:none;" title="Spiel beenden">🏁<span class="btn-label"> Spiel beenden</span></button>
     </div>
@@ -1307,7 +1359,11 @@
   <div class="modal">
     <h2>🏁 Spiel beendet!</h2>
     <p>Hier ist die schmerzhafte Wahrheit:</p>
-    <ul class="ranking" id="rankingList"></ul>
+    <div class="end-scroll">
+      <ul class="ranking" id="rankingList"></ul>
+      <div class="awards" id="awardsBox"></div>
+    </div>
+    <div class="end-summary" id="endSummary"></div>
     <div class="action-buttons" style="justify-content:center;">
       <button class="btn ghost" id="btnCloseEnd">Weiterspielen</button>
       <button class="btn primary" id="btnNewGame">🔄 Neues Spiel</button>
@@ -1341,6 +1397,18 @@
     </div>
     <div class="coin-stage-result" id="coinStageResult"></div>
     <div class="coin-stage-hint" id="coinStageHint">Die Münze fliegt …</div>
+  </div>
+</div>
+
+<!-- Spieler-Optionen: aussetzen bzw. zurückholen -->
+<div class="overlay" id="playerOverlay">
+  <div class="modal">
+    <h2 id="playerOptName">Spieler:in</h2>
+    <p id="playerOptInfo"></p>
+    <div class="action-buttons" style="justify-content:center;flex-wrap:wrap;">
+      <button class="btn primary" id="btnTogglePause">⏸ Aussetzen</button>
+      <button class="btn ghost" id="btnClosePlayerOpt">Schließen</button>
+    </div>
   </div>
 </div>
 
@@ -1585,6 +1653,8 @@ const MINIGAMES = [
     instructions:"Reihum wiederholt jede Person alle bisherigen Gegenstände und fügt einen neuen hinzu. Erster Aussetzer trinkt." },
   { bewegung:true, id:'freeze', title:'Freeze!', icon:'🧊', timerSeconds:0, amount:2, promptBank:null,
     instructions:"Auf „Start“ erstarren alle sofort in ihrer Position. Wer sich zuerst bewegt oder lacht, trinkt." },
+  { id:'zeitgefuehl', title:'Zeitgefühl', icon:'⏱️', timerSeconds:0, amount:0, promptBank:null, custom:'zeitgefuehl',
+    instructions:"Reihum: auf Start tippen, im Kopf mitzählen und bei genau 10 Sekunden stoppen. Die Uhr bleibt unsichtbar. Wer am weitesten danebenliegt, trinkt am meisten." },
   { id:'jumanji', title:'Jumanji', icon:'🎲', timerSeconds:0, amount:0, promptBank:null, custom:'jumanji',
     instructions:"Reihum würfelt jede Person mit zwei Würfeln. Die Augen werden addiert – bei einem Pasch zählt die Augenzahl mal 3. Ein Einser-Pasch ist Jumanji! Wer am Ende die wenigsten Punkte hat, trinkt so viele Schlücke, wie die höchste Zahl anzeigt." },
   { id:'zweiwahrheiten', title:'Zwei Wahrheiten, eine Lüge', icon:'🎲', timerSeconds:0, amount:2, promptBank:null,
@@ -1696,6 +1766,8 @@ const state = {
   players: [],
   intensity: 0,
   finaleDone: false,
+  undoStack: [],
+  stats: {},
   offCats: [],    // abgewählte Kartenarten
   offMinis: [],   // abgewählte Minispiele
   currentIndex: 0,
@@ -1728,6 +1800,8 @@ function saveState(){
       currentIndex: state.currentIndex,
       intensity: state.intensity,
       finaleDone: state.finaleDone,
+      undoStack: state.undoStack.slice(-5),
+      stats: state.stats,
       offCats: state.offCats,
       offMinis: state.offMinis,
       deck: state.deck.map(c => c.uid),
@@ -1762,6 +1836,8 @@ function restoreSavedGame(d){
   state.currentIndex = Math.min(d.currentIndex || 0, d.players.length - 1);
   state.intensity    = Math.min(Math.max(0, d.intensity | 0), INTENSITY_LEVELS.length - 1);
   state.finaleDone   = !!d.finaleDone;
+  state.undoStack    = Array.isArray(d.undoStack) ? d.undoStack : [];
+  state.stats        = (d.stats && typeof d.stats === 'object') ? d.stats : {};
   state.offCats      = Array.isArray(d.offCats) ? d.offCats : [];
   state.offMinis     = Array.isArray(d.offMinis) ? d.offMinis : [];
   state.deck         = toCards(d.deck);
@@ -1773,6 +1849,7 @@ function restoreSavedGame(d){
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
+  document.getElementById('btnUndo').style.display = 'inline-flex';
   renderAll();
 }
 
@@ -1798,8 +1875,33 @@ function escapeHtml(str){
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function currentPlayer(){ return state.players[state.currentIndex]; }
-function leftNeighbor(){ const n = state.players.length; return state.players[(state.currentIndex - 1 + n) % n]; }
-function rightNeighbor(){ const n = state.players.length; return state.players[(state.currentIndex + 1) % n]; }
+
+/* ---------- Aussetzen ----------
+   Pausierte Personen sind weiter in der Liste (und im Endstand), werden aber
+   bei der Zugreihenfolge, bei Nachbarn und bei jeder Auswahl übersprungen. */
+function activePlayers(){ return state.players.filter(p => !p.paused); }
+function isPaused(p){ return !!(p && p.paused); }
+
+/* Position der aktiven Person innerhalb der aktiven Liste */
+function activeIndexOfCurrent(){
+  const cur = currentPlayer();
+  const act = activePlayers();
+  const i = act.findIndex(p => cur && p.id === cur.id);
+  return i === -1 ? 0 : i;
+}
+
+function neighborInDirection(dir){
+  const n = state.players.length;
+  if(n === 0) return null;
+  for(let stepCount = 1; stepCount <= n; stepCount++){
+    const idx = ((state.currentIndex + dir * stepCount) % n + n) % n;
+    const p = state.players[idx];
+    if(p && !p.paused && p.id !== currentPlayer().id) return p;
+  }
+  return currentPlayer();
+}
+function leftNeighbor(){ return neighborInDirection(-1); }
+function rightNeighbor(){ return neighborInDirection(1); }
 
 let toastTimer = null;
 function toast(msg){
@@ -1826,10 +1928,26 @@ function sip(n){
   return Math.max(1, Math.round(base * intensity().mult));
 }
 
+/* ---------- Statistik für den Abschluss ---------- */
+function bumpStat(playerId, key, n){
+  if(!playerId) return;
+  if(!state.stats) state.stats = {};
+  if(!state.stats[playerId]) state.stats[playerId] = {};
+  state.stats[playerId][key] = (state.stats[playerId][key] || 0) + (n === undefined ? 1 : n);
+}
+function statOf(playerId, key){
+  return (state.stats && state.stats[playerId] && state.stats[playerId][key]) || 0;
+}
+
 function addSips(playerId, amount, reason){
   const p = state.players.find(pl => pl.id === playerId);
   if(!p || amount <= 0) return;
   p.sips += amount;
+  if(amount > statOf(playerId, 'maxSingle')){
+    if(!state.stats[playerId]) state.stats[playerId] = {};
+    state.stats[playerId].maxSingle = amount;
+  }
+  bumpStat(playerId, 'sipEvents');
   state.log.unshift({ text: `<b>${escapeHtml(p.name)}</b> trinkt <b>${amount}</b> ${amount === 1 ? 'Schluck' : 'Schlücke'} — ${escapeHtml(reason)}` });
   renderPlayers();
   renderLog();
@@ -1955,9 +2073,12 @@ function startGame(){
   state.activeRules = [];
   state.log = [];
   state.finaleDone = false;
+  state.undoStack = [];
+  state.stats = {};
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
+  document.getElementById('btnUndo').style.display = 'inline-flex';
   renderAll();
   addLogNarrative('🎉 Spiel gestartet mit ' + state.players.length + ' Spieler:innen — ' + chosen.length + ' Karten im Stapel.');
   const offInfo = [];
@@ -1975,16 +2096,19 @@ function renderPlayers(){
   const maxVal = computeMaxSips();
   state.players.forEach((p, i) => {
     const el = document.createElement('div');
-    el.className = 'player-card' + (i === state.currentIndex ? ' active' : '');
+    el.className = 'player-card' + (i === state.currentIndex && !p.paused ? ' active' : '') + (p.paused ? ' paused' : '');
     el.innerHTML = `
       <div class="bar" style="background:${p.color}"></div>
       <div class="glass-wrap" data-id="${p.id}">${glassMarkup(p, maxVal)}</div>
       <div class="info">
         <div class="name">${escapeHtml(p.name)}</div>
-        ${i === state.currentIndex ? '<div class="turn-tag">🎯 Am Zug</div>' : ''}
+        ${p.paused ? '<div class="turn-tag pause-tag">⏸ Pause</div>'
+                   : (i === state.currentIndex ? '<div class="turn-tag">🎯 Am Zug</div>' : '')}
       </div>
       <div class="sips">${p.sips}<small>Schlücke</small></div>
     `;
+    el.title = 'Antippen für Optionen';
+    el.addEventListener('click', () => openPlayerOptions(p.id));
     panel.appendChild(el);
   });
   const tn = document.getElementById('turnName');
@@ -2030,6 +2154,7 @@ function renderAll(){
   renderLog();
   updateDeckCount();
   syncIntensityUI();
+  updateUndoButton();
 }
 
 /* ---------- Ziehen & Karten-Flip ---------- */
@@ -2043,6 +2168,81 @@ function renderFlip(card){
   flip.classList.remove('flipped');
   void flip.offsetWidth;
   requestAnimationFrame(() => flip.classList.add('flipped'));
+}
+
+/* ---------- Rückgängig ----------
+   Vor jeder gezogenen Karte wird ein kompakter Schnappschuss abgelegt:
+   Schlücke, Zugposition, Stapel, Hausregeln, Protokolllänge und Statistik.
+   Ein Klick auf „Rückgängig" spielt genau diesen Zustand wieder ein — die
+   Karte landet zurück auf dem Stapel und kann neu aufgelöst werden. */
+const UNDO_LIMIT = 8;
+
+function snapshotState(label){
+  return {
+    label: label || 'Karte',
+    sips: state.players.map(p => ({ id: p.id, sips: p.sips, paused: !!p.paused })),
+    currentIndex: state.currentIndex,
+    deck: state.deck.map(c => c.uid),
+    discard: state.discard.map(c => c.uid),
+    activeRules: state.activeRules.slice(),
+    logLen: state.log.length,
+    finaleDone: state.finaleDone,
+    stats: JSON.parse(JSON.stringify(state.stats || {})),
+  };
+}
+
+function pushUndo(label){
+  state.undoStack.push(snapshotState(label));
+  if(state.undoStack.length > UNDO_LIMIT) state.undoStack.shift();
+  updateUndoButton();
+}
+
+function canUndo(){
+  const panel = document.getElementById('actionPanel');
+  const open = panel && panel.classList.contains('show');
+  return state.undoStack.length > 0 && !open && state.players.length > 0;
+}
+
+function undoLast(){
+  if(state.undoStack.length === 0){ toast('Nichts zum Rückgängigmachen.'); return; }
+  const panel = document.getElementById('actionPanel');
+  if(panel && panel.classList.contains('show')){ toast('Bitte zuerst die offene Karte auflösen.'); return; }
+
+  const snap = state.undoStack.pop();
+  const byUid = {};
+  DECK_TEMPLATE.forEach(c => { byUid[c.uid] = c; });
+  const toCards = ids => (Array.isArray(ids) ? ids.map(u => byUid[u]).filter(Boolean) : []);
+
+  snap.sips.forEach(entry => {
+    const p = state.players.find(x => x.id === entry.id);
+    if(p){ p.sips = entry.sips; p.paused = entry.paused; }
+  });
+  state.currentIndex = Math.min(snap.currentIndex, state.players.length - 1);
+  state.deck = toCards(snap.deck);
+  state.discard = toCards(snap.discard);
+  state.activeRules = snap.activeRules.slice();
+  state.finaleDone = !!snap.finaleDone;
+  state.stats = snap.stats || {};
+  // Protokoll ist neuste-zuerst: die seitdem entstandenen Einträge fallen weg
+  if(state.log.length > snap.logLen) state.log = state.log.slice(state.log.length - snap.logLen);
+
+  // Karte zurück auf den Stapel — die Rückseite darf nicht mehr aufgedeckt sein
+  const flip = document.getElementById('flipCard');
+  if(flip) flip.classList.remove('flipped');
+
+  renderAll();
+  updateUndoButton();
+  saveState();
+  toast('↩️ Letzte Karte zurückgenommen');
+}
+
+function updateUndoButton(){
+  const btn = document.getElementById('btnUndo');
+  if(!btn) return;
+  btn.disabled = !canUndo();
+  btn.title = state.undoStack.length
+    ? 'Letzte Karte zurücknehmen (' + state.undoStack.length + ' möglich)'
+    : 'Nichts zum Rückgängigmachen';
 }
 
 function updateDeckCount(){
@@ -2072,6 +2272,7 @@ function drawCard(){
     state.discard = [];
     toast('🔀 Alle Karten wurden neu gemischt!');
   }
+  pushUndo('Karte');
   const card = state.deck.pop();
   state.discard.push(card);
   updateDeckCount();
@@ -2079,11 +2280,23 @@ function drawCard(){
   openActionForCard(card);
 }
 
+/* Nächste nicht pausierte Person am Zug */
+function advanceTurn(){
+  const n = state.players.length;
+  if(n === 0) return;
+  for(let stepCount = 1; stepCount <= n; stepCount++){
+    const idx = (state.currentIndex + stepCount) % n;
+    if(!state.players[idx].paused){ state.currentIndex = idx; return; }
+  }
+  state.currentIndex = (state.currentIndex + 1) % n;   // Notnagel: alle pausiert
+}
+
 function finishTurn(){
   document.getElementById('actionOverlay').classList.remove('show');
   document.getElementById('actionPanel').classList.remove('show');
   document.getElementById('actionPanel').innerHTML = '';
-  state.currentIndex = (state.currentIndex + 1) % state.players.length;
+  updateUndoButton();
+  advanceTurn();
   renderPlayers();
   saveState();
   const flip = document.getElementById('flipCard');
@@ -2144,8 +2357,8 @@ function makeStepper(initial, min, max, onChange){
 function computeAutoTargets(card){
   const cur = currentPlayer();
   if(card.target === 'self') return [cur];
-  if(card.target === 'all') return state.players.slice();
-  if(card.target === 'allExceptSelf') return state.players.filter(p => p.id !== cur.id);
+  if(card.target === 'all') return activePlayers();
+  if(card.target === 'allExceptSelf') return activePlayers().filter(p => p.id !== cur.id);
   if(card.target === 'left') return [leftNeighbor()];
   if(card.target === 'right') return [rightNeighbor()];
   if(card.target === 'bothNeighbors'){
@@ -2194,6 +2407,7 @@ function openActionForCard(card){
   }
   observePanelFit(panel);
   fitPanel();
+  updateUndoButton();
 }
 
 /* ---------- Panel immer ohne Scrollen anzeigen ----------
@@ -2262,7 +2476,7 @@ function renderAutoPanel(card, body){
 }
 
 function renderChoosePanel(card, body){
-  const others = state.players.filter(p => p.id !== currentPlayer().id);
+  const others = activePlayers().filter(p => p.id !== currentPlayer().id);
   const need = Math.max(1, Math.min(card.choose, others.length));
   const info = document.createElement('div'); info.className = 'free-total';
   info.textContent = `Wähle ${need} Person${need > 1 ? 'en' : ''} — ${card.alsoSelf ? 'ihr trinkt gemeinsam, ' : ''}je ${sip(card.amount)} ${sip(card.amount) === 1 ? 'Schluck' : 'Schlücke'}.`;
@@ -2280,7 +2494,7 @@ function renderChoosePanel(card, body){
 }
 
 function renderFreePanel(card, body){
-  const others = state.players.filter(p => p.id !== currentPlayer().id);
+  const others = activePlayers().filter(p => p.id !== currentPlayer().id);
   const values = {}; others.forEach(p => values[p.id] = 0);
   const rows = document.createElement('div');
   const totalInfo = document.createElement('div'); totalInfo.className = 'free-total';
@@ -2315,7 +2529,7 @@ function renderManualPanel(card, body){
   info.textContent = `Wähle alle Betroffenen (je ${sip(card.amount)} ${sip(card.amount) === 1 ? 'Schluck' : 'Schlücke'}). Trifft's auf niemanden zu, einfach direkt bestätigen.`;
   body.appendChild(info);
   const chipWrap = document.createElement('div'); body.appendChild(chipWrap);
-  const sel = buildChipSelector(chipWrap, state.players, { max: state.players.length });
+  const sel = buildChipSelector(chipWrap, activePlayers(), { max: state.players.length });
   const actions = document.createElement('div'); actions.className = 'action-buttons';
   const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen';
   actions.appendChild(btn); body.appendChild(actions);
@@ -2348,7 +2562,7 @@ function renderNarrativePanel(card, body){
     info.textContent = 'Wähle optional eine Person (nur für die Story):';
     body.appendChild(info);
     const chipWrap = document.createElement('div'); body.appendChild(chipWrap);
-    partnerSel = buildChipSelector(chipWrap, state.players.filter(p => p.id !== currentPlayer().id), { max: 1 });
+    partnerSel = buildChipSelector(chipWrap, activePlayers().filter(p => p.id !== currentPlayer().id), { max: 1 });
   }
   const actions = document.createElement('div'); actions.className = 'action-buttons';
   const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = 'Weiter';
@@ -2376,7 +2590,7 @@ function renderDuelPanel(card, body){
   const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen'; btn.disabled = true;
   actions.appendChild(btn); body.appendChild(actions);
   let loserSel = null;
-  buildChipSelector(chipWrap, state.players, {
+  buildChipSelector(chipWrap, activePlayers(), {
     max: 2,
     onChange: ids => {
       loserWrap.innerHTML = '';
@@ -2483,6 +2697,7 @@ function renderCoinGambleWidget(container, player, baseAmount, baseReason, onDon
         ? `<span class="win">🌀 NIXisNIX!</span><br>${escapeHtml(player.name)} bleibt verschont.`
         : `<span class="lose">Verloren!</span><br>${escapeHtml(player.name)} trinkt ${baseAmount * 2} Schlücke.`,
       onDone: () => {
+        bumpStat(player.id, isNix ? 'coinWin' : 'coinLoss');
         if(isNix){
           addLogNarrative('🌀 NIXisNIX! ' + player.name + ' würfelt sich frei und bleibt von ' + baseAmount + ' Schlücken verschont.');
         } else {
@@ -2557,13 +2772,14 @@ function renderCoinPanel(card, body){
         ? `<span class="win">Richtig!</span><br>Es kam „${escapeHtml(resultLabel)}“`
         : `<span class="lose">Falsch!</span><br>Es kam „${escapeHtml(resultLabel)}“`,
       onDone: () => {
+        bumpStat(currentPlayer().id, won ? 'coinWin' : 'coinLoss');
         resultBox.innerHTML = won
           ? `<b style="color:var(--good)">Richtig!</b> Es kam „${escapeHtml(resultLabel)}“ — wähle, wer statt dir <b>${amount}</b> Schlücke trinkt.`
           : `<b style="color:var(--critical)">Falsch!</b> Es kam „${escapeHtml(resultLabel)}“ — du trinkst <b>${amount}</b> Schlücke.`;
         actions.innerHTML = '';
         if(won){
           const chipWrap = document.createElement('div'); body.insertBefore(chipWrap, actions);
-          const targets = state.players.filter(p => p.id !== currentPlayer().id);
+          const targets = activePlayers().filter(p => p.id !== currentPlayer().id);
           const confirmBtn = document.createElement('button');
           confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen'; confirmBtn.disabled = true;
           const sel = buildChipSelector(chipWrap, targets, { max: 1, onChange: ids => { confirmBtn.disabled = ids.length !== 1; } });
@@ -2590,7 +2806,7 @@ function renderBetPanel(card, body){
   // zufällig ausgelost — bei jeder Wette neu und unabhängig voneinander.
   const opponentIsRandom = Math.random() < 0.5;
   const challengeIsRandom = Math.random() < 0.5;
-  const others = state.players.filter(p => p.id !== currentPlayer().id);
+  const others = activePlayers().filter(p => p.id !== currentPlayer().id);
 
   let sel = null;
   let fixedOpponentId = null;
@@ -2654,6 +2870,127 @@ function renderBetPanel(card, body){
 }
 
 
+/* ================= ZEITGEFÜHL =================
+   Reihum startet jede Person eine unsichtbare Uhr und stoppt sie bei
+   gefühlten 10 Sekunden. Angezeigt wird während des Laufs bewusst nichts.
+   Am Ende zählt die Abweichung — Wertung wie bei den Schätzfragen. */
+const ZEIT_TARGET_MS = 10000;
+
+function renderZeitgefuehl(body){
+  const order = activePlayers().slice(activeIndexOfCurrent()).concat(activePlayers().slice(0, activeIndexOfCurrent()));
+  const runs = [];
+  let step = 0;
+
+  const goal = document.createElement('div');
+  goal.className = 'prompt-box';
+  goal.innerHTML = '<div class="zeit-goal">10,0 s</div><div class="est-unit">Stoppt so genau wie möglich — ohne Uhr</div>';
+  body.appendChild(goal);
+
+  const stage = document.createElement('div');
+  body.appendChild(stage);
+
+  function askNext(){
+    stage.innerHTML = '';
+    if(step >= order.length){ showResult(); return; }
+    const p = order[step];
+
+    const head = document.createElement('div');
+    head.className = 'est-turn';
+    head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
+      + `<b>${escapeHtml(p.name)}</b> ist dran`
+      + `<span class="est-progress">${step + 1} / ${order.length}</span>`;
+    stage.appendChild(head);
+
+    const dial = document.createElement('div');
+    dial.className = 'zeit-dial';
+    dial.innerHTML = '<span class="zeit-dial-icon">⏱️</span>';
+    stage.appendChild(dial);
+
+    const hint = document.createElement('div');
+    hint.className = 'reveal-hint';
+    hint.textContent = 'Die Uhr läuft verdeckt — niemand sieht die Zeit.';
+    stage.appendChild(hint);
+
+    const acts = document.createElement('div');
+    acts.className = 'action-buttons';
+    const btn = document.createElement('button');
+    btn.className = 'btn primary';
+    btn.textContent = '▶️ Start';
+    acts.appendChild(btn);
+    stage.appendChild(acts);
+
+    let startedAt = null;
+    btn.onclick = () => {
+      if(startedAt === null){
+        startedAt = performance.now();
+        dial.classList.add('running');
+        btn.textContent = '⏹️ Stopp';
+        btn.className = 'btn danger';
+        hint.textContent = 'Jetzt mitzählen …';
+        return;
+      }
+      const ms = performance.now() - startedAt;
+      dial.classList.remove('running');
+      runs.push({ player: p, ms: ms, dev: Math.abs(ms - ZEIT_TARGET_MS) });
+      step++;
+      askNext();
+    };
+  }
+
+  function fmtSec(ms){
+    return (ms / 1000).toFixed(1).replace('.', ',') + ' s';
+  }
+
+  function showResult(){
+    stage.innerHTML = '';
+    const bestDev = Math.min.apply(null, runs.map(r => r.dev));
+    const sorted = runs.slice().sort((a, b) => b.dev - a.dev);   // schlechteste zuerst
+    const PEN = [sip(3), sip(2), sip(1)];
+    let rank = 0;
+    sorted.forEach((row, i) => {
+      if(i > 0 && row.dev !== sorted[i-1].dev) rank = i;
+      row.pen = (row.dev === bestDev) ? 0 : (PEN[rank] || 0);
+    });
+
+    const list = document.createElement('div');
+    list.className = 'est-result';
+    sorted.slice().reverse().forEach(row => {
+      const el = document.createElement('div');
+      el.className = 'est-row' + (row.dev === bestDev ? ' best' : '');
+      el.innerHTML = `<span class="est-dot" style="background:${row.player.color}"></span>`
+        + `<span class="est-name">${escapeHtml(row.player.name)}</span>`
+        + `<span class="est-val">${fmtSec(row.ms)}</span>`
+        + `<span class="est-dev">${row.ms > ZEIT_TARGET_MS ? '+' : '−'}${fmtSec(row.dev).replace(' s','')}</span>`
+        + `<span class="est-pen">${row.pen > 0 ? row.pen + ' 🍺' : (row.dev === bestDev ? '🏆' : '–')}</span>`;
+      list.appendChild(el);
+    });
+    stage.appendChild(list);
+
+    const acts = document.createElement('div');
+    acts.className = 'action-buttons';
+    const btn = document.createElement('button');
+    btn.className = 'btn primary';
+    btn.textContent = '✅ Bestätigen';
+    acts.appendChild(btn);
+    stage.appendChild(acts);
+
+    btn.onclick = () => {
+      const winner = runs.find(r => r.dev === bestDev);
+      if(winner) bumpStat(winner.player.id, 'timeWin');
+      sorted.forEach(row => {
+        if(row.pen > 0){
+          addSips(row.player.id, row.pen, 'Zeitgefühl: ' + fmtSec(row.ms) + ' statt 10,0 s');
+          bumpStat(row.player.id, 'timeLoss');
+        }
+      });
+      addLogNarrative('⏱️ Zeitgefühl: ' + (winner ? winner.player.name + ' war am dichtesten dran (' + fmtSec(winner.ms) + ').' : 'Runde gespielt.'));
+      finishTurn();
+    };
+  }
+
+  askNext();
+}
+
 /* ================= JUMANJI =================
    Reihum würfelt jede Person zwei Würfel.
    - normale Augen  -> Summe
@@ -2686,7 +3023,7 @@ function jumanjiScore(a, b){
 }
 
 function renderJumanji(body){
-  const order = state.players.slice(state.currentIndex).concat(state.players.slice(0, state.currentIndex));
+  const order = activePlayers().slice(activeIndexOfCurrent()).concat(activePlayers().slice(0, activeIndexOfCurrent()));
   const rolls = [];          // { player, a, b, score, pasch, jumanji }
   let jumanjiHit = false;
   let step = 0;
@@ -3014,7 +3351,8 @@ function renderJumanji(body){
       okBtn.onclick = () => {
         if(!field.valid()) return;
         const n = Math.max(1, Math.round(field.value()));
-        losers.forEach(r => addSips(r.player.id, n, 'Jumanji — Glas geext'));
+        rolls.filter(r => r.score === hi).forEach(r => bumpStat(r.player.id, 'diceWin'));
+        losers.forEach(r => { addSips(r.player.id, n, 'Jumanji — Glas geext'); bumpStat(r.player.id, 'diceLoss'); });
         finishTurn();
       };
     } else {
@@ -3023,7 +3361,8 @@ function renderJumanji(body){
       tail.appendChild(acts);
       okBtn.textContent = '✅ Bestätigen';
       okBtn.onclick = () => {
-        losers.forEach(r => addSips(r.player.id, hi, 'Jumanji — wenigste Punkte (' + lo + ')'));
+        rolls.filter(r => r.score === hi).forEach(r => bumpStat(r.player.id, 'diceWin'));
+        losers.forEach(r => { addSips(r.player.id, hi, 'Jumanji — wenigste Punkte (' + lo + ')'); bumpStat(r.player.id, 'diceLoss'); });
         finishTurn();
       };
     }
@@ -3040,6 +3379,7 @@ function renderMinigamePanel(card, body){
   body.appendChild(head);
 
   if(mg.custom === 'jumanji'){ renderJumanji(body); return; }
+  if(mg.custom === 'zeitgefuehl'){ renderZeitgefuehl(body); return; }
 
   if(mg.promptBank){
     const promptText = pick(mg.promptBank);
@@ -3112,7 +3452,7 @@ function renderMinigamePanel(card, body){
   // Die Münze darf nur geworfen werden, wenn eindeutig eine Person betroffen ist —
   // bei mehreren Verlierer:innen bleibt es beim festen Schluck-Betrag.
   const gambleSlot = document.createElement('div');
-  const sel = buildChipSelector(chipWrap, state.players, {
+  const sel = buildChipSelector(chipWrap, activePlayers(), {
     max: state.players.length,
     onChange: ids => {
       gambleSlot.innerHTML = '';
@@ -3209,7 +3549,7 @@ function makeNumberField(parent, opts){
 
 function renderEstimatePanel(card, body){
   const frage = pick(SCHAETZ_FRAGEN);
-  const order = state.players.slice(state.currentIndex).concat(state.players.slice(0, state.currentIndex));
+  const order = activePlayers().slice(activeIndexOfCurrent()).concat(activePlayers().slice(0, activeIndexOfCurrent()));
   const guesses = [];
   let step = 0;
 
@@ -3315,7 +3655,8 @@ function renderEstimatePanel(card, body){
     const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen';
     btn.onclick = () => {
       sorted.forEach(row => {
-        if(row.pen > 0) addSips(row.player.id, row.pen, 'Schätzfrage: ' + frage.q);
+        if(row.pen > 0){ addSips(row.player.id, row.pen, 'Schätzfrage: ' + frage.q); }
+        if(row.dev === bestDev) bumpStat(row.player.id, 'estimateWin');
       });
       const winner = sorted[sorted.length - 1];
       addLogNarrative('📊 ' + frage.q + ' Richtig: ' + fmt(solution) + ' ' + frage.unit
@@ -3357,7 +3698,7 @@ const FINALE_PENALTY = 5;   // Basiswert, wird über den Intensitätsregler skal
 function pickFinalists(){
   // Nach Schlücken aufsteigend; bei Gleichstand entscheidet der Zufall,
   // damit nicht immer dieselbe Sitzposition bevorzugt wird.
-  return shuffle(state.players).sort((a, b) => a.sips - b.sips).slice(0, 2);
+  return shuffle(activePlayers()).sort((a, b) => a.sips - b.sips).slice(0, 2);
 }
 
 function startFinale(){
@@ -3579,6 +3920,8 @@ function renderFinaleDuel(duo, body){
     stage.appendChild(acts);
 
     btn.onclick = () => {
+      bumpStat(champ.id, 'finaleWin');
+      bumpStat(loser.id, 'finaleLoss');
       addSips(loser.id, penalty, 'Finale gegen ' + champ.name + ' verloren');
       addLogNarrative('🏁 Finale: ' + champ.name + ' schlägt ' + loser.name + ' mit ' + wins[winIdx] + ':' + wins[1 - winIdx] + '.');
       document.getElementById('actionOverlay').classList.remove('show');
@@ -3594,11 +3937,65 @@ function renderFinaleDuel(duo, body){
   playRound();
 }
 
+/* Titel für den Abschluss — vergeben wird nur, was auch wirklich vorkam. */
+const AWARDS = [
+  { key:'coinWin',     icon:'🍀', title:'Glückspilz',        text:p => p.n + ' gewonnene Münzwürfe' },
+  { key:'coinLoss',    icon:'🌧️', title:'Pechvogel',         text:p => p.n + ' verlorene Münzwürfe' },
+  { key:'estimateWin', icon:'🎯', title:'Schätzmeister:in',  text:p => p.n + '× am dichtesten dran' },
+  { key:'diceWin',     icon:'🎲', title:'Würfelglück',       text:p => p.n + '× die höchste Augenzahl' },
+  { key:'timeWin',     icon:'⏱️', title:'Innere Uhr',        text:p => p.n + '× das beste Zeitgefühl' },
+  { key:'maxSingle',   icon:'💥', title:'Größter Einzelschluck', text:p => p.n + ' Schlücke auf einmal' },
+  { key:'finaleWin',   icon:'🏁', title:'Finalsieger:in',    text:() => 'hat das Finale gewonnen' },
+];
+
+function computeAwards(){
+  const out = [];
+  AWARDS.forEach(a => {
+    let best = null;
+    state.players.forEach(p => {
+      const n = statOf(p.id, a.key);
+      if(n > 0 && (!best || n > best.n)) best = { player: p, n: n };
+    });
+    if(!best) return;
+    // Bei Gleichstand keinen Titel vergeben — sonst wirkt es willkürlich
+    const tiedCount = state.players.filter(p => statOf(p.id, a.key) === best.n).length;
+    if(tiedCount > 1 && a.key !== 'finaleWin') return;
+    out.push({ icon: a.icon, title: a.title, name: best.player.name, color: best.player.color, detail: a.text(best) });
+  });
+  return out;
+}
+
 function endGame(){
   const sorted = [...state.players].sort((a, b) => b.sips - a.sips);
   const medals = ['🥇', '🥈', '🥉'];
   const list = document.getElementById('rankingList');
-  list.innerHTML = sorted.map((p, i) => `<li><span class="medal">${medals[i] || '🍺'}</span><span class="rname" style="color:${p.color}">${escapeHtml(p.name)}</span><span class="rsips">${p.sips} Schlücke</span></li>`).join('');
+  list.innerHTML = sorted.map((p, i) =>
+    `<li${p.paused ? ' class="paused"' : ''}><span class="medal">${medals[i] || '🍺'}</span>`
+    + `<span class="rname" style="color:${p.color}">${escapeHtml(p.name)}${p.paused ? ' <em>(ausgesetzt)</em>' : ''}</span>`
+    + `<span class="rsips">${p.sips} Schlücke</span></li>`).join('');
+
+  // Abschlussstatistik
+  const awards = computeAwards();
+  const box = document.getElementById('awardsBox');
+  if(box){
+    if(awards.length === 0){
+      box.style.display = 'none';
+    } else {
+      box.style.display = '';
+      box.innerHTML = '<div class="awards-head">Titel des Abends</div>'
+        + awards.map(a =>
+            `<div class="award"><span class="award-icon">${a.icon}</span>`
+            + `<span class="award-body"><b>${escapeHtml(a.title)}</b>`
+            + `<span class="award-name" style="color:${a.color}">${escapeHtml(a.name)}</span>`
+            + `<span class="award-detail">${escapeHtml(a.detail)}</span></span></div>`
+          ).join('');
+    }
+  }
+
+  const total = state.players.reduce((sum, p) => sum + p.sips, 0);
+  const sum = document.getElementById('endSummary');
+  if(sum) sum.textContent = total + ' Schlücke insgesamt · ' + state.discard.length + ' Karten gespielt';
+
   document.getElementById('endOverlay').classList.add('show');
 }
 
@@ -3728,6 +4125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('endOverlay').classList.remove('show');
     document.getElementById('gameScreen').style.display = 'none';
     document.getElementById('btnEndGame').style.display = 'none';
+    document.getElementById('btnUndo').style.display = 'none';
     document.getElementById('setupScreen').style.display = 'block';
   });
 });
@@ -3884,6 +4282,58 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPickers();
   });
   renderPickers();
+});
+
+
+
+/* ========== SPIELER AUSSETZEN LASSEN ========== */
+let _playerOptId = null;
+
+function openPlayerOptions(id){
+  const p = state.players.find(x => x.id === id);
+  if(!p) return;
+  _playerOptId = id;
+  document.getElementById('playerOptName').textContent = p.name;
+  const info = document.getElementById('playerOptInfo');
+  info.textContent = p.paused
+    ? 'Setzt gerade aus — kommt bei Karten und Minispielen nicht vor, bleibt aber im Endstand.'
+    : 'Bisher ' + p.sips + (p.sips === 1 ? ' Schluck' : ' Schlücke') + '. Wer aussetzt, wird übersprungen, zählt aber weiter im Endstand mit.';
+  const btn = document.getElementById('btnTogglePause');
+  btn.textContent = p.paused ? '▶️ Zurück ins Spiel' : '⏸ Aussetzen';
+  btn.className = p.paused ? 'btn success' : 'btn primary';
+  document.getElementById('playerOverlay').classList.add('show');
+}
+
+function togglePause(){
+  const p = state.players.find(x => x.id === _playerOptId);
+  if(!p) return;
+  if(!p.paused && activePlayers().length <= 2){
+    toast('Mindestens 2 Personen müssen mitspielen.');
+    return;
+  }
+  p.paused = !p.paused;
+  // War die pausierte Person gerade am Zug, rückt die nächste nach
+  if(p.paused && currentPlayer() && currentPlayer().id === p.id) advanceTurn();
+  addLogNarrative(p.paused ? '⏸ ' + p.name + ' setzt aus.' : '▶️ ' + p.name + ' ist wieder dabei.');
+  renderPlayers();
+  saveState();
+  document.getElementById('playerOverlay').classList.remove('show');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ov = document.getElementById('playerOverlay');
+  const tog = document.getElementById('btnTogglePause');
+  const cls = document.getElementById('btnClosePlayerOpt');
+  if(tog) tog.addEventListener('click', togglePause);
+  if(cls && ov) cls.addEventListener('click', () => ov.classList.remove('show'));
+  if(ov) ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const u = document.getElementById('btnUndo');
+  if(u) u.addEventListener('click', undoLast);
+  updateUndoButton();
 });
 
 </script>
