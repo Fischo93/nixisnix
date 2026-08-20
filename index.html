@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="NIXisNIX — das Trinkspiel mit Karten, Münze und Chaos. 60 Karten, 18 Minispiele, für 2 bis 12 Spieler:innen. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="description" content="NIXisNIX — das Trinkspiel mit Karten, Münze und Chaos. 66 Karten, 20 Minispiele, für 2 bis 12 Spieler:innen. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta name="theme-color" content="#0d0b18">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
@@ -12,14 +12,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NIXisNIX">
 <meta property="og:title" content="NIXisNIX — Das Trinkspiel">
-<meta property="og:description" content="60 Karten, 18 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta property="og:description" content="66 Karten, 20 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta property="og:image" content="nixisnix-preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NIXisNIX — Das Trinkspiel">
-<meta name="twitter:description" content="60 Karten, 18 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="twitter:description" content="66 Karten, 20 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta name="twitter:image" content="nixisnix-preview.png">
 <title>NIXisNIX – Das Trinkspiel</title>
 <style>
@@ -373,6 +373,7 @@
 
     /* Kompakter auf dem Handy, damit Skalieren selten nötig wird */
     .card-head{padding:9px 11px;}
+    .card-head .ch-cat:only-child{margin:0;}
     .card-head .ch-text{font-size:15px;margin-top:2px;}
     .prompt-box{padding:11px;margin-bottom:9px;}
     .chip-row{gap:7px;margin-bottom:9px;}
@@ -1188,6 +1189,19 @@
   #endOverlay .end-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;}
   #endOverlay .end-summary{flex:none;}
 
+
+  .pick-label .pick-note{text-transform:none;letter-spacing:0;font-weight:600;color:var(--ink-muted);opacity:.85;}
+  .pick-num{white-space:nowrap;}
+  @media (max-width:520px){ .pick-label .pick-note{display:block;margin-top:2px;} }
+
+
+  /* Einsatz beim Münzwurf */
+  .coin-stake{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;}
+  .coin-stake-side{display:flex;flex-direction:column;gap:1px;align-items:center;}
+  .coin-stake-side b{font-size:15.5px;}
+  .coin-stake-side small{font-size:11.5px;color:var(--ink-muted);}
+  .coin-stake-or{font-size:11.5px;margin:1px 0;color:var(--ink-muted);font-weight:700;text-transform:uppercase;letter-spacing:.8px;}
+
 </style>
 </head>
 <body>
@@ -1248,13 +1262,13 @@
     <div class="setup-single">
       <div class="card-panel">
         <h3 style="margin-top:0;font-size:14px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.6px;">Was soll mitspielen?</h3>
-        <div class="pick-summary" id="pickSummary">66 Karten im Stapel</div>
+        <div class="pick-summary" id="pickSummary">–</div>
 
-        <div class="pick-label">Kartenarten</div>
+        <div class="pick-label">Kartenarten <span class="pick-note">— wie viele Karten davon im Stapel liegen</span></div>
         <div class="pick-grid" id="catPicker"></div>
 
         <details class="pick-fold" id="miniFold">
-          <summary>Einzelne Minispiele auswählen <span class="fold-count" id="miniCount">18 / 18</span></summary>
+          <summary>Welche Minispiele dürfen vorkommen? <span class="fold-count" id="miniCount">–</span></summary>
           <div class="pick-actions">
             <button type="button" class="btn small" id="btnMiniAll">Alle an</button>
             <button type="button" class="btn small" id="btnMiniNone">Alle aus</button>
@@ -1321,7 +1335,7 @@
           <div class="deck-pile" id="deckPile">
             <div class="dpile-logo nix-wordmark" style="color:var(--accent-2);text-shadow:0 0 14px var(--glow-cyan);">NIX<br><span class="lc">is</span><br>NIX</div>
             <div class="dpile-sub">Kartenstapel</div>
-            <div class="dpile-count" id="deckCount">60 Karten</div>
+            <div class="dpile-count" id="deckCount">–</div>
           </div>
 
           <div class="draw-stage">
@@ -1541,7 +1555,7 @@ const TRINK_CARDS = [
   { text:"Alle heben sofort ihr Glas! Wer zuletzt hebt, trinkt 2 Schlücke.", kind:'manual', amount:2 },
   { text:"Tausche symbolisch dein Getränk mit einer Person deiner Wahl.", kind:'narrative', narrativePartner:true },
   { text:"Jede Person mit Ring, Kette oder Armband trinkt 2 Schlücke.", kind:'manual', amount:2 },
-  { text:"Wähle eine Person – ihr trinkt gemeinsam „Ex“: je 3 Schlücke.", kind:'choose', choose:1, amount:3, alsoSelf:true },
+  { text:"Wähle eine Person – ihr trinkt gemeinsam: je 3 Schlücke.", kind:'choose', choose:1, amount:3, alsoSelf:true },
   { text:"Die jüngste Person am Tisch trinkt 2 Schlücke.", kind:'manual', amount:2 },
   { text:"Die älteste Person am Tisch trinkt 2 Schlücke.", kind:'manual', amount:2 },
   { text:"Nix wie ran: Du trinkst 4 Schlücke – einfach weil die Karte es sagt.", kind:'auto', target:'self', amount:4 },
@@ -1549,13 +1563,13 @@ const TRINK_CARDS = [
 ];
 
 const MUENZE_CARDS = [
-  { text:"Doppelt oder NIXisNIX! Tippe Kopf oder Zahl.", amount:2 },
-  { text:"Die Münze entscheidet: Kopf oder Zahl?", amount:2 },
+  { text:"Doppelt oder NIXisNIX! Die Münze entscheidet.", amount:2 },
+  { text:"Die Münze entscheidet: doppelt oder nix?", amount:2 },
   { text:"Riskier es! Doppelt oder NIXisNIX mit der Münze.", amount:3 },
   { text:"NIXisNIX – oder doch? Münze werfen!", amount:2 },
-  { text:"Alles auf eine Karte: Kopf oder Zahl?", amount:3 },
-  { text:"Die Münze fliegt. Triffst du die richtige Seite?", amount:2 },
-  { text:"Doppelt oder NIXisNIX – dein Bauchgefühl ist gefragt.", amount:2 },
+  { text:"Alles auf eine Karte: doppelt oder nix?", amount:3 },
+  { text:"Die Münze fliegt. Mal sehen, wie sie landet.", amount:2 },
+  { text:"Doppelt oder NIXisNIX – die Münze hat das letzte Wort.", amount:2 },
   { text:"Letzte Chance auf NIXisNIX: Münze werfen!", amount:3 },
 ];
 
@@ -2379,8 +2393,10 @@ function openActionForCard(card){
   const header = document.createElement('div');
   header.className = 'card-head';
   header.style.setProperty('--cat', card.meta.color);
+  // Bei Minispielen steht der Spielname gleich darunter — der Zwischentext
+  // („Überraschung: ein Minispiel wartet") wäre dort nur doppelt gemoppelt.
   header.innerHTML = `<div class="ch-cat">${card.meta.icon} ${escapeHtml(card.meta.label)}</div>`
-    + `<div class="ch-text">${escapeHtml(scaleSips(card.text, card))}</div>`;
+    + (card.kind === 'minigame' ? '' : `<div class="ch-text">${escapeHtml(scaleSips(card.text, card))}</div>`);
   inner.appendChild(header);
   const body = document.createElement('div');
   inner.appendChild(body);
@@ -2726,24 +2742,16 @@ function renderCoinGambleWidget(container, player, baseAmount, baseReason, onDon
 
 function renderCoinPanel(card, body){
   const amount = sip(card.amount) * 2;
-  let call = null;
-  const callRow = document.createElement('div'); callRow.className = 'call-row';
-  const callOptions = [
-    { key: 'nix',  label: '🌀 NIXisNIX' },
-    { key: 'zahl', label: '🔢 ' + amount + ' Schlücke' },
-  ];
-  callOptions.forEach(opt => {
-    const chip = document.createElement('div'); chip.className = 'chip selectable';
-    chip.textContent = opt.label;
-    chip.onclick = () => {
-      call = opt.key;
-      callRow.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-      chip.classList.add('selected');
-      flipBtn.disabled = false;
-    };
-    callRow.appendChild(chip);
-  });
-  body.appendChild(callRow);
+  const cur = currentPlayer();
+
+  const info = document.createElement('div');
+  info.className = 'prompt-box';
+  info.innerHTML = `<div class="coin-stake">`
+    + `<span class="coin-stake-side"><b>🌀 NIXisNIX</b><small>nichts trinken</small></span>`
+    + `<span class="coin-stake-or">oder</span>`
+    + `<span class="coin-stake-side"><b>🍺 ${amount} Schlücke</b><small>für ${escapeHtml(cur.name)}</small></span>`
+    + `</div>`;
+  body.appendChild(info);
 
   const resultBox = document.createElement('div');
   resultBox.className = 'free-total'; resultBox.style.textAlign = 'center';
@@ -2752,49 +2760,35 @@ function renderCoinPanel(card, body){
   const actions = document.createElement('div');
   actions.className = 'action-buttons'; actions.style.justifyContent = 'center';
   const flipBtn = document.createElement('button');
-  flipBtn.className = 'btn primary'; flipBtn.textContent = '🪙 Münze werfen'; flipBtn.disabled = true;
+  flipBtn.className = 'btn primary'; flipBtn.textContent = '🪙 Münze werfen';
   actions.appendChild(flipBtn); body.appendChild(actions);
 
   flipBtn.onclick = () => {
-    if(!call) return;
     flipBtn.disabled = true;
-    const result = Math.random() < 0.5 ? 'nix' : 'zahl';
-    const won = result === call;
-    const resultLabel = result === 'nix' ? 'NIXisNIX' : amount + ' Schlücke';
-    const callLabel = call === 'nix' ? 'NIXisNIX' : amount + ' Schlücke';
+    const isNix = Math.random() < 0.5;
 
     playCoinToss({
-      call: `<b>${escapeHtml(currentPlayer().name)}</b> tippt auf „${escapeHtml(callLabel)}“`,
-      backFace: result === 'nix'
+      call: `<b>${escapeHtml(cur.name)}</b> riskiert es: nix oder ${amount} Schlücke`,
+      backFace: isNix
         ? '<div style="font-size:34px;">🌀</div><span class="nix-wordmark on-gold" style="font-size:15px;">NIX<span class="lc">is</span>NIX</span>'
         : `<div>${amount}</div><span>Schlücke</span>`,
-      result: won
-        ? `<span class="win">Richtig!</span><br>Es kam „${escapeHtml(resultLabel)}“`
-        : `<span class="lose">Falsch!</span><br>Es kam „${escapeHtml(resultLabel)}“`,
+      result: isNix
+        ? `<span class="win">🌀 NIXisNIX!</span><br>${escapeHtml(cur.name)} trinkt nichts.`
+        : `<span class="lose">${amount} Schlücke!</span><br>${escapeHtml(cur.name)} muss ran.`,
       onDone: () => {
-        bumpStat(currentPlayer().id, won ? 'coinWin' : 'coinLoss');
-        resultBox.innerHTML = won
-          ? `<b style="color:var(--good)">Richtig!</b> Es kam „${escapeHtml(resultLabel)}“ — wähle, wer statt dir <b>${amount}</b> Schlücke trinkt.`
-          : `<b style="color:var(--critical)">Falsch!</b> Es kam „${escapeHtml(resultLabel)}“ — du trinkst <b>${amount}</b> Schlücke.`;
+        bumpStat(cur.id, isNix ? 'coinWin' : 'coinLoss');
+        resultBox.innerHTML = isNix
+          ? `<b style="color:var(--good)">🌀 NIXisNIX!</b> ${escapeHtml(cur.name)} kommt ohne einen Schluck davon.`
+          : `<b style="color:var(--critical)">Pech!</b> ${escapeHtml(cur.name)} trinkt <b>${amount}</b> Schlücke.`;
         actions.innerHTML = '';
-        if(won){
-          const chipWrap = document.createElement('div'); body.insertBefore(chipWrap, actions);
-          const targets = activePlayers().filter(p => p.id !== currentPlayer().id);
-          const confirmBtn = document.createElement('button');
-          confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen'; confirmBtn.disabled = true;
-          const sel = buildChipSelector(chipWrap, targets, { max: 1, onChange: ids => { confirmBtn.disabled = ids.length !== 1; } });
-          actions.appendChild(confirmBtn);
-          confirmBtn.onclick = () => {
-            const ids = sel.getSelected();
-            addSips(ids[0], amount, 'Doppelt oder NIXisNIX verloren gegen ' + currentPlayer().name);
-            finishTurn();
-          };
-        } else {
-          const confirmBtn = document.createElement('button');
-          confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen';
-          actions.appendChild(confirmBtn);
-          confirmBtn.onclick = () => { addSips(currentPlayer().id, amount, 'Doppelt oder NIXisNIX verloren'); finishTurn(); };
-        }
+        const confirmBtn = document.createElement('button');
+        confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen';
+        actions.appendChild(confirmBtn);
+        confirmBtn.onclick = () => {
+          if(isNix) addLogNarrative('🌀 NIXisNIX! ' + cur.name + ' bleibt von ' + amount + ' Schlücken verschont.');
+          else addSips(cur.id, amount, 'Doppelt oder NIXisNIX verloren');
+          finishTurn();
+        };
       },
     });
   };
@@ -4226,7 +4220,7 @@ function renderPickers(){
     el.className = 'pick-item ' + (on ? 'on' : 'off');
     el.innerHTML = `<span class="pick-box">✓</span>`
       + `<span class="pick-name">${meta.icon} ${escapeHtml(meta.label)}</span>`
-      + `<span class="pick-num">${countForCat(cat)}</span>`;
+      + `<span class="pick-num">${countForCat(cat)} Karten</span>`;
     el.addEventListener('click', () => { toggleInList(state.offCats, cat); renderPickers(); });
     catBox.appendChild(el);
   });
@@ -4257,7 +4251,7 @@ function renderPickers(){
       let txt = total + ' von ' + DECK_TEMPLATE.length + ' Karten im Stapel';
       if(catOn('mini')){
         if(nMini === 0) txt += ' · Minispiele pausieren';
-        else if(nMini < MINIGAMES.length) txt += ' · ' + nMini + ' von ' + MINIGAMES.length + ' Minispielen';
+        else txt += ' · die ' + countForCat('mini') + ' Minispiel-Karten ziehen aus ' + nMini + ' von ' + MINIGAMES.length + ' Spielen';
       }
       sum.textContent = txt;
     }
