@@ -366,7 +366,7 @@
       padding:calc(10px + env(safe-area-inset-top)) 15px calc(14px + env(safe-area-inset-bottom));
       overflow-y:auto;
     }
-    .action-panel.show{animation:sheetUp .28s cubic-bezier(.2,.8,.3,1);}
+    .action-panel.show{display:flex;animation:sheetUp .28s cubic-bezier(.2,.8,.3,1);}
     .action-panel::before{content:none;}
     .action-buttons{justify-content:stretch;}
     .action-buttons .btn{flex:1;justify-content:center;text-align:center;}
@@ -443,7 +443,7 @@
     100%{transform:translateY(0) rotateY(1260deg);}
   }
   .coin-face{
-    position:absolute;inset:0;border-radius:50%;display:flex;flex-direction:column;gap:2px;
+    position:absolute;inset:0;border-radius:50%;display:flex;flex-direction:column;gap:2px;padding:6px 12px;overflow:hidden;
     align-items:center;justify-content:center;text-align:center;backface-visibility:hidden;
     box-shadow:0 0 0 4px rgba(255,255,255,0.20) inset, 0 8px 18px rgba(0,0,0,0.55), 0 0 26px rgba(99,230,255,0.35);
   }
@@ -954,6 +954,148 @@
   #legalOverlay .legal-body{flex:1 1 auto;min-height:0;overflow-y:auto;}
   #legalOverlay .modal h2,#legalOverlay .modal .action-buttons{flex:none;}
 
+
+  /* ---------- Münzwurf-Bühne (liegt über allem) ---------- */
+  .coin-stage{
+    position:fixed;inset:0;z-index:120;display:none;
+    align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 42%, rgba(99,230,255,0.16), transparent 55%), rgba(6,4,14,0.94);
+    backdrop-filter:blur(6px);
+    padding:24px;text-align:center;
+  }
+  .coin-stage.show{display:flex;animation:stageIn .18s ease-out;}
+  .coin-stage.leaving{animation:stageOut .32s ease-in forwards;}
+  @keyframes stageIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes stageOut{from{opacity:1;}to{opacity:0;}}
+  .coin-stage-inner{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:420px;width:100%;}
+  /* Die Bühne ist bewusst immer dunkel — auch im hellen Design,
+     damit die Münze wie im Rampenlicht wirkt. Farben daher fest. */
+  .coin-stage{color:#ffffff;}
+  .coin-stage-call{
+    font-size:14px;color:rgba(255,255,255,0.72);font-weight:600;
+    min-height:20px;
+  }
+  .coin-stage-call b{color:#63e6ff;}
+  .coin-stage-result .win{color:#3ce88f;}
+  .coin-stage-result .lose{color:#ff6b81;}
+  .coin-toss-zone.big{height:300px;perspective:1100px;margin:0;}
+  .coin-toss-zone.big .coin3d{width:170px;height:170px;}
+  .coin-toss-zone.big .coin-front{font-size:22px;}
+  .coin-toss-zone.big .coin-back{font-size:46px;}
+  .coin-toss-zone.big .coin-back span{font-size:19px;}
+  .coin-toss-zone.big .coin-shadow{width:132px;height:26px;}
+  .coin-toss-zone.big.tossing .coin3d{animation:coinTossBig 1.15s cubic-bezier(.33,.05,.35,1) forwards;}
+  @keyframes coinTossBig{
+    0%{transform:translateY(0) rotateY(0deg);}
+    50%{transform:translateY(-190px) rotateY(720deg);}
+    100%{transform:translateY(0) rotateY(1260deg);}
+  }
+  .coin-stage-result{
+    font-size:20px;font-weight:800;line-height:1.35;min-height:56px;
+    opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;
+  }
+  .coin-stage-result.show{opacity:1;transform:translateY(0);}
+  .coin-stage-hint{font-size:12.5px;color:rgba(255,255,255,0.45);}
+  @media (max-width:640px){
+    .coin-toss-zone.big{height:250px;}
+    .coin-toss-zone.big .coin3d{width:140px;height:140px;}
+    .coin-toss-zone.big .coin-back{font-size:38px;}
+    .coin-stage-result{font-size:18px;}
+    @keyframes coinTossBig{
+      0%{transform:translateY(0) rotateY(0deg);}
+      50%{transform:translateY(-150px) rotateY(720deg);}
+      100%{transform:translateY(0) rotateY(1260deg);}
+    }
+  }
+  @media (max-height:520px){
+    .coin-toss-zone.big{height:180px;}
+    .coin-toss-zone.big .coin3d{width:104px;height:104px;}
+    .coin-toss-zone.big .coin-back{font-size:30px;}
+    @keyframes coinTossBig{
+      0%{transform:translateY(0) rotateY(0deg);}
+      50%{transform:translateY(-100px) rotateY(720deg);}
+      100%{transform:translateY(0) rotateY(1260deg);}
+    }
+  }
+
+
+  /* ---------- Jumanji ---------- */
+  .jum-board{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:2px 0 10px;}
+  .jum-stat{
+    border:1px solid var(--line);border-radius:12px;padding:8px 10px;
+    background:var(--surface-2);text-align:center;
+  }
+  .jum-stat-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-muted);font-weight:700;}
+  .jum-stat-val{font-size:26px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums;}
+  .jum-stat-name{font-size:11.5px;color:var(--ink-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .jum-high{border-color:var(--good);}
+  .jum-high .jum-stat-val{color:var(--good);}
+  .jum-low{border-color:var(--critical);}
+  .jum-low .jum-stat-val{color:var(--critical);}
+
+  .jum-flag{
+    text-align:center;font-size:13px;padding:7px 10px;margin-bottom:9px;
+    border-radius:10px;border:1px solid var(--warning);
+    background:rgba(255,207,77,0.12);color:var(--warning);
+  }
+
+  .jum-dice{display:flex;justify-content:center;gap:14px;margin:12px 0 8px;}
+  .jum-dice.rolling .die{animation:dieShake .09s linear infinite;}
+  @keyframes dieShake{
+    0%{transform:rotate(-7deg) translateY(0);}
+    50%{transform:rotate(6deg) translateY(-4px);}
+    100%{transform:rotate(-7deg) translateY(0);}
+  }
+  .die{
+    width:62px;height:62px;border-radius:13px;
+    background:linear-gradient(160deg,#ffffff,#dfe3ee);
+    border:1px solid rgba(0,0,0,0.18);
+    box-shadow:0 5px 14px rgba(0,0,0,0.45), inset 0 -3px 6px rgba(0,0,0,0.10);
+    display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+    gap:3px;padding:8px;
+  }
+  .die .pip{border-radius:50%;background:transparent;}
+  .die .pip.on{background:#1a1520;box-shadow:inset 0 1px 2px rgba(255,255,255,0.35);}
+
+  .jum-roll-info{text-align:center;font-size:15px;margin-bottom:8px;color:var(--ink-secondary);}
+  .jum-score{color:var(--accent-2);font-size:18px;}
+  .jum-hit{color:var(--warning);}
+  .jum-hit-big{font-size:22px;font-weight:800;color:var(--warning);margin-bottom:4px;}
+  .jum-verdict{text-align:center;font-size:14px;line-height:1.5;margin:10px 0 4px;}
+  .jum-verdict b{color:var(--accent);}
+  .jum-sub{font-size:12.5px;color:var(--ink-muted);margin-top:6px;}
+  .jum-tie-head{font-size:17px;font-weight:800;color:var(--warning);margin-bottom:2px;}
+  .jum-compact{
+    display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+    gap:4px 6px;font-size:12.5px;color:var(--ink-muted);
+    margin:2px 0 4px;line-height:1.5;
+  }
+  .jum-compact b{color:var(--ink-secondary);font-variant-numeric:tabular-nums;}
+  .jum-compact .tie{color:var(--critical);}
+  .jum-compact .tie b{color:var(--critical);}
+  .jum-compact i{opacity:.4;font-style:normal;}
+  .jum-tie-label{
+    margin:12px 0 7px;padding-top:10px;border-top:1px dashed var(--line);
+    font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;
+    color:var(--warning);font-weight:800;text-align:center;
+  }
+  .jum-dice.single{gap:0;}
+  .est-row.worst{border-color:var(--critical);}
+
+  body.theme-light .jum-stat{background:transparent;}
+  body.theme-light .die{background:linear-gradient(160deg,#ffffff,#e8f5f2);box-shadow:0 4px 10px rgba(0,0,0,0.18);}
+
+  @media (max-width:640px){
+    .die{width:54px;height:54px;border-radius:11px;padding:7px;}
+    .jum-stat-val{font-size:23px;}
+    .jum-dice{margin:9px 0 6px;gap:12px;}
+  }
+  @media (max-height:520px){
+    .die{width:44px;height:44px;border-radius:9px;padding:5px;gap:2px;}
+    .jum-stat-val{font-size:20px;}
+    .jum-dice{margin:6px 0 4px;}
+  }
+
 </style>
 </head>
 <body>
@@ -1134,6 +1276,22 @@
 
 <!-- Rechtstexte -->
 <!-- Intensität während des Spiels ändern -->
+<!-- Münzwurf: eigene Bühne über allem, verschwindet nach dem Ergebnis -->
+<div class="coin-stage" id="coinStage" aria-live="polite">
+  <div class="coin-stage-inner">
+    <div class="coin-stage-call" id="coinStageCall"></div>
+    <div class="coin-toss-zone big">
+      <div class="coin3d" id="coinStage3d">
+        <div class="coin-face coin-front nix-wordmark on-gold">NIX<span class="lc">is</span><br>NIX</div>
+        <div class="coin-face coin-back" id="coinStageBack"></div>
+      </div>
+      <div class="coin-shadow"></div>
+    </div>
+    <div class="coin-stage-result" id="coinStageResult"></div>
+    <div class="coin-stage-hint" id="coinStageHint">Die Münze fliegt …</div>
+  </div>
+</div>
+
 <div class="overlay" id="intensityOverlay">
   <div class="modal">
     <h2>Wie hart darf's werden?</h2>
@@ -1375,6 +1533,8 @@ const MINIGAMES = [
     instructions:"Reihum wiederholt jede Person alle bisherigen Gegenstände und fügt einen neuen hinzu. Erster Aussetzer trinkt." },
   { bewegung:true, id:'freeze', title:'Freeze!', icon:'🧊', timerSeconds:0, amount:2, promptBank:null,
     instructions:"Auf „Start“ erstarren alle sofort in ihrer Position. Wer sich zuerst bewegt oder lacht, trinkt." },
+  { id:'jumanji', title:'Jumanji', icon:'🎲', timerSeconds:0, amount:0, promptBank:null, custom:'jumanji',
+    instructions:"Reihum würfelt jede Person mit zwei Würfeln. Die Augen werden addiert – bei einem Pasch zählt die Augenzahl mal 3. Ein Einser-Pasch ist Jumanji! Wer am Ende die wenigsten Punkte hat, trinkt so viele Schlücke, wie die höchste Zahl anzeigt." },
   { id:'zweiwahrheiten', title:'Zwei Wahrheiten, eine Lüge', icon:'🎲', timerSeconds:0, amount:2, promptBank:null,
     instructions:"Die aktive Person nennt drei Aussagen über sich – zwei wahr, eine gelogen. Wer falsch tippt, trinkt." },
 ];
@@ -2169,6 +2329,57 @@ function renderDuelPanel(card, body){
    Schluck-Betrag trinken müsste (z.B. "Trink 5 Schlücke"). Bietet zusätzlich
    zum normalen Bestätigen-Knopf die Möglichkeit, stattdessen die Münze zu
    werfen: Doppelt oder NIXisNIX. */
+/* ---------- Münzwurf auf eigener Bühne ----------
+   Legt sich über die ganze Seite, wirft die Münze groß und gut sichtbar,
+   zeigt kurz das Ergebnis und blendet sich dann von selbst wieder aus.
+   Danach läuft es im Kartenpanel normal weiter. */
+function playCoinToss(opts){
+  const stage   = document.getElementById('coinStage');
+  const coin    = document.getElementById('coinStage3d');
+  const back    = document.getElementById('coinStageBack');
+  const callEl  = document.getElementById('coinStageCall');
+  const resEl   = document.getElementById('coinStageResult');
+  const hintEl  = document.getElementById('coinStageHint');
+  const zone    = stage.querySelector('.coin-toss-zone');
+
+  // Fällt die Bühne aus (z.B. sehr alter Browser), geht es sofort weiter
+  if(!stage || !coin){ opts.onDone(); return; }
+
+  callEl.innerHTML = opts.call || '';
+  resEl.innerHTML = '';
+  resEl.classList.remove('show');
+  hintEl.textContent = 'Die Münze fliegt …';
+  back.innerHTML = opts.backFace || '';
+
+  zone.classList.remove('tossing');
+  stage.classList.remove('leaving');
+  stage.classList.add('show');
+  void coin.offsetWidth;          // Neustart der Animation erzwingen
+  zone.classList.add('tossing');
+
+  let closed = false;
+  function close(){
+    if(closed) return;
+    closed = true;
+    stage.removeEventListener('click', close);
+    stage.classList.add('leaving');
+    setTimeout(() => {
+      stage.classList.remove('show', 'leaving');
+      zone.classList.remove('tossing');
+      resEl.classList.remove('show');
+      opts.onDone();
+    }, 300);
+  }
+
+  setTimeout(() => {
+    resEl.innerHTML = opts.result || '';
+    resEl.classList.add('show');
+    hintEl.textContent = 'Tippen zum Weitermachen';
+    stage.addEventListener('click', close);
+    setTimeout(close, 2200);      // blendet sich von selbst wieder aus
+  }, 1150);
+}
+
 function renderCoinGambleWidget(container, player, baseAmount, baseReason, onDone, normalBtn){
   if(baseAmount <= 0) return;
   const wrap = document.createElement('div'); wrap.style.marginTop = '4px';
@@ -2187,112 +2398,115 @@ function renderCoinGambleWidget(container, player, baseAmount, baseReason, onDon
     if(normalBtn) normalBtn.disabled = true;
     divider.remove(); gambleBtn.remove();
     coinArea.style.display = 'block';
-    coinArea.innerHTML = `
-      <div class="coin-toss-zone">
-        <div class="coin3d">
-          <div class="coin-face coin-front nix-wordmark on-gold">NIX<span class="lc">is</span><br>NIX</div>
-          <div class="coin-face coin-back"></div>
-        </div>
-        <div class="coin-shadow"></div>
-      </div>
-      <div class="action-buttons" style="justify-content:center;">
-        <button class="btn primary" id="gflip">🪙 Münze werfen</button>
-      </div>
-    `;
-    const tossZone = coinArea.querySelector('.coin-toss-zone');
-    const backFace = coinArea.querySelector('.coin-back');
-    const flipBtn = coinArea.querySelector('#gflip');
-    const gActions = coinArea.querySelector('.action-buttons');
-    flipBtn.onclick = () => {
-      flipBtn.disabled = true;
-      const isNix = Math.random() < 0.5;
-      backFace.innerHTML = isNix
-        ? '<div style="font-size:22px;">🌀</div><span class="nix-wordmark on-gold" style="font-size:15px;">NIX<span class="lc">is</span>NIX</span>'
-        : `<div style="font-size:28px;">${baseAmount * 2}</div><span>Schlücke</span>`;
-      tossZone.classList.add('tossing');
-      setTimeout(() => {
-        const resultLine = document.createElement('div');
-        resultLine.className = 'free-total'; resultLine.style.textAlign = 'center'; resultLine.style.margin = '10px 0';
+
+    const isNix = Math.random() < 0.5;
+    playCoinToss({
+      call: `<b>${escapeHtml(player.name)}</b> riskiert es: 0 oder ${baseAmount * 2} Schlücke`,
+      backFace: isNix
+        ? '<div style="font-size:34px;">🌀</div><span class="nix-wordmark on-gold" style="font-size:15px;">NIX<span class="lc">is</span>NIX</span>'
+        : `<div>${baseAmount * 2}</div><span>Schlücke</span>`,
+      result: isNix
+        ? `<span class="win">🌀 NIXisNIX!</span><br>${escapeHtml(player.name)} bleibt verschont.`
+        : `<span class="lose">Verloren!</span><br>${escapeHtml(player.name)} trinkt ${baseAmount * 2} Schlücke.`,
+      onDone: () => {
         if(isNix){
           addLogNarrative('🌀 NIXisNIX! ' + player.name + ' würfelt sich frei und bleibt von ' + baseAmount + ' Schlücken verschont.');
-          resultLine.innerHTML = `<b style="color:var(--good)">🌀 NIXisNIX!</b> ${escapeHtml(player.name)} bleibt verschont.`;
         } else {
           addSips(player.id, baseAmount * 2, baseReason + ' — Doppelt oder NIXisNIX verloren');
-          resultLine.innerHTML = `<b style="color:var(--critical)">Verloren!</b> ${escapeHtml(player.name)} trinkt <b>${baseAmount * 2}</b> Schlücke.`;
         }
-        coinArea.insertBefore(resultLine, gActions);
-        gActions.innerHTML = '';
-        const okBtn = document.createElement('button'); okBtn.className = 'btn primary'; okBtn.textContent = 'Weiter';
+        coinArea.innerHTML = '';
+        const resultLine = document.createElement('div');
+        resultLine.className = 'free-total';
+        resultLine.style.cssText = 'text-align:center;margin:10px 0;';
+        resultLine.innerHTML = isNix
+          ? `<b style="color:var(--good)">🌀 NIXisNIX!</b> ${escapeHtml(player.name)} bleibt verschont.`
+          : `<b style="color:var(--critical)">Verloren!</b> ${escapeHtml(player.name)} trinkt <b>${baseAmount * 2}</b> Schlücke.`;
+        coinArea.appendChild(resultLine);
+        const gActions = document.createElement('div');
+        gActions.className = 'action-buttons';
+        gActions.style.justifyContent = 'center';
+        const okBtn = document.createElement('button');
+        okBtn.className = 'btn primary'; okBtn.textContent = 'Weiter';
         okBtn.onclick = onDone;
         gActions.appendChild(okBtn);
-      }, 1150);
-    };
+        coinArea.appendChild(gActions);
+      },
+    });
   };
 }
 
 function renderCoinPanel(card, body){
+  const amount = sip(card.amount) * 2;
   let call = null;
   const callRow = document.createElement('div'); callRow.className = 'call-row';
   const callOptions = [
-    { key: 'nix', label: '🌀 NIXisNIX' },
-    { key: 'zahl', label: '🔢 ' + (sip(card.amount) * 2) + ' Schlücke' },
+    { key: 'nix',  label: '🌀 NIXisNIX' },
+    { key: 'zahl', label: '🔢 ' + amount + ' Schlücke' },
   ];
   callOptions.forEach(opt => {
     const chip = document.createElement('div'); chip.className = 'chip selectable';
     chip.textContent = opt.label;
-    chip.onclick = () => { call = opt.key; callRow.querySelectorAll('.chip').forEach(c => c.classList.remove('selected')); chip.classList.add('selected'); flipBtn.disabled = false; };
+    chip.onclick = () => {
+      call = opt.key;
+      callRow.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      flipBtn.disabled = false;
+    };
     callRow.appendChild(chip);
   });
   body.appendChild(callRow);
 
-  const tossZone = document.createElement('div'); tossZone.className = 'coin-toss-zone';
-  tossZone.innerHTML = `
-    <div class="coin3d">
-      <div class="coin-face coin-front nix-wordmark on-gold">NIX<span class="lc">is</span><br>NIX</div>
-      <div class="coin-face coin-back"></div>
-    </div>
-    <div class="coin-shadow"></div>
-  `;
-  body.appendChild(tossZone);
-  const backFace = tossZone.querySelector('.coin-back');
+  const resultBox = document.createElement('div');
+  resultBox.className = 'free-total'; resultBox.style.textAlign = 'center';
+  body.appendChild(resultBox);
 
-  const resultBox = document.createElement('div'); resultBox.className = 'free-total'; resultBox.style.textAlign = 'center'; body.appendChild(resultBox);
-  const actions = document.createElement('div'); actions.className = 'action-buttons'; actions.style.justifyContent = 'center';
-  const flipBtn = document.createElement('button'); flipBtn.className = 'btn primary'; flipBtn.textContent = '🪙 Münze werfen'; flipBtn.disabled = true;
+  const actions = document.createElement('div');
+  actions.className = 'action-buttons'; actions.style.justifyContent = 'center';
+  const flipBtn = document.createElement('button');
+  flipBtn.className = 'btn primary'; flipBtn.textContent = '🪙 Münze werfen'; flipBtn.disabled = true;
   actions.appendChild(flipBtn); body.appendChild(actions);
 
   flipBtn.onclick = () => {
-    if(!call || tossZone.classList.contains('tossing')) return;
+    if(!call) return;
     flipBtn.disabled = true;
     const result = Math.random() < 0.5 ? 'nix' : 'zahl';
-    backFace.innerHTML = result === 'nix'
-      ? '<div style="font-size:22px;">🌀</div><span class="nix-wordmark on-gold" style="font-size:15px;">NIX<span class="lc">is</span>NIX</span>'
-      : `<div style="font-size:28px;">${sip(card.amount) * 2}</div><span>Schlücke</span>`;
-    tossZone.classList.add('tossing');
-    setTimeout(() => {
-      const won = result === call;
-      const resultLabel = result === 'nix' ? 'NIXisNIX' : (sip(card.amount) * 2) + ' Schlücke';
-      resultBox.innerHTML = won
-        ? `<b style="color:var(--good)">Richtig!</b> Es kam „${resultLabel}“ — wähle, wer statt dir <b>${sip(card.amount) * 2}</b> Schlücke trinkt.`
-        : `<b style="color:var(--critical)">Falsch!</b> Es kam „${resultLabel}“ — du trinkst <b>${sip(card.amount) * 2}</b> Schlücke.`;
-      actions.innerHTML = '';
-      if(won){
-        const chipWrap = document.createElement('div'); body.insertBefore(chipWrap, actions);
-        const targets = state.players.filter(p => p.id !== currentPlayer().id);
-        const confirmBtn = document.createElement('button'); confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen'; confirmBtn.disabled = true;
-        const sel = buildChipSelector(chipWrap, targets, { max: 1, onChange: ids => { confirmBtn.disabled = ids.length !== 1; } });
-        actions.appendChild(confirmBtn);
-        confirmBtn.onclick = () => {
-          const ids = sel.getSelected();
-          addSips(ids[0], sip(card.amount) * 2, 'Doppelt oder NIXisNIX verloren gegen ' + currentPlayer().name);
-          finishTurn();
-        };
-      } else {
-        const confirmBtn = document.createElement('button'); confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen';
-        actions.appendChild(confirmBtn);
-        confirmBtn.onclick = () => { addSips(currentPlayer().id, sip(card.amount) * 2, 'Doppelt oder NIXisNIX verloren'); finishTurn(); };
-      }
-    }, 1150);
+    const won = result === call;
+    const resultLabel = result === 'nix' ? 'NIXisNIX' : amount + ' Schlücke';
+    const callLabel = call === 'nix' ? 'NIXisNIX' : amount + ' Schlücke';
+
+    playCoinToss({
+      call: `<b>${escapeHtml(currentPlayer().name)}</b> tippt auf „${escapeHtml(callLabel)}“`,
+      backFace: result === 'nix'
+        ? '<div style="font-size:34px;">🌀</div><span class="nix-wordmark on-gold" style="font-size:15px;">NIX<span class="lc">is</span>NIX</span>'
+        : `<div>${amount}</div><span>Schlücke</span>`,
+      result: won
+        ? `<span class="win">Richtig!</span><br>Es kam „${escapeHtml(resultLabel)}“`
+        : `<span class="lose">Falsch!</span><br>Es kam „${escapeHtml(resultLabel)}“`,
+      onDone: () => {
+        resultBox.innerHTML = won
+          ? `<b style="color:var(--good)">Richtig!</b> Es kam „${escapeHtml(resultLabel)}“ — wähle, wer statt dir <b>${amount}</b> Schlücke trinkt.`
+          : `<b style="color:var(--critical)">Falsch!</b> Es kam „${escapeHtml(resultLabel)}“ — du trinkst <b>${amount}</b> Schlücke.`;
+        actions.innerHTML = '';
+        if(won){
+          const chipWrap = document.createElement('div'); body.insertBefore(chipWrap, actions);
+          const targets = state.players.filter(p => p.id !== currentPlayer().id);
+          const confirmBtn = document.createElement('button');
+          confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen'; confirmBtn.disabled = true;
+          const sel = buildChipSelector(chipWrap, targets, { max: 1, onChange: ids => { confirmBtn.disabled = ids.length !== 1; } });
+          actions.appendChild(confirmBtn);
+          confirmBtn.onclick = () => {
+            const ids = sel.getSelected();
+            addSips(ids[0], amount, 'Doppelt oder NIXisNIX verloren gegen ' + currentPlayer().name);
+            finishTurn();
+          };
+        } else {
+          const confirmBtn = document.createElement('button');
+          confirmBtn.className = 'btn primary'; confirmBtn.textContent = '✅ Bestätigen';
+          actions.appendChild(confirmBtn);
+          confirmBtn.onclick = () => { addSips(currentPlayer().id, amount, 'Doppelt oder NIXisNIX verloren'); finishTurn(); };
+        }
+      },
+    });
   };
 }
 
@@ -2365,11 +2579,393 @@ function renderBetPanel(card, body){
   };
 }
 
+
+/* ================= JUMANJI =================
+   Reihum würfelt jede Person zwei Würfel.
+   - normale Augen  -> Summe
+   - Pasch          -> Augenzahl x 3   (2er Pasch = 6, 6er Pasch = 18)
+   - Einser-Pasch   -> Jumanji! Am Ende ext die Verliererin/der Verlierer das Glas.
+   Wer die wenigsten Punkte hat, trinkt so viele Schlücke wie die Höchstzahl.
+   Die Würfelaugen sind bereits die Schluckzahl — der Intensitätsregler
+   greift hier bewusst nicht, sonst käme man auf bis zu 54 Schlücke. */
+const DICE_PIPS = {
+  1: [4],
+  2: [0, 8],
+  3: [0, 4, 8],
+  4: [0, 2, 6, 8],
+  5: [0, 2, 4, 6, 8],
+  6: [0, 2, 3, 5, 6, 8],
+};
+
+function diceFaceHtml(value){
+  const on = DICE_PIPS[value] || [];
+  let cells = '';
+  for(let i = 0; i < 9; i++){
+    cells += `<span class="pip${on.indexOf(i) === -1 ? '' : ' on'}"></span>`;
+  }
+  return `<div class="die" data-v="${value}">${cells}</div>`;
+}
+
+function jumanjiScore(a, b){
+  if(a === b) return { score: a * 3, pasch: true, jumanji: a === 1 };
+  return { score: a + b, pasch: false, jumanji: false };
+}
+
+function renderJumanji(body){
+  const order = state.players.slice(state.currentIndex).concat(state.players.slice(0, state.currentIndex));
+  const rolls = [];          // { player, a, b, score, pasch, jumanji }
+  let jumanjiHit = false;
+  let step = 0;
+
+  /* --- Anzeige oben: aktuell höchste und niedrigste Zahl --- */
+  const board = document.createElement('div');
+  board.className = 'jum-board';
+  board.innerHTML = `
+    <div class="jum-stat jum-high">
+      <div class="jum-stat-label">Höchste</div>
+      <div class="jum-stat-val" id="jumHighVal">–</div>
+      <div class="jum-stat-name" id="jumHighName">noch niemand</div>
+    </div>
+    <div class="jum-stat jum-low">
+      <div class="jum-stat-label">Niedrigste</div>
+      <div class="jum-stat-val" id="jumLowVal">–</div>
+      <div class="jum-stat-name" id="jumLowName">noch niemand</div>
+    </div>`;
+  body.appendChild(board);
+
+  const flag = document.createElement('div');
+  flag.className = 'jum-flag';
+  flag.style.display = 'none';
+  flag.innerHTML = '🎲 <b>JUMANJI!</b> Am Ende wird geext.';
+  body.appendChild(flag);
+
+  const stage = document.createElement('div');
+  body.appendChild(stage);
+
+  function updateBoard(){
+    if(rolls.length === 0) return;
+    const scores = rolls.map(r => r.score);
+    const hi = Math.max.apply(null, scores);
+    const lo = Math.min.apply(null, scores);
+    const hiNames = rolls.filter(r => r.score === hi).map(r => r.player.name).join(', ');
+    const loNames = rolls.filter(r => r.score === lo).map(r => r.player.name).join(', ');
+    document.getElementById('jumHighVal').textContent = hi;
+    document.getElementById('jumHighName').textContent = hiNames;
+    document.getElementById('jumLowVal').textContent = lo;
+    document.getElementById('jumLowName').textContent = loNames;
+  }
+
+  /* --- Ein Wurf pro Person --- */
+  function askNext(){
+    stage.innerHTML = '';
+    if(step >= order.length){ showResult(); return; }
+    const p = order[step];
+
+    const head = document.createElement('div');
+    head.className = 'est-turn';
+    head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
+      + `<b>${escapeHtml(p.name)}</b> ist dran`
+      + `<span class="est-progress">${step + 1} / ${order.length}</span>`;
+    stage.appendChild(head);
+
+    const diceRow = document.createElement('div');
+    diceRow.className = 'jum-dice';
+    diceRow.innerHTML = diceFaceHtml(1) + diceFaceHtml(1);
+    stage.appendChild(diceRow);
+
+    const info = document.createElement('div');
+    info.className = 'jum-roll-info';
+    info.textContent = 'Tippe auf „Würfeln“';
+    stage.appendChild(info);
+
+    const acts = document.createElement('div');
+    acts.className = 'action-buttons';
+    const rollBtn = document.createElement('button');
+    rollBtn.className = 'btn primary';
+    rollBtn.textContent = '🎲 Würfeln';
+    acts.appendChild(rollBtn);
+    stage.appendChild(acts);
+
+    rollBtn.onclick = () => {
+      rollBtn.disabled = true;
+      const a = 1 + Math.floor(Math.random() * 6);
+      const b = 1 + Math.floor(Math.random() * 6);
+      const res = jumanjiScore(a, b);
+
+      // Würfel kurz "rollen" lassen
+      diceRow.classList.add('rolling');
+      let ticks = 0;
+      const spin = setInterval(() => {
+        ticks++;
+        diceRow.innerHTML = diceFaceHtml(1 + Math.floor(Math.random() * 6))
+                          + diceFaceHtml(1 + Math.floor(Math.random() * 6));
+        if(ticks >= 8){
+          clearInterval(spin);
+          diceRow.classList.remove('rolling');
+          diceRow.innerHTML = diceFaceHtml(a) + diceFaceHtml(b);
+
+          rolls.push({ player: p, a: a, b: b, score: res.score, pasch: res.pasch, jumanji: res.jumanji });
+          updateBoard();
+
+          if(res.jumanji){
+            jumanjiHit = true;
+            flag.style.display = '';
+            info.innerHTML = `<b class="jum-hit">🎲 JUMANJI!</b> Einser-Pasch — ${res.score} Punkte.`;
+            toast('🎲 JUMANJI!');
+          } else if(res.pasch){
+            info.innerHTML = `<b>Pasch!</b> ${a} und ${b} → ${a} × 3 = <b class="jum-score">${res.score}</b>`;
+          } else {
+            info.innerHTML = `${a} + ${b} = <b class="jum-score">${res.score}</b>`;
+          }
+
+          acts.innerHTML = '';
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'btn primary';
+          nextBtn.textContent = step === order.length - 1 ? '🏁 Auswerten' : '➡️ Weiter';
+          nextBtn.onclick = () => { step++; askNext(); };
+          acts.appendChild(nextBtn);
+        }
+      }, 90);
+    };
+  }
+
+  /* --- Auswertung --- */
+  function showResult(){
+    stage.innerHTML = '';
+    const scores = rolls.map(r => r.score);
+    const hi = Math.max.apply(null, scores);
+    const lo = Math.min.apply(null, scores);
+    const tied = rolls.filter(r => r.score === lo);
+    const sorted = rolls.slice().sort((x, y) => y.score - x.score);
+
+    const list = document.createElement('div');
+    list.className = 'est-result';
+    sorted.forEach(r => {
+      const el = document.createElement('div');
+      el.className = 'est-row' + (r.score === hi ? ' best' : '') + (r.score === lo ? ' worst' : '');
+      el.innerHTML = `<span class="est-dot" style="background:${r.player.color}"></span>`
+        + `<span class="est-name">${escapeHtml(r.player.name)}</span>`
+        + `<span class="est-val">${r.score}</span>`
+        + `<span class="est-dev">${r.a} + ${r.b}${r.jumanji ? ' 🎲' : (r.pasch ? ' (Pasch)' : '')}</span>`
+        + `<span class="est-pen">${r.score === hi ? '🏆' : (r.score === lo ? '🍺' : '–')}</span>`;
+      list.appendChild(el);
+    });
+    stage.appendChild(list);
+
+    // Bereich unter der Tabelle: hier landet entweder das Stechen oder das Urteil
+    const tail = document.createElement('div');
+    stage.appendChild(tail);
+
+    if(tied.length > 1){
+      startTiebreak(tail, tied, lo, hi, 1, list, sorted);
+    } else {
+      showVerdict(tail, [tied[0]], lo, hi);
+    }
+  }
+
+  /* --- Stechen bei Gleichstand: ein Würfel, niedrigste Augenzahl verliert --- */
+  function startTiebreak(tail, tied, lo, hi, round, list, sorted){
+    tail.innerHTML = '';
+    // Beim Stechen wird die große Tabelle zu einer Zeile — sonst wird es
+    // bei vielen Personen auf dem Handy zu eng.
+    if(list && sorted && list.parentNode){
+      const compact = document.createElement('div');
+      compact.className = 'jum-compact';
+      compact.innerHTML = sorted.map(r =>
+        `<span${r.score === lo ? ' class="tie"' : ''}>${escapeHtml(r.player.name)} <b>${r.score}</b></span>`
+      ).join('<i>·</i>');
+      list.parentNode.replaceChild(compact, list);
+    }
+    const info = document.createElement('div');
+    info.className = 'jum-verdict';
+    info.innerHTML = `<div class="jum-tie-head">⚔️ Gleichstand bei <b>${lo}</b> Punkten${round > 1 ? ' — Stechen, Runde ' + round : ''}</div>`
+      + `<div class="jum-sub">${tied.map(r => escapeHtml(r.player.name)).join(', ')} würfeln je einen Würfel. Die niedrigste Augenzahl verliert.</div>`;
+    tail.appendChild(info);
+
+    const acts = document.createElement('div');
+    acts.className = 'action-buttons';
+    const startBtn = document.createElement('button');
+    startBtn.className = 'btn primary';
+    startBtn.textContent = '🎲 Stechen starten';
+    acts.appendChild(startBtn);
+    tail.appendChild(acts);
+
+    startBtn.onclick = () => runTiebreakRolls(tail, tied, lo, hi, round);
+  }
+
+  function runTiebreakRolls(tail, tied, lo, hi, round){
+    const results = [];
+    let idx = 0;
+
+    function askRoll(){
+      tail.innerHTML = '';
+      if(idx >= tied.length){ evaluateTiebreak(); return; }
+      const p = tied[idx].player;
+
+      const head = document.createElement('div');
+      head.className = 'est-turn';
+      head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
+        + `<b>${escapeHtml(p.name)}</b> im Stechen`
+        + `<span class="est-progress">${idx + 1} / ${tied.length}</span>`;
+      tail.appendChild(head);
+
+      const diceRow = document.createElement('div');
+      diceRow.className = 'jum-dice single';
+      diceRow.innerHTML = diceFaceHtml(1);
+      tail.appendChild(diceRow);
+
+      const info = document.createElement('div');
+      info.className = 'jum-roll-info';
+      info.textContent = results.length
+        ? 'Bisher: ' + results.map(r => r.player.name + ' ' + r.die).join(' · ')
+        : 'Niedrigste Augenzahl verliert';
+      tail.appendChild(info);
+
+      const acts = document.createElement('div');
+      acts.className = 'action-buttons';
+      const rollBtn = document.createElement('button');
+      rollBtn.className = 'btn primary';
+      rollBtn.textContent = '🎲 Würfeln';
+      acts.appendChild(rollBtn);
+      tail.appendChild(acts);
+
+      rollBtn.onclick = () => {
+        rollBtn.disabled = true;
+        const die = 1 + Math.floor(Math.random() * 6);
+        diceRow.classList.add('rolling');
+        let ticks = 0;
+        const spin = setInterval(() => {
+          ticks++;
+          diceRow.innerHTML = diceFaceHtml(1 + Math.floor(Math.random() * 6));
+          if(ticks >= 8){
+            clearInterval(spin);
+            diceRow.classList.remove('rolling');
+            diceRow.innerHTML = diceFaceHtml(die);
+            results.push({ player: p, roll: tied[idx], die: die });
+            info.innerHTML = `<b>${escapeHtml(p.name)}</b> würfelt eine <b class="jum-score">${die}</b>`;
+            acts.innerHTML = '';
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'btn primary';
+            nextBtn.textContent = idx === tied.length - 1 ? '🏁 Auswerten' : '➡️ Weiter';
+            nextBtn.onclick = () => { idx++; askRoll(); };
+            acts.appendChild(nextBtn);
+          }
+        }, 90);
+      };
+    }
+
+    function evaluateTiebreak(){
+      tail.innerHTML = '';
+      const min = Math.min.apply(null, results.map(r => r.die));
+      const stillTied = results.filter(r => r.die === min);
+
+      const lbl = document.createElement('div');
+      lbl.className = 'jum-tie-label';
+      lbl.textContent = round > 1 ? '⚔️ Stechen · Runde ' + round : '⚔️ Stechen';
+      tail.appendChild(lbl);
+
+      const board = document.createElement('div');
+      board.className = 'est-result';
+      results.slice().sort((a, b) => a.die - b.die).forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'est-row' + (r.die === min ? ' worst' : '');
+        el.innerHTML = `<span class="est-dot" style="background:${r.player.color}"></span>`
+          + `<span class="est-name">${escapeHtml(r.player.name)}</span>`
+          + `<span class="est-val">${r.die}</span>`
+          + `<span class="est-pen">${r.die === min ? '🍺' : '–'}</span>`;
+        board.appendChild(el);
+      });
+      tail.appendChild(board);
+
+      if(stillTied.length > 1){
+        // Immer noch gleich — nächste Stechrunde nur unter den Betroffenen
+        const again = document.createElement('div');
+        again.className = 'jum-verdict';
+        again.innerHTML = `<div class="jum-tie-head">Immer noch gleich!</div>`
+          + `<div class="jum-sub">${stillTied.map(r => escapeHtml(r.player.name)).join(', ')} würfeln noch einmal.</div>`;
+        tail.appendChild(again);
+        const acts = document.createElement('div');
+        acts.className = 'action-buttons';
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'btn primary';
+        nextBtn.textContent = '🎲 Nächste Runde';
+        nextBtn.onclick = () => runTiebreakRolls(tail, stillTied.map(r => r.roll), lo, hi, round + 1);
+        acts.appendChild(nextBtn);
+        tail.appendChild(acts);
+      } else {
+        const loserRoll = stillTied[0].roll;
+        const note = document.createElement('div');
+        note.className = 'jum-verdict';
+        note.innerHTML = `<div class="jum-tie-head">⚔️ Stechen entschieden</div>`
+          + `<div class="jum-sub"><b>${escapeHtml(loserRoll.player.name)}</b> hat mit einer ${stillTied[0].die} die niedrigste Augenzahl.</div>`;
+        tail.appendChild(note);
+        const box = document.createElement('div');
+        tail.appendChild(box);
+        showVerdict(box, [loserRoll], lo, hi);
+      }
+    }
+
+    askRoll();
+  }
+
+  /* --- Urteil & Schlücke verbuchen --- */
+  function showVerdict(tail, losers, lo, hi){
+    const verdict = document.createElement('div');
+    verdict.className = 'jum-verdict';
+    tail.appendChild(verdict);
+
+    const acts = document.createElement('div');
+    acts.className = 'action-buttons';
+    const okBtn = document.createElement('button');
+    okBtn.className = 'btn primary';
+    acts.appendChild(okBtn);
+
+    const loserNames = losers.map(r => r.player.name);
+    const names = loserNames.length > 1
+      ? loserNames.slice(0, -1).join(', ') + ' und ' + loserNames[loserNames.length - 1]
+      : loserNames[0];
+
+    if(jumanjiHit){
+      verdict.innerHTML = `<div class="jum-hit-big">🎲 JUMANJI!</div>`
+        + `<div><b>${escapeHtml(names)}</b> ${losers.length > 1 ? 'exen' : 'ext'} das Glas.</div>`
+        + `<div class="jum-sub">Wie viele Schlücke waren das?</div>`;
+      const field = makeNumberField(tail, {
+        placeholder: 'Anzahl Schlücke …',
+        onChange: ok => { okBtn.disabled = !ok; },
+        onEnter: () => okBtn.click(),
+      });
+      tail.appendChild(acts);
+      okBtn.textContent = '✅ Eintragen';
+      okBtn.disabled = true;
+      okBtn.onclick = () => {
+        if(!field.valid()) return;
+        const n = Math.max(1, Math.round(field.value()));
+        losers.forEach(r => addSips(r.player.id, n, 'Jumanji — Glas geext'));
+        finishTurn();
+      };
+    } else {
+      verdict.innerHTML = `<div><b>${escapeHtml(names)}</b> ${losers.length > 1 ? 'verlieren' : 'verliert'}`
+        + ` und ${losers.length > 1 ? 'trinken' : 'trinkt'} <b>${hi}</b> Schlücke.</div>`;
+      tail.appendChild(acts);
+      okBtn.textContent = '✅ Bestätigen';
+      okBtn.onclick = () => {
+        losers.forEach(r => addSips(r.player.id, hi, 'Jumanji — wenigste Punkte (' + lo + ')'));
+        finishTurn();
+      };
+    }
+  }
+
+
+  askNext();
+}
+
 function renderMinigamePanel(card, body){
   const mg = pick(activeMinigames());
   const head = document.createElement('div');
   head.innerHTML = `<div class="prompt-box" style="text-align:left;"><div class="mg-title"><span class="mg-icon">${mg.icon}</span>${escapeHtml(mg.title)}</div><div class="mg-instructions">${escapeHtml(mg.instructions)}</div></div>`;
   body.appendChild(head);
+
+  if(mg.custom === 'jumanji'){ renderJumanji(body); return; }
 
   if(mg.promptBank){
     const promptText = pick(mg.promptBank);
