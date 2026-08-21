@@ -21,6 +21,11 @@
 <meta name="twitter:title" content="NIXisNIX — Das Trinkspiel">
 <meta name="twitter:description" content="66 Karten, 20 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta name="twitter:image" content="nixisnix-preview.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NIXisNIX">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>NIXisNIX – Das Trinkspiel</title>
 <style>
   :root{
@@ -215,7 +220,6 @@
   .btn.ghost{background:transparent;}
   .btn.small{padding:6px 12px;font-size:12.5px;}
   .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-  .btn-icon{width:38px;height:38px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:16px;}
 
   .card-panel{
     background:linear-gradient(180deg, var(--surface-1), var(--surface-0));
@@ -228,8 +232,6 @@
   #setupScreen .intro{max-width:620px;margin:0 auto 24px;text-align:center;}
   #setupScreen .intro h1{font-size:22px;margin:0 0 6px;text-shadow:0 0 18px var(--glow-pink);}
   #setupScreen .intro p{color:var(--ink-secondary);font-size:14.5px;line-height:1.5;margin:0;}
-  .setup-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;}
-  .setup-grid > *{min-width:0;}
   @media (max-width:820px){.setup-grid{grid-template-columns:1fr;}}
   .setup-single{max-width:620px;margin:0 auto;}
   .player-rows{display:flex;flex-direction:column;gap:10px;margin:16px 0;}
@@ -256,7 +258,6 @@
   .add-player-btn{width:100%;border:1.5px dashed var(--line);background:transparent;color:var(--ink-secondary);border-radius:12px;padding:10px;font-weight:600;}
   .add-player-btn:hover{border-color:var(--accent);color:var(--accent);}
   .setup-hint{color:var(--ink-muted);font-size:12.5px;margin-top:6px;}
-  .setup-side h3{color:var(--accent-2);margin:2px 0 10px;font-size:14px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.6px;}
   .start-cta{display:flex;justify-content:center;margin-top:22px;}
   .start-cta .btn{font-size:16px;padding:14px 34px;}
 
@@ -324,7 +325,6 @@
   .cat-icon{font-size:26px;}
   .cat-label{font-size:11.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;opacity:.85;margin-top:2px;}
   .card-text{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;font-weight:700;line-height:1.35;padding:6px 2px;}
-  .card-idx{font-size:10px;opacity:.6;text-align:right;}
 
   .turn-banner{text-align:center;}
   .turn-banner .who{font-size:13px;color:var(--ink-muted);}
@@ -453,7 +453,6 @@
     letter-spacing:.4px;user-select:none;
   }
   .word-hide.open .word-mask{display:none;}
-  .reveal-hidden{filter:blur(7px);user-select:none;transition:filter .15s ease;}
   .reveal-hint{font-size:11px;color:var(--ink-muted);margin-top:6px;}
   .action-buttons{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap;}
   /* Münzwurf: echtes 3D-Objekt mit zwei Seiten (Vorderseite NIXisNIX,
@@ -484,7 +483,6 @@
     50%{transform:translateX(-50%) scale(0.4);opacity:.18;}
     100%{transform:translateX(-50%) scale(1);opacity:.55;}
   }
-  .call-row{display:flex;gap:8px;justify-content:center;margin-bottom:10px;}
   .call-row .chip.selected{background:rgba(255,95,162,0.26);}
 
   /* Einklappbare Bereiche (Regeln / Protokoll) */
@@ -1317,6 +1315,81 @@
     #logOverlay .log-modal{max-height:calc(100dvh - 30px);padding:18px 16px;}
   }
 
+
+  /* Aufsteigende Schluck-Anzeige */
+  .sip-float{
+    position:absolute;right:9px;top:64%;
+    font-size:19px;font-weight:800;color:var(--accent);
+    text-shadow:0 0 12px var(--glow-pink);
+    pointer-events:none;animation:sipUp 1.05s cubic-bezier(.2,.7,.3,1) forwards;
+    font-variant-numeric:tabular-nums;z-index:3;
+  }
+  /* Startet unterhalb der Schluckzahl und steigt daran vorbei nach oben,
+     damit der eigentliche Zählerstand lesbar bleibt. */
+  @keyframes sipUp{
+    0%{opacity:0;transform:translateY(6px) scale(.7);}
+    18%{opacity:1;transform:translateY(-6px) scale(1.15);}
+    60%{opacity:1;transform:translateY(-34px) scale(1);}
+    100%{opacity:0;transform:translateY(-62px) scale(.95);}
+  }
+  body.theme-light .sip-float{color:#0d9488;text-shadow:none;}
+  @media (prefers-reduced-motion:reduce){
+    .sip-float{animation-duration:.01s;}
+  }
+
+
+  /* Knopf „Letzte Runde übernehmen" */
+  .roster-box{margin-top:8px;}
+  .roster-btn{
+    width:100%;display:flex;align-items:center;gap:10px;text-align:left;
+    padding:9px 12px;border-radius:12px;line-height:1.25;
+  }
+  .roster-icon{font-size:18px;flex:none;}
+  .roster-text{display:flex;flex-direction:column;min-width:0;gap:1px;}
+  .roster-text b{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .roster-text small{
+    font-size:11.5px;color:var(--ink-muted);font-weight:600;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+
+
+  /* Kurzanleitung im Setup */
+  .howto{margin-top:0;}
+  .howto > summary{color:var(--accent-2);}
+  .howto-body{padding:0 13px 13px;}
+  .howto-body ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;}
+  .howto-body li{font-size:13px;line-height:1.5;color:var(--ink-secondary);}
+  .howto-body li b{color:var(--ink-primary);}
+  .howto-tip{
+    font-size:12.5px;line-height:1.5;color:var(--ink-muted);
+    margin:10px 0 0;padding-top:9px;border-top:1px dashed var(--line);
+  }
+
+
+  /* Teilen-Fenster */
+  .start-cta{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  #btnShare{opacity:.85;}
+  .share-qr{
+    display:block;margin:14px auto 8px;border-radius:12px;
+    background:#fff;padding:0;box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  }
+  .share-note{font-size:12px;color:var(--ink-muted);line-height:1.45;}
+  .share-url{
+    margin-top:10px;padding:9px 11px;border-radius:10px;
+    background:var(--surface-2);border:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-secondary);
+    word-break:break-all;user-select:all;
+  }
+  body.theme-light .share-url{background:transparent;}
+  #shareOverlay .share-modal{max-width:360px;}
+
+
+  .install-hint{
+    font-size:12px;line-height:1.5;color:var(--ink-muted);
+    margin-top:10px;
+  }
+  .install-hint:empty{display:none;}
+
 </style>
 </head>
 <body>
@@ -1367,10 +1440,27 @@
     </div>
 
     <div class="setup-single">
+      <details class="pick-fold howto" id="howtoFold">
+        <summary>❓ So geht's — kurz erklärt</summary>
+        <div class="howto-body">
+          <ol>
+            <li><b>Namen eintragen.</b> Die Reihenfolge ist die Sitzordnung — davon hängen Karten wie „dein linker Nachbar" ab.</li>
+            <li><b>Reihum tippt eine Person auf den Kartenstapel.</b> Wer dran ist, steht auf der Karte oben rechts.</li>
+            <li><b>Die Karte sagt, was passiert:</b> trinken, jemanden auswählen, würfeln, die Münze werfen oder ein Minispiel starten. Das Ergebnis bestätigt ihr im selben Fenster, die Schlücke werden automatisch gezählt.</li>
+            <li><b>Ist der Stapel durch, kommt das Finale</b> — ein Würfelduell der beiden mit den wenigsten Schlücken. Danach gibt es den Endstand mit Titeln.</li>
+          </ol>
+          <p class="howto-tip">Oben lässt sich jederzeit das Protokoll öffnen, die letzte Karte zurücknehmen oder zwischen hellem und dunklem Design wechseln. Ein Tipp auf eine Spielerkarte lässt jemanden aussetzen.</p>
+          <p class="howto-tip">Wie hart gespielt wird, stellt ihr unten mit dem Regler ein — er rechnet alle Schluckzahlen im ganzen Spiel um.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="setup-single">
       <div class="card-panel">
         <h3 style="margin-top:0;font-size:14px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.6px;">Spieler:innen</h3>
         <div class="player-rows" id="playerRows"></div>
         <button class="add-player-btn" id="btnAddPlayer">+ Spieler:in hinzufügen</button>
+        <div class="roster-box" id="rosterBox" style="display:none;"></div>
         <div class="setup-hint">Mindestens 2, maximal 12 Personen. Die Reihenfolge bestimmt später die Sitzordnung (Nachbarn für Karten wie „linker Nachbar trinkt“). Wählt außerdem für jede Person ein Glas – der Schluck-Counter füllt sich im Spiel passend dazu.</div>
       </div>
     </div>
@@ -1422,6 +1512,7 @@
 
     <div class="start-cta">
       <button class="btn primary" id="btnStartGame">🎉 Los geht's – Spiel starten</button>
+      <button class="btn small" id="btnShare" title="Spiel teilen">🔗 Teilen</button>
     </div>
   </div>
 
@@ -1525,6 +1616,24 @@
 
 <!-- Spieler-Optionen: aussetzen bzw. zurückholen -->
 <!-- Protokoll -->
+<!-- Teilen -->
+<div class="overlay" id="shareOverlay">
+  <div class="modal share-modal">
+    <h2>🔗 Spiel teilen</h2>
+    <p>Damit die anderen am Tisch NIXisNIX auf ihrem eigenen Handy öffnen können.</p>
+    <canvas id="shareQr" class="share-qr" aria-label="QR-Code mit der Spieladresse"></canvas>
+    <div class="share-note" id="shareQrNote"></div>
+    <div class="share-url" id="shareUrl"></div>
+    <div class="install-hint" id="installHint"></div>
+    <div class="action-buttons" style="justify-content:center;flex-wrap:wrap;">
+      <button class="btn success small" id="btnInstall" style="display:none;">📲 Als App installieren</button>
+      <button class="btn small" id="btnShareCopy">📋 Link kopieren</button>
+      <button class="btn small" id="btnShareSystem" style="display:none;">📤 Teilen</button>
+      <button class="btn primary" id="btnCloseShare">Schließen</button>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="logOverlay">
   <div class="modal log-modal">
     <h2>📜 Protokoll</h2>
@@ -1643,6 +1752,27 @@
 <script>
 /* =========================================================
    NIXisNIX — Spiel-Engine
+
+   Aufbau dieser Datei (in dieser Reihenfolge):
+
+     1. DATEN        Kartentexte, Minispiele, Schätzfragen, Quizfragen,
+                     Hausregeln — alles, was man ändern kann, ohne Code
+                     anzufassen.
+     2. STAPEL       Deck-Aufbau und die Auswahl, was mitspielen soll.
+     3. ZUSTAND      state = die komplette Partie. Speichern, Laden,
+                     Rückgängig, Statistik, Aussetzen, Intensitätsregler.
+     4. ANZEIGE      Spielerliste, Kartenstapel, Protokoll, Logo.
+     5. BAUSTEINE    Helfer, die mehrere Spiele gemeinsam nutzen:
+                     turnOrder, turnHeader, resultRow, actionBar,
+                     rollDice, rankByDeviation, makeNumberField.
+     6. KARTEN       Ein renderXyzPanel je Kartenart. Jedes bekommt die
+                     Karte und einen leeren Kasten und füllt ihn.
+     7. MINISPIELE   Zeitgefühl und Jumanji bringen eigene Abläufe mit.
+     8. FINALE       Würfelduell, wenn der Stapel durch ist.
+     9. START        Ein einziger DOMContentLoaded ganz unten verdrahtet
+                     alle Knöpfe und Overlays.
+
+   Faustregel: Wer Inhalte ändern will, bleibt in Abschnitt 1.
    ========================================================= */
 
 const PLAYER_COLORS = ['#ff5fa2','#63e6ff','#b47cff','#7dff9e','#ffd166','#ff8a5b','#5b8cff','#ff5bd1'];
@@ -1982,6 +2112,7 @@ function restoreSavedGame(d){
   document.getElementById('btnEndGame').style.display = 'inline-flex';
   document.getElementById('btnUndo').style.display = 'inline-flex';
   document.getElementById('btnLog').style.display = 'inline-flex';
+  keepScreenAwake();
   renderAll();
 }
 
@@ -2084,12 +2215,26 @@ function addSips(playerId, amount, reason){
   renderPlayers();
   renderLog();
   bumpGlass(playerId);
+  floatSips(playerId, amount);
   saveState();
 }
 function addLogNarrative(text){
   state.log.unshift({ text: escapeHtml(text) });
   renderLog();
   saveState();
+}
+
+/* Kurz aufsteigende „+3" über der betroffenen Spielerkarte — man sieht
+   sofort, wen es getroffen hat, ohne die Zahlen zu vergleichen. */
+function floatSips(playerId, amount){
+  const glass = document.querySelector('.glass-wrap[data-id="' + playerId + '"]');
+  const card = glass && glass.closest('.player-card');
+  if(!card) return;
+  const tag = document.createElement('div');
+  tag.className = 'sip-float';
+  tag.textContent = '+' + amount;
+  card.appendChild(tag);
+  setTimeout(() => tag.remove(), 1100);
 }
 
 function bumpGlass(playerId){
@@ -2160,6 +2305,57 @@ function glassMarkup(p, maxVal){
 
 /* ---------- Setup-Screen ---------- */
 
+/* ---------- Namen der letzten Runde ----------
+   Vier bis acht Namen einzutippen ist jedes Mal die lästigste Minute des
+   Abends. Die letzte Aufstellung wird deshalb gemerkt und lässt sich mit
+   einem Tipp wieder einsetzen — inklusive der gewählten Gläser. */
+const ROSTER_KEY = 'nixisnix.roster.v1';
+
+function saveRoster(entries){
+  if(!HAS_STORAGE) return;
+  try { localStorage.setItem(ROSTER_KEY, JSON.stringify(entries.slice(0, 12))); } catch(e){}
+}
+
+function readRoster(){
+  if(!HAS_STORAGE) return null;
+  try {
+    const d = JSON.parse(localStorage.getItem(ROSTER_KEY) || 'null');
+    if(!Array.isArray(d) || d.length < 2) return null;
+    return d.filter(e => e && typeof e.name === 'string');
+  } catch(e){ return null; }
+}
+
+function applyRoster(entries){
+  const rows = document.getElementById('playerRows');
+  rows.innerHTML = '';
+  entries.forEach(e => addPlayerRow(e.name));
+  [...rows.children].forEach((row, i) => {
+    const sel = row.querySelector('.glass-select');
+    if(sel && entries[i] && entries[i].glassType) sel.value = entries[i].glassType;
+  });
+  renumberPlaceholders();
+  toast('👥 Aufstellung übernommen');
+}
+
+function renderRosterButton(){
+  const box = document.getElementById('rosterBox');
+  if(!box) return;
+  const saved = readRoster();
+  if(!saved){ box.style.display = 'none'; return; }
+  box.style.display = '';
+  const names = saved.map(e => e.name).join(', ');
+  box.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn small roster-btn';
+  btn.innerHTML = `<span class="roster-icon">👥</span><span class="roster-text">`
+    + `<b>Letzte Runde übernehmen</b><small>${escapeHtml(names)}</small></span>`;
+  btn.addEventListener('click', () => applyRoster(saved));
+  box.appendChild(btn);
+}
+
+
+
 function addPlayerRow(name){
   const rows = document.getElementById('playerRows');
   if(rows.children.length >= 12){ toast('Maximal 12 Spieler:innen.'); return; }
@@ -2198,6 +2394,7 @@ function startGame(){
   if(entries.length < 2){ toast('Mindestens 2 Spieler:innen nötig.'); return; }
   const chosen = activeDeckTemplate();
   if(chosen.length === 0){ toast('Wählt mindestens eine Kartenart aus.'); return; }
+  saveRoster(entries);
   state.players = entries.map((e, i) => ({ id: 'p' + i + '_' + Date.now(), name: e.name, glassType: e.glassType, color: PLAYER_COLORS[i % PLAYER_COLORS.length], sips: 0 }));
   state.currentIndex = 0;
   state.deck = shuffle(chosen);
@@ -2212,6 +2409,7 @@ function startGame(){
   document.getElementById('btnEndGame').style.display = 'inline-flex';
   document.getElementById('btnUndo').style.display = 'inline-flex';
   document.getElementById('btnLog').style.display = 'inline-flex';
+  keepScreenAwake();
   renderAll();
   addLogNarrative('🎉 Spiel gestartet mit ' + state.players.length + ' Spieler:innen — ' + chosen.length + ' Karten im Stapel.');
   const offInfo = [];
@@ -2302,6 +2500,343 @@ function renderFlip(card){
   void flip.offsetWidth;
   requestAnimationFrame(() => flip.classList.add('flipped'));
 }
+
+/* Kompakter QR-Encoder: Byte-Modus, Fehlerkorrektur L, Versionen 1–6.
+   Reicht für Adressen bis 134 Zeichen und kommt ohne Bibliothek aus.
+   Ab Version 7 verlangt der Standard zusätzliche Versionsblöcke — die
+   sparen wir uns, so lange Adressen kommen hier nicht vor. */
+const QR = (() => {
+  const EXP = new Array(512), LOG = new Array(256);
+  (function(){ let x = 1;
+    for(let i = 0; i < 255; i++){ EXP[i] = x; LOG[x] = i; x <<= 1; if(x & 256) x ^= 0x11d; }
+    for(let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+  })();
+  const mul = (a,b) => (a === 0 || b === 0) ? 0 : EXP[LOG[a] + LOG[b]];
+
+  function genPoly(n){
+    let p = [1];
+    for(let i = 0; i < n; i++){
+      const q = [1, EXP[i]], r = new Array(p.length + 1).fill(0);
+      for(let a = 0; a < p.length; a++) for(let b = 0; b < 2; b++) r[a+b] ^= mul(p[a], q[b]);
+      p = r;
+    }
+    return p;
+  }
+  function ecc(data, n){
+    const gen = genPoly(n), res = data.concat(new Array(n).fill(0));
+    for(let i = 0; i < data.length; i++){
+      const c = res[i];
+      if(c === 0) continue;
+      for(let j = 0; j < gen.length; j++) res[i+j] ^= mul(gen[j], c);
+    }
+    return res.slice(data.length);
+  }
+
+  // [Gesamt-Codewörter, EC-Codewörter pro Block, Blöcke Gruppe1, Blöcke Gruppe2] für Level L
+  const V = {
+    1:[26,7,1,0], 2:[44,10,1,0], 3:[70,15,1,0], 4:[100,20,1,0], 5:[134,26,1,0],
+    6:[172,18,2,0],
+  };
+  const ALIGN = {1:[],2:[6,18],3:[6,22],4:[6,26],5:[6,30],6:[6,34]};
+  const FORMAT_L = ['111011111000100','111001011110011','111110110101010','111100010011101',
+                    '110011000101111','110001100011000','110110001000001','110100101110110'];
+
+  function capacity(v){ const [tot, ecPer, g1, g2] = V[v]; return tot - ecPer * (g1 + g2); }
+
+  function encode(text){
+    const bytes = Array.from(new TextEncoder().encode(text));
+    let ver = 0;
+    for(let v = 1; v <= 6; v++){
+      const need = 4 + 8 + bytes.length * 8;
+      if(need <= capacity(v) * 8){ ver = v; break; }
+    }
+    if(!ver) return null;   // zu lang — dann zeigen wir nur den Link
+    const [tot, ecPer, g1, g2] = V[ver];
+    const blocks = g1 + g2, dataWords = capacity(ver);
+
+    let bits = '';
+    bits += '0100';
+    bits += bytes.length.toString(2).padStart(8, '0');
+    bytes.forEach(b => { bits += b.toString(2).padStart(8, '0'); });
+    bits += '0000'.slice(0, Math.min(4, dataWords * 8 - bits.length));
+    while(bits.length % 8) bits += '0';
+    const pad = [0xEC, 0x11];
+    let pi = 0;
+    while(bits.length < dataWords * 8){ bits += pad[pi++ % 2].toString(2).padStart(8, '0'); }
+    const data = [];
+    for(let i = 0; i < bits.length; i += 8) data.push(parseInt(bits.substr(i, 8), 2));
+
+    // Blöcke bilden: Gruppe 2 hat je ein Codewort mehr
+    const short = Math.floor(dataWords / blocks), longCount = dataWords % blocks;
+    const dBlocks = [], eBlocks = [];
+    let off = 0;
+    for(let i = 0; i < blocks; i++){
+      const size = short + (i >= blocks - longCount ? 1 : 0);
+      const blk = data.slice(off, off + size); off += size;
+      dBlocks.push(blk); eBlocks.push(ecc(blk, ecPer));
+    }
+    const out = [];
+    const maxLen = Math.max(...dBlocks.map(b => b.length));
+    for(let i = 0; i < maxLen; i++) dBlocks.forEach(b => { if(i < b.length) out.push(b[i]); });
+    for(let i = 0; i < ecPer; i++) eBlocks.forEach(b => out.push(b[i]));
+
+    const size = ver * 4 + 17;
+    const m = Array.from({length:size}, () => new Array(size).fill(null));
+    const put = (r,c,v) => { if(r>=0&&c>=0&&r<size&&c<size) m[r][c] = v; };
+
+    function finder(r,c){
+      for(let i = -1; i <= 7; i++) for(let j = -1; j <= 7; j++){
+        const on = (i>=0&&i<=6&&(j===0||j===6)) || (j>=0&&j<=6&&(i===0||i===6)) || (i>=2&&i<=4&&j>=2&&j<=4);
+        put(r+i, c+j, on ? 1 : 0);
+      }
+    }
+    finder(0,0); finder(0,size-7); finder(size-7,0);
+    for(let i = 8; i < size-8; i++){ m[6][i] = i % 2 === 0 ? 1 : 0; m[i][6] = i % 2 === 0 ? 1 : 0; }
+    (ALIGN[ver]||[]).forEach(r => (ALIGN[ver]||[]).forEach(c => {
+      if(m[r][c] !== null) return;
+      for(let i = -2; i <= 2; i++) for(let j = -2; j <= 2; j++){
+        const on = Math.max(Math.abs(i), Math.abs(j)) !== 1;
+        put(r+i, c+j, on ? 1 : 0);
+      }
+    }));
+    m[size-8][8] = 1;                                  // immer dunkles Modul
+    for(let i = 0; i < 9; i++){                        // Formatbereiche freihalten
+      if(m[8][i] === null) m[8][i] = 0;
+      if(m[i][8] === null) m[i][8] = 0;
+    }
+    for(let i = 0; i < 8; i++){
+      if(m[8][size-1-i] === null) m[8][size-1-i] = 0;
+      if(m[size-1-i][8] === null) m[size-1-i][8] = 0;
+    }
+    const reserved = m.map(row => row.map(v => v !== null));
+
+    // Datenbits einweben (Maske 0)
+    let bi = 0;
+    const stream = out.map(b => b.toString(2).padStart(8,'0')).join('');
+    let up = true;
+    for(let c = size - 1; c > 0; c -= 2){
+      if(c === 6) c--;
+      for(let k = 0; k < size; k++){
+        const r = up ? size - 1 - k : k;
+        for(let d = 0; d < 2; d++){
+          const cc = c - d;
+          if(reserved[r][cc]) continue;
+          let bit = bi < stream.length ? Number(stream[bi++]) : 0;
+          if((r + cc) % 2 === 0) bit ^= 1;             // Maske 0
+          m[r][cc] = bit;
+        }
+      }
+      up = !up;
+    }
+    const fmt = FORMAT_L[0];                            // Level L, Maske 0
+    for(let i = 0; i < 15; i++){
+      const bit = Number(fmt[i]);
+      if(i < 6) m[8][i] = bit;
+      else if(i === 6) m[8][7] = bit;
+      else if(i === 7) m[8][8] = bit;
+      else if(i === 8) m[7][8] = bit;
+      else m[14 - i][8] = bit;
+      // Zweite Kopie: 7 Module senkrecht unten, 8 Module waagerecht rechts
+      if(i < 7) m[size-1-i][8] = bit;
+      else m[8][size-15+i] = bit;
+    }
+    return m.map(row => row.map(v => v ? 1 : 0));
+  }
+  return { encode };
+})();
+
+/* ---------- Offline nutzbar ----------
+   Der Service Worker legt die Seite beim ersten Besuch ab. Danach startet
+   NIXisNIX auch ohne Empfang, und über „Zum Startbildschirm hinzufügen"
+   bekommt es ein eigenes Symbol. Läuft nur über https (also auf GitHub
+   Pages) — lokal per file:// passiert einfach nichts. */
+function registerServiceWorker(){
+  if(!('serviceWorker' in navigator)) return;
+  if(location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+
+/* Chrome bietet das Installieren selbst an — wir merken uns die Einladung
+   und zeigen im Teilen-Fenster einen eigenen Knopf dafür. */
+let _installPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _installPrompt = e;
+  const btn = document.getElementById('btnInstall');
+  if(btn) btn.style.display = '';
+});
+
+async function installApp(){
+  if(!_installPrompt) return;
+  _installPrompt.prompt();
+  try { await _installPrompt.userChoice; } catch(e){}
+  _installPrompt = null;
+  const btn = document.getElementById('btnInstall');
+  if(btn) btn.style.display = 'none';
+}
+
+/* ---------- Teilen ----------
+   Der QR-Code wird im Gerät selbst gezeichnet — keine fremde Seite, keine
+   Internetverbindung, die Adresse verlässt das Handy nicht. */
+function shareUrl(){
+  return location.href.split('#')[0];
+}
+
+function drawQr(canvas, text){
+  const m = QR.encode(text);
+  if(!m) return false;
+  const n = m.length, quiet = 4, total = n + quiet * 2;
+  const dpr = Math.min(3, window.devicePixelRatio || 1);
+  const cssSize = 220;
+  const scale = Math.max(2, Math.floor(cssSize * dpr / total));
+  const px = total * scale;
+  canvas.width = px; canvas.height = px;
+  canvas.style.width = cssSize + 'px';
+  canvas.style.height = cssSize + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, px, px);
+  ctx.fillStyle = '#000000';
+  for(let r = 0; r < n; r++) for(let c = 0; c < n; c++){
+    if(m[r][c]) ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale);
+  }
+  return true;
+}
+
+function openShare(){
+  const url = shareUrl();
+  const link = document.getElementById('shareUrl');
+  if(link) link.textContent = url;
+  const canvas = document.getElementById('shareQr');
+  const note = document.getElementById('shareQrNote');
+  if(canvas){
+    const ok = drawQr(canvas, url);
+    canvas.style.display = ok ? '' : 'none';
+    if(note) note.textContent = ok
+      ? 'Mit der Kamera scannen — dann öffnet sich das Spiel auf dem anderen Handy.'
+      : 'Die Adresse ist für einen QR-Code zu lang — bitte den Link kopieren.';
+  }
+  const sys = document.getElementById('btnShareSystem');
+  if(sys) sys.style.display = navigator.share ? '' : 'none';
+
+  // iPhones bieten das Installieren nicht selbst an — dort der Weg von Hand
+  const hint = document.getElementById('installHint');
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  if(hint){
+    if(standalone) hint.textContent = '';
+    else if(isIOS) hint.textContent = 'Auf dem iPhone: unten auf „Teilen" tippen und „Zum Home-Bildschirm" wählen — dann startet NIXisNIX wie eine App, auch ohne Empfang.';
+    else if(!_installPrompt) hint.textContent = 'Über das Browser-Menü lässt sich NIXisNIX zum Startbildschirm hinzufügen und läuft dann auch ohne Empfang.';
+    else hint.textContent = '';
+  }
+}
+
+async function shareSystem(){
+  try { await navigator.share({ title: 'NIXisNIX', text: 'Lust auf eine Runde NIXisNIX?', url: shareUrl() }); }
+  catch(e){ /* abgebrochen — kein Grund für eine Meldung */ }
+}
+
+async function copyShareUrl(){
+  const url = shareUrl();
+  try {
+    await navigator.clipboard.writeText(url);
+    toast('🔗 Link kopiert');
+  } catch(e){
+    // Ältere Browser: Text markieren, damit man ihn selbst kopieren kann
+    const el = document.getElementById('shareUrl');
+    if(el && window.getSelection){
+      const r = document.createRange(); r.selectNodeContents(el);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      toast('Bitte den markierten Link kopieren');
+    }
+  }
+}
+
+/* ---------- Zurück-Taste ----------
+   Auf dem Handy bedeutet „Zurück" sonst: Spiel verlassen. Jedes geöffnete
+   Fenster legt deshalb einen Verlaufseintrag an; Zurück schließt dann nur
+   dieses Fenster. Liegt eine Karte offen, bleibt das Spiel stehen und
+   weist stattdessen darauf hin — sonst wäre die Karte einfach weg. */
+const HISTORY_KEEP_OPEN = ['actionOverlay'];   // Karten dürfen nicht per Zurück verschwinden
+let _ovStack = [];
+let _ovFromHistory = false;
+let _ovBackFromApp = false;
+
+function trackOverlays(){
+  if(!('MutationObserver' in window)) return;
+  const obs = new MutationObserver(muts => {
+    muts.forEach(m => {
+      const el = m.target;
+      if(!el.id) return;
+      const open = el.classList.contains('show');
+      const known = _ovStack.indexOf(el.id) !== -1;
+      if(open && !known){
+        _ovStack.push(el.id);
+        try { history.pushState({ nixOverlay: el.id }, ''); } catch(e){}
+      } else if(!open && known){
+        _ovStack.splice(_ovStack.lastIndexOf(el.id), 1);
+        if(!_ovFromHistory){
+          _ovBackFromApp = true;
+          try { history.back(); } catch(e){ _ovBackFromApp = false; }
+        }
+      }
+    });
+  });
+  document.querySelectorAll('.overlay, .coin-stage').forEach(el => {
+    obs.observe(el, { attributes: true, attributeFilter: ['class'] });
+  });
+}
+
+window.addEventListener('popstate', () => {
+  if(_ovBackFromApp){ _ovBackFromApp = false; return; }
+  const id = _ovStack[_ovStack.length - 1];
+  if(!id) return;                       // nichts offen: Browser darf normal zurück
+  const el = document.getElementById(id);
+  if(HISTORY_KEEP_OPEN.indexOf(id) !== -1){
+    // Karte offen lassen und den Verlaufseintrag wiederherstellen
+    try { history.pushState({ nixOverlay: id }, ''); } catch(e){}
+    toast('Bitte zuerst die Karte auflösen.');
+    return;
+  }
+  _ovStack.pop();
+  _ovFromHistory = true;
+  if(el) el.classList.remove('show');
+  setTimeout(() => { _ovFromHistory = false; }, 0);
+});
+
+/* ---------- Bildschirm wach halten ----------
+   Ohne das sperrt sich das Handy mitten in der Runde, sobald der Stapel
+   kurz liegen bleibt. Der Wake Lock braucht eine sichere Verbindung
+   (https), fällt also lokal per file:// still aus — das Spiel läuft dann
+   einfach ohne. Beim Wegschalten der Seite gibt das System ihn frei,
+   deshalb wird er beim Zurückkommen neu angefordert. */
+let _wakeLock = null;
+
+async function keepScreenAwake(){
+  if(!('wakeLock' in navigator)) return;
+  if(_wakeLock) return;
+  try {
+    _wakeLock = await navigator.wakeLock.request('screen');
+    _wakeLock.addEventListener('release', () => { _wakeLock = null; });
+  } catch(e){ _wakeLock = null; }   // z.B. Akkusparmodus — kein Grund für eine Fehlermeldung
+}
+
+function releaseScreenLock(){
+  if(!_wakeLock) return;
+  try { _wakeLock.release(); } catch(e){}
+  _wakeLock = null;
+}
+
+function gameIsRunning(){
+  const gs = document.getElementById('gameScreen');
+  return !!gs && gs.style.display === 'block';
+}
+
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible' && gameIsRunning()) keepScreenAwake();
+});
 
 /* ---------- Rückgängig ----------
    Vor jeder gezogenen Karte wird ein kompakter Schnappschuss abgelegt:
@@ -3193,6 +3728,88 @@ function renderBetPanel(card, body){
 }
 
 
+/* ================= GEMEINSAME BAUSTEINE =================
+   Diese Helfer fassen zusammen, was in mehreren Spielen wortgleich
+   gebraucht wird: Zugreihenfolge, Kopfzeile, Ergebniszeile, Knopfleiste
+   und die Würfelanimation. */
+
+/* Reihenfolge ab der Person am Zug, Pausierte übersprungen. */
+function turnOrder(){
+  const act = activePlayers();
+  const i = activeIndexOfCurrent();
+  return act.slice(i).concat(act.slice(0, i));
+}
+
+/* „● Anna ist dran            3 / 5" */
+function turnHeader(player, step, total, suffix){
+  const el = document.createElement('div');
+  el.className = 'est-turn';
+  el.innerHTML = `<span class="est-dot" style="background:${player.color}"></span>`
+    + `<b>${escapeHtml(player.name)}</b> ${suffix || 'ist dran'}`
+    + (total ? `<span class="est-progress">${step} / ${total}</span>` : '');
+  return el;
+}
+
+/* Eine Zeile einer Ergebnisliste. */
+function resultRow(o){
+  const el = document.createElement('div');
+  el.className = 'est-row' + (o.cls ? ' ' + o.cls : '');
+  el.innerHTML = `<span class="est-dot" style="background:${o.player.color}"></span>`
+    + `<span class="est-name">${escapeHtml(o.player.name)}</span>`
+    + `<span class="est-val">${o.value}</span>`
+    + (o.note !== undefined ? `<span class="est-dev">${o.note}</span>` : '')
+    + `<span class="est-pen">${o.tag}</span>`;
+  return el;
+}
+
+/* Knopfleiste mit einem Hauptknopf; liefert den Knopf zum Weiterverdrahten. */
+function actionBar(parent, label, onClick, opts){
+  const o = opts || {};
+  const bar = document.createElement('div');
+  bar.className = 'action-buttons';
+  if(o.center) bar.style.justifyContent = 'center';
+  const btn = document.createElement('button');
+  btn.className = 'btn ' + (o.variant || 'primary');
+  btn.textContent = label;
+  if(o.disabled) btn.disabled = true;
+  if(onClick) btn.onclick = onClick;
+  bar.appendChild(btn);
+  parent.appendChild(bar);
+  return { bar: bar, btn: btn };
+}
+
+/* Würfel rollen lassen und danach das echte Ergebnis zeigen.
+   `values` sind die tatsächlich gefallenen Augen (ein oder zwei Würfel). */
+function rollDice(row, values, onDone){
+  row.classList.add('rolling');
+  let ticks = 0;
+  const spin = setInterval(() => {
+    ticks++;
+    row.innerHTML = values.map(() => diceFaceHtml(1 + Math.floor(Math.random() * 6))).join('');
+    if(ticks >= 8){
+      clearInterval(spin);
+      row.classList.remove('rolling');
+      row.innerHTML = values.map(diceFaceHtml).join('');
+      onDone();
+    }
+  }, 90);
+}
+
+/* Wertung nach Abweichung: schlechteste zuerst, Gleichstand teilt sich die
+   Strafe, der beste Wert bleibt verschont. Wird von Schätzfrage und
+   Zeitgefühl gleichermaßen genutzt. */
+function rankByDeviation(rows){
+  const bestDev = Math.min.apply(null, rows.map(r => r.dev));
+  const sorted = rows.slice().sort((a, b) => b.dev - a.dev);
+  const PEN = [sip(3), sip(2), sip(1)];
+  let rank = 0;
+  sorted.forEach((row, i) => {
+    if(i > 0 && row.dev !== sorted[i-1].dev) rank = i;
+    row.pen = (row.dev === bestDev) ? 0 : (PEN[rank] || 0);
+  });
+  return { sorted: sorted, bestDev: bestDev };
+}
+
 /* ================= ZEITGEFÜHL =================
    Reihum startet jede Person eine unsichtbare Uhr und stoppt sie bei
    gefühlten 10 Sekunden. Angezeigt wird während des Laufs bewusst nichts.
@@ -3200,7 +3817,7 @@ function renderBetPanel(card, body){
 const ZEIT_TARGET_MS = 10000;
 
 function renderZeitgefuehl(body){
-  const order = activePlayers().slice(activeIndexOfCurrent()).concat(activePlayers().slice(0, activeIndexOfCurrent()));
+  const order = turnOrder();
   const runs = [];
   let step = 0;
 
@@ -3217,12 +3834,7 @@ function renderZeitgefuehl(body){
     if(step >= order.length){ showResult(); return; }
     const p = order[step];
 
-    const head = document.createElement('div');
-    head.className = 'est-turn';
-    head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
-      + `<b>${escapeHtml(p.name)}</b> ist dran`
-      + `<span class="est-progress">${step + 1} / ${order.length}</span>`;
-    stage.appendChild(head);
+    stage.appendChild(turnHeader(p, step + 1, order.length));
 
     const dial = document.createElement('div');
     dial.className = 'zeit-dial';
@@ -3234,13 +3846,8 @@ function renderZeitgefuehl(body){
     hint.textContent = 'Die Uhr läuft verdeckt — niemand sieht die Zeit.';
     stage.appendChild(hint);
 
-    const acts = document.createElement('div');
-    acts.className = 'action-buttons';
-    const btn = document.createElement('button');
-    btn.className = 'btn primary';
-    btn.textContent = '▶️ Start';
-    acts.appendChild(btn);
-    stage.appendChild(acts);
+    const _ab = actionBar(stage, '▶️ Start');
+    const acts = _ab.bar, btn = _ab.btn;
 
     let startedAt = null;
     btn.onclick = () => {
@@ -3266,36 +3873,22 @@ function renderZeitgefuehl(body){
 
   function showResult(){
     stage.innerHTML = '';
-    const bestDev = Math.min.apply(null, runs.map(r => r.dev));
-    const sorted = runs.slice().sort((a, b) => b.dev - a.dev);   // schlechteste zuerst
-    const PEN = [sip(3), sip(2), sip(1)];
-    let rank = 0;
-    sorted.forEach((row, i) => {
-      if(i > 0 && row.dev !== sorted[i-1].dev) rank = i;
-      row.pen = (row.dev === bestDev) ? 0 : (PEN[rank] || 0);
-    });
+    const { sorted, bestDev } = rankByDeviation(runs);
 
     const list = document.createElement('div');
     list.className = 'est-result';
     sorted.slice().reverse().forEach(row => {
-      const el = document.createElement('div');
-      el.className = 'est-row' + (row.dev === bestDev ? ' best' : '');
-      el.innerHTML = `<span class="est-dot" style="background:${row.player.color}"></span>`
-        + `<span class="est-name">${escapeHtml(row.player.name)}</span>`
-        + `<span class="est-val">${fmtSec(row.ms)}</span>`
-        + `<span class="est-dev">${row.ms > ZEIT_TARGET_MS ? '+' : '−'}${fmtSec(row.dev).replace(' s','')}</span>`
-        + `<span class="est-pen">${row.pen > 0 ? row.pen + ' 🍺' : (row.dev === bestDev ? '🏆' : '–')}</span>`;
-      list.appendChild(el);
+      list.appendChild(resultRow({
+        player: row.player, value: fmtSec(row.ms),
+        note: (row.ms > ZEIT_TARGET_MS ? '+' : '−') + fmtSec(row.dev).replace(' s',''),
+        tag: row.pen > 0 ? row.pen + ' 🍺' : (row.dev === bestDev ? '🏆' : '–'),
+        cls: row.dev === bestDev ? 'best' : '',
+      }));
     });
     stage.appendChild(list);
 
-    const acts = document.createElement('div');
-    acts.className = 'action-buttons';
-    const btn = document.createElement('button');
-    btn.className = 'btn primary';
-    btn.textContent = '✅ Bestätigen';
-    acts.appendChild(btn);
-    stage.appendChild(acts);
+    const _ab = actionBar(stage, '✅ Bestätigen');
+    const acts = _ab.bar, btn = _ab.btn;
 
     btn.onclick = () => {
       const winner = runs.find(r => r.dev === bestDev);
@@ -3346,7 +3939,7 @@ function jumanjiScore(a, b){
 }
 
 function renderJumanji(body){
-  const order = activePlayers().slice(activeIndexOfCurrent()).concat(activePlayers().slice(0, activeIndexOfCurrent()));
+  const order = turnOrder();
   const rolls = [];          // { player, a, b, score, pasch, jumanji }
   let jumanjiHit = false;
   let step = 0;
@@ -3395,12 +3988,7 @@ function renderJumanji(body){
     if(step >= order.length){ showResult(); return; }
     const p = order[step];
 
-    const head = document.createElement('div');
-    head.className = 'est-turn';
-    head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
-      + `<b>${escapeHtml(p.name)}</b> ist dran`
-      + `<span class="est-progress">${step + 1} / ${order.length}</span>`;
-    stage.appendChild(head);
+    stage.appendChild(turnHeader(p, step + 1, order.length));
 
     const diceRow = document.createElement('div');
     diceRow.className = 'jum-dice';
@@ -3412,13 +4000,8 @@ function renderJumanji(body){
     info.textContent = 'Tippe auf „Würfeln“';
     stage.appendChild(info);
 
-    const acts = document.createElement('div');
-    acts.className = 'action-buttons';
-    const rollBtn = document.createElement('button');
-    rollBtn.className = 'btn primary';
-    rollBtn.textContent = '🎲 Würfeln';
-    acts.appendChild(rollBtn);
-    stage.appendChild(acts);
+    const _ab = actionBar(stage, '🎲 Würfeln');
+    const acts = _ab.bar, rollBtn = _ab.btn;
 
     rollBtn.onclick = () => {
       rollBtn.disabled = true;
@@ -3426,40 +4009,28 @@ function renderJumanji(body){
       const b = 1 + Math.floor(Math.random() * 6);
       const res = jumanjiScore(a, b);
 
-      // Würfel kurz "rollen" lassen
-      diceRow.classList.add('rolling');
-      let ticks = 0;
-      const spin = setInterval(() => {
-        ticks++;
-        diceRow.innerHTML = diceFaceHtml(1 + Math.floor(Math.random() * 6))
-                          + diceFaceHtml(1 + Math.floor(Math.random() * 6));
-        if(ticks >= 8){
-          clearInterval(spin);
-          diceRow.classList.remove('rolling');
-          diceRow.innerHTML = diceFaceHtml(a) + diceFaceHtml(b);
+      rollDice(diceRow, [a, b], () => {
+        rolls.push({ player: p, a: a, b: b, score: res.score, pasch: res.pasch, jumanji: res.jumanji });
+        updateBoard();
 
-          rolls.push({ player: p, a: a, b: b, score: res.score, pasch: res.pasch, jumanji: res.jumanji });
-          updateBoard();
-
-          if(res.jumanji){
-            jumanjiHit = true;
-            flag.style.display = '';
-            info.innerHTML = `<b class="jum-hit">🎲 JUMANJI!</b> Einser-Pasch — ${res.score} Punkte.`;
-            toast('🎲 JUMANJI!');
-          } else if(res.pasch){
-            info.innerHTML = `<b>Pasch!</b> ${a} und ${b} → ${a} × 3 = <b class="jum-score">${res.score}</b>`;
-          } else {
-            info.innerHTML = `${a} + ${b} = <b class="jum-score">${res.score}</b>`;
-          }
-
-          acts.innerHTML = '';
-          const nextBtn = document.createElement('button');
-          nextBtn.className = 'btn primary';
-          nextBtn.textContent = step === order.length - 1 ? '🏁 Auswerten' : '➡️ Weiter';
-          nextBtn.onclick = () => { step++; askNext(); };
-          acts.appendChild(nextBtn);
+        if(res.jumanji){
+          jumanjiHit = true;
+          flag.style.display = '';
+          info.innerHTML = `<b class="jum-hit">🎲 JUMANJI!</b> Einser-Pasch — ${res.score} Punkte.`;
+          toast('🎲 JUMANJI!');
+        } else if(res.pasch){
+          info.innerHTML = `<b>Pasch!</b> ${a} und ${b} → ${a} × 3 = <b class="jum-score">${res.score}</b>`;
+        } else {
+          info.innerHTML = `${a} + ${b} = <b class="jum-score">${res.score}</b>`;
         }
-      }, 90);
+
+        acts.innerHTML = '';
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'btn primary';
+        nextBtn.textContent = step === order.length - 1 ? '🏁 Auswerten' : '➡️ Weiter';
+        nextBtn.onclick = () => { step++; askNext(); };
+        acts.appendChild(nextBtn);
+      });
     };
   }
 
@@ -3475,14 +4046,12 @@ function renderJumanji(body){
     const list = document.createElement('div');
     list.className = 'est-result';
     sorted.forEach(r => {
-      const el = document.createElement('div');
-      el.className = 'est-row' + (r.score === hi ? ' best' : '') + (r.score === lo ? ' worst' : '');
-      el.innerHTML = `<span class="est-dot" style="background:${r.player.color}"></span>`
-        + `<span class="est-name">${escapeHtml(r.player.name)}</span>`
-        + `<span class="est-val">${r.score}</span>`
-        + `<span class="est-dev">${r.a} + ${r.b}${r.jumanji ? ' 🎲' : (r.pasch ? ' (Pasch)' : '')}</span>`
-        + `<span class="est-pen">${r.score === hi ? '🏆' : (r.score === lo ? '🍺' : '–')}</span>`;
-      list.appendChild(el);
+      list.appendChild(resultRow({
+        player: r.player, value: r.score,
+        note: r.a + ' + ' + r.b + (r.jumanji ? ' 🎲' : (r.pasch ? ' (Pasch)' : '')),
+        tag: r.score === hi ? '🏆' : (r.score === lo ? '🍺' : '–'),
+        cls: (r.score === hi ? 'best' : '') + (r.score === lo ? ' worst' : ''),
+      }));
     });
     stage.appendChild(list);
 
@@ -3516,13 +4085,8 @@ function renderJumanji(body){
       + `<div class="jum-sub">${tied.map(r => escapeHtml(r.player.name)).join(', ')} würfeln je einen Würfel. Die niedrigste Augenzahl verliert.</div>`;
     tail.appendChild(info);
 
-    const acts = document.createElement('div');
-    acts.className = 'action-buttons';
-    const startBtn = document.createElement('button');
-    startBtn.className = 'btn primary';
-    startBtn.textContent = '🎲 Stechen starten';
-    acts.appendChild(startBtn);
-    tail.appendChild(acts);
+    const _ab = actionBar(tail, '🎲 Stechen starten');
+    const acts = _ab.bar, startBtn = _ab.btn;
 
     startBtn.onclick = () => runTiebreakRolls(tail, tied, lo, hi, round);
   }
@@ -3536,12 +4100,7 @@ function renderJumanji(body){
       if(idx >= tied.length){ evaluateTiebreak(); return; }
       const p = tied[idx].player;
 
-      const head = document.createElement('div');
-      head.className = 'est-turn';
-      head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
-        + `<b>${escapeHtml(p.name)}</b> im Stechen`
-        + `<span class="est-progress">${idx + 1} / ${tied.length}</span>`;
-      tail.appendChild(head);
+      tail.appendChild(turnHeader(p, idx + 1, tied.length, 'im Stechen'));
 
       const diceRow = document.createElement('div');
       diceRow.className = 'jum-dice single';
@@ -3555,36 +4114,22 @@ function renderJumanji(body){
         : 'Niedrigste Augenzahl verliert';
       tail.appendChild(info);
 
-      const acts = document.createElement('div');
-      acts.className = 'action-buttons';
-      const rollBtn = document.createElement('button');
-      rollBtn.className = 'btn primary';
-      rollBtn.textContent = '🎲 Würfeln';
-      acts.appendChild(rollBtn);
-      tail.appendChild(acts);
+      const _ab = actionBar(tail, '🎲 Würfeln');
+      const acts = _ab.bar, rollBtn = _ab.btn;
 
       rollBtn.onclick = () => {
         rollBtn.disabled = true;
         const die = 1 + Math.floor(Math.random() * 6);
-        diceRow.classList.add('rolling');
-        let ticks = 0;
-        const spin = setInterval(() => {
-          ticks++;
-          diceRow.innerHTML = diceFaceHtml(1 + Math.floor(Math.random() * 6));
-          if(ticks >= 8){
-            clearInterval(spin);
-            diceRow.classList.remove('rolling');
-            diceRow.innerHTML = diceFaceHtml(die);
-            results.push({ player: p, roll: tied[idx], die: die });
-            info.innerHTML = `<b>${escapeHtml(p.name)}</b> würfelt eine <b class="jum-score">${die}</b>`;
-            acts.innerHTML = '';
-            const nextBtn = document.createElement('button');
-            nextBtn.className = 'btn primary';
-            nextBtn.textContent = idx === tied.length - 1 ? '🏁 Auswerten' : '➡️ Weiter';
-            nextBtn.onclick = () => { idx++; askRoll(); };
-            acts.appendChild(nextBtn);
-          }
-        }, 90);
+        rollDice(diceRow, [die], () => {
+          results.push({ player: p, roll: tied[idx], die: die });
+          info.innerHTML = `<b>${escapeHtml(p.name)}</b> würfelt eine <b class="jum-score">${die}</b>`;
+          acts.innerHTML = '';
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'btn primary';
+          nextBtn.textContent = idx === tied.length - 1 ? '🏁 Auswerten' : '➡️ Weiter';
+          nextBtn.onclick = () => { idx++; askRoll(); };
+          acts.appendChild(nextBtn);
+        });
       };
     }
 
@@ -3601,13 +4146,11 @@ function renderJumanji(body){
       const board = document.createElement('div');
       board.className = 'est-result';
       results.slice().sort((a, b) => a.die - b.die).forEach(r => {
-        const el = document.createElement('div');
-        el.className = 'est-row' + (r.die === min ? ' worst' : '');
-        el.innerHTML = `<span class="est-dot" style="background:${r.player.color}"></span>`
-          + `<span class="est-name">${escapeHtml(r.player.name)}</span>`
-          + `<span class="est-val">${r.die}</span>`
-          + `<span class="est-pen">${r.die === min ? '🍺' : '–'}</span>`;
-        board.appendChild(el);
+        board.appendChild(resultRow({
+          player: r.player, value: r.die,
+          tag: r.die === min ? '🍺' : '–',
+          cls: r.die === min ? 'worst' : '',
+        }));
       });
       tail.appendChild(board);
 
@@ -3879,7 +4422,7 @@ function makeNumberField(parent, opts){
 
 function renderEstimatePanel(card, body){
   const frage = pick(SCHAETZ_FRAGEN);
-  const order = activePlayers().slice(activeIndexOfCurrent()).concat(activePlayers().slice(0, activeIndexOfCurrent()));
+  const order = turnOrder();
   const guesses = [];
   let step = 0;
 
@@ -3895,11 +4438,7 @@ function renderEstimatePanel(card, body){
     stage.innerHTML = '';
     if(step >= order.length){ askSolution(); return; }
     const p = order[step];
-    const head = document.createElement('div'); head.className = 'est-turn';
-    head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
-      + `<b>${escapeHtml(p.name)}</b> ist dran`
-      + `<span class="est-progress">${step + 1} / ${order.length}</span>`;
-    stage.appendChild(head);
+    stage.appendChild(turnHeader(p, step + 1, order.length));
 
     const field = makeNumberField(stage, {
       placeholder: 'Deine Schätzung …',
@@ -3954,14 +4493,7 @@ function renderEstimatePanel(card, body){
   function reveal(solution){
     stage.innerHTML = '';
     const rows = guesses.map(g => ({ ...g, dev: Math.abs(g.value - solution) }));
-    const sorted = rows.slice().sort((a, b) => b.dev - a.dev);   // schlechteste zuerst
-    const bestDev = Math.min.apply(null, rows.map(r => r.dev));
-    const PEN = [sip(3), sip(2), sip(1)];
-    let rank = 0;
-    sorted.forEach((row, i) => {
-      if(i > 0 && row.dev !== sorted[i-1].dev) rank = i;
-      row.pen = (row.dev === bestDev) ? 0 : (PEN[rank] || 0);
-    });
+    const { sorted, bestDev } = rankByDeviation(rows);
 
     const sol = document.createElement('div'); sol.className = 'prompt-box est-solution';
     sol.innerHTML = `<div class="est-unit">Richtige Antwort</div>`
@@ -3970,14 +4502,11 @@ function renderEstimatePanel(card, body){
 
     const list = document.createElement('div'); list.className = 'est-result';
     sorted.slice().reverse().forEach(row => {
-      const el = document.createElement('div');
-      el.className = 'est-row' + (row.dev === bestDev ? ' best' : '');
-      el.innerHTML = `<span class="est-dot" style="background:${row.player.color}"></span>`
-        + `<span class="est-name">${escapeHtml(row.player.name)}</span>`
-        + `<span class="est-val">${fmt(row.value)}</span>`
-        + `<span class="est-dev">±${fmt(row.dev)}</span>`
-        + `<span class="est-pen">${row.pen > 0 ? row.pen + ' 🍺' : (row.dev === bestDev ? '🏆' : '–')}</span>`;
-      list.appendChild(el);
+      list.appendChild(resultRow({
+        player: row.player, value: fmt(row.value), note: '±' + fmt(row.dev),
+        tag: row.pen > 0 ? row.pen + ' 🍺' : (row.dev === bestDev ? '🏆' : '–'),
+        cls: row.dev === bestDev ? 'best' : '',
+      }));
     });
     stage.appendChild(list);
 
@@ -4132,12 +4661,7 @@ function renderFinaleDuel(duo, body){
       if(idx >= duo.length){ evaluate(); return; }
       const p = duo[idx];
 
-      const head = document.createElement('div');
-      head.className = 'est-turn';
-      head.innerHTML = `<span class="est-dot" style="background:${p.color}"></span>`
-        + `<b>${escapeHtml(p.name)}</b> würfelt`
-        + `<span class="est-progress">${idx + 1} / 2</span>`;
-      holder.appendChild(head);
+      holder.appendChild(turnHeader(p, idx + 1, 2, 'würfelt'));
 
       const diceRow = document.createElement('div');
       diceRow.className = 'jum-dice single';
@@ -4151,36 +4675,22 @@ function renderFinaleDuel(duo, body){
         : 'Höhere Augenzahl gewinnt die Runde';
       holder.appendChild(info);
 
-      const acts = document.createElement('div');
-      acts.className = 'action-buttons';
-      const rollBtn = document.createElement('button');
-      rollBtn.className = 'btn primary';
-      rollBtn.textContent = '🎲 Würfeln';
-      acts.appendChild(rollBtn);
-      holder.appendChild(acts);
+      const _ab = actionBar(holder, '🎲 Würfeln');
+      const acts = _ab.bar, rollBtn = _ab.btn;
 
       rollBtn.onclick = () => {
         rollBtn.disabled = true;
         const die = 1 + Math.floor(Math.random() * 6);
-        diceRow.classList.add('rolling');
-        let ticks = 0;
-        const spin = setInterval(() => {
-          ticks++;
-          diceRow.innerHTML = diceFaceHtml(1 + Math.floor(Math.random() * 6));
-          if(ticks >= 8){
-            clearInterval(spin);
-            diceRow.classList.remove('rolling');
-            diceRow.innerHTML = diceFaceHtml(die);
-            results.push({ player: p, die: die, index: idx });
-            info.innerHTML = `<b>${escapeHtml(p.name)}</b>: <b class="jum-score">${die}</b>`;
-            acts.innerHTML = '';
-            const nextBtn = document.createElement('button');
-            nextBtn.className = 'btn primary';
-            nextBtn.textContent = idx === duo.length - 1 ? '🏁 Runde auswerten' : '➡️ Weiter';
-            nextBtn.onclick = () => { idx++; step(holder); };
-            acts.appendChild(nextBtn);
-          }
-        }, 90);
+        rollDice(diceRow, [die], () => {
+          results.push({ player: p, die: die, index: idx });
+          info.innerHTML = `<b>${escapeHtml(p.name)}</b>: <b class="jum-score">${die}</b>`;
+          acts.innerHTML = '';
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'btn primary';
+          nextBtn.textContent = idx === duo.length - 1 ? '🏁 Runde auswerten' : '➡️ Weiter';
+          nextBtn.onclick = () => { idx++; step(holder); };
+          acts.appendChild(nextBtn);
+        });
       };
     }
 
@@ -4241,13 +4751,8 @@ function renderFinaleDuel(duo, body){
       + `<div><b>${escapeHtml(loser.name)}</b> verliert und trinkt <b>${penalty}</b> Schlücke.</div>`;
     stage.appendChild(box);
 
-    const acts = document.createElement('div');
-    acts.className = 'action-buttons';
-    const btn = document.createElement('button');
-    btn.className = 'btn primary';
-    btn.textContent = '🏁 Endstand ansehen';
-    acts.appendChild(btn);
-    stage.appendChild(acts);
+    const _ab = actionBar(stage, '🏁 Endstand ansehen');
+    const acts = _ab.bar, btn = _ab.btn;
 
     btn.onclick = () => {
       bumpStat(champ.id, 'finaleWin');
@@ -4457,6 +4962,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnEndGame').style.display = 'none';
     document.getElementById('btnUndo').style.display = 'none';
     document.getElementById('btnLog').style.display = 'none';
+    releaseScreenLock();
     document.getElementById('setupScreen').style.display = 'block';
   });
 });
@@ -4492,12 +4998,7 @@ function updateThemeButton() {
   }
 }
 
-// Initialize theme on page load
-document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  const btn = document.getElementById('btnThemeToggle');
-  if (btn) btn.addEventListener('click', toggleTheme);
-});
+
 
 
 
@@ -4526,19 +5027,7 @@ function setIntensity(idx){
   saveState();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  ['intensityRange','intensityRange2'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('input', e => setIntensity(Number(e.target.value)));
-  });
-  const badge = document.getElementById('intensityBadge');
-  const ov = document.getElementById('intensityOverlay');
-  if(badge && ov) badge.addEventListener('click', () => { syncIntensityUI(); ov.classList.add('show'); });
-  const close = document.getElementById('btnCloseIntensity');
-  if(close && ov) close.addEventListener('click', () => ov.classList.remove('show'));
-  if(ov) ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); });
-  syncIntensityUI();
-});
+
 
 
 
@@ -4597,25 +5086,26 @@ function renderPickers(){
   if(start) start.disabled = total === 0;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const all  = document.getElementById('btnMiniAll');
-  const none = document.getElementById('btnMiniNone');
-  const calm = document.getElementById('btnMiniCalm');
-  if(all)  all.addEventListener('click',  () => { state.offMinis = []; renderPickers(); });
-  if(none) none.addEventListener('click', () => { state.offMinis = MINIGAMES.map(m => m.id); renderPickers(); });
-  if(calm) calm.addEventListener('click', () => {
-    MINIGAMES.forEach(m => {
-      const off = state.offMinis.indexOf(m.id) !== -1;
-      if(m.bewegung && !off) state.offMinis.push(m.id);
-      if(!m.bewegung && off) state.offMinis.splice(state.offMinis.indexOf(m.id), 1);
-    });
-    document.getElementById('miniFold').open = true;
-    renderPickers();
-  });
-  renderPickers();
-});
 
 
+
+
+/* Ein Overlay verhält sich immer gleich: Knopf öffnet, Knopf schließt,
+   Klick auf den Hintergrund schließt ebenfalls. */
+function wireOverlay(overlayId, openId, closeId, onOpen){
+  const ov = document.getElementById(overlayId);
+  if(!ov) return;
+  const open = openId && document.getElementById(openId);
+  const close = closeId && document.getElementById(closeId);
+  if(open) open.addEventListener('click', () => { if(onOpen) onOpen(); ov.classList.add('show'); });
+  if(close) close.addEventListener('click', () => ov.classList.remove('show'));
+  ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); });
+}
+
+function bindClick(id, fn){
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('click', fn);
+}
 
 /* ========== SPIELER AUSSETZEN LASSEN ========== */
 let _playerOptId = null;
@@ -4651,31 +5141,53 @@ function togglePause(){
   document.getElementById('playerOverlay').classList.remove('show');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const ov = document.getElementById('playerOverlay');
-  const tog = document.getElementById('btnTogglePause');
-  const cls = document.getElementById('btnClosePlayerOpt');
-  if(tog) tog.addEventListener('click', togglePause);
-  if(cls && ov) cls.addEventListener('click', () => ov.classList.remove('show'));
-  if(ov) ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); });
-});
 
 
+
+
+
+
+
+
+
+/* ========== START: alles an einer Stelle verdrahten ========== */
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   paintBrandMarks();
-  const u = document.getElementById('btnUndo');
-  if(u) u.addEventListener('click', undoLast);
+  trackOverlays();
+
+  bindClick('btnThemeToggle', toggleTheme);
+  bindClick('btnUndo', undoLast);
+  bindClick('btnShareCopy', copyShareUrl);
+  bindClick('btnShareSystem', shareSystem);
+  bindClick('btnInstall', installApp);
+  registerServiceWorker();
+
+  // Intensitätsregler (im Setup und im Spiel)
+  ['intensityRange','intensityRange2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('input', e => setIntensity(Number(e.target.value)));
+  });
+
+  // Auswahl der Minispiele
+  bindClick('btnMiniAll',  () => { state.offMinis = []; renderPickers(); });
+  bindClick('btnMiniNone', () => { state.offMinis = MINIGAMES.map(m => m.id); renderPickers(); });
+  bindClick('btnMiniCalm', () => {
+    state.offMinis = MINIGAMES.filter(m => m.bewegung).map(m => m.id);
+    document.getElementById('miniFold').open = true;
+    renderPickers();
+  });
+  bindClick('btnTogglePause', togglePause);
+
+  wireOverlay('intensityOverlay', 'intensityBadge', 'btnCloseIntensity', syncIntensityUI);
+  wireOverlay('playerOverlay',    null,             'btnClosePlayerOpt');
+  wireOverlay('logOverlay',       'btnLog',         'btnCloseLog', renderLog);
+  wireOverlay('shareOverlay',     'btnShare',       'btnCloseShare', openShare);
+
+  syncIntensityUI();
+  renderPickers();
+  renderRosterButton();
   updateUndoButton();
-});
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  const ov = document.getElementById('logOverlay');
-  const open = document.getElementById('btnLog');
-  const close = document.getElementById('btnCloseLog');
-  if(open && ov) open.addEventListener('click', () => { renderLog(); ov.classList.add('show'); });
-  if(close && ov) close.addEventListener('click', () => ov.classList.remove('show'));
-  if(ov) ov.addEventListener('click', e => { if(e.target === ov) ov.classList.remove('show'); });
 });
 
 </script>
