@@ -253,7 +253,7 @@
   @media (max-width:420px){
     .player-row{gap:6px;padding:8px 8px;}
     .player-row input{font-size:14px;}
-    .player-row select.glass-select{width:96px;font-size:10.5px;padding:6px 3px;}
+    .player-row select.glass-select{width:58px;font-size:16px;padding:7px 2px 7px 6px;}
   }
   .add-player-btn{width:100%;border:1.5px dashed var(--line);background:transparent;color:var(--ink-secondary);border-radius:12px;padding:10px;font-weight:600;}
   .add-player-btn:hover{border-color:var(--accent);color:var(--accent);}
@@ -280,7 +280,10 @@
   .glass-wrap.bump{animation:glassBump .38s ease;}
   @keyframes glassBump{0%{transform:scale(1) rotate(0);}35%{transform:scale(1.2) rotate(-4deg);}100%{transform:scale(1) rotate(0);}}
   .glass-svg{display:block;}
-  .glass-outline{fill:none;stroke:rgba(255,255,255,0.35);stroke-width:2;}
+  .glass-outline{fill:none;stroke:rgba(255,255,255,0.42);stroke-width:2;}
+  /* Im hellen Thema wäre ein weißes Glas auf hellem Grund unsichtbar. */
+  body.theme-light .glass-outline{stroke:rgba(15,80,71,0.42);}
+  body.theme-light .glass-foam{fill:#0f5047;opacity:.22;}
   .glass-liquid{transition:y .5s cubic-bezier(.2,.7,.3,1), height .5s cubic-bezier(.2,.7,.3,1);}
   .glass-foam{transition:y .5s cubic-bezier(.2,.7,.3,1);}
 
@@ -430,6 +433,9 @@
   .mg-title{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:800;color:var(--ink-primary);margin-bottom:8px;line-height:1.2;}
   .mg-title .mg-icon{font-size:24px;line-height:1;flex:none;}
   .mg-instructions{font-size:13.5px;line-height:1.5;color:var(--ink-secondary);}
+  .mg-instructions.is-clamped{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;}
+  .mg-rules-more{display:none;margin-top:4px;font-size:12px;font-weight:700;color:var(--accent);cursor:pointer;letter-spacing:.02em;}
+  .mg-instructions.is-clamped + .mg-rules-more{display:block;}
   /* Verdeckt heißt wirklich verdeckt: Ein Weichzeichner ließe die Wortlänge
      erkennen, deshalb wird das Wort komplett gegen einen gleich breiten
      Platzhalter getauscht. */
@@ -1389,7 +1395,155 @@
     margin-top:10px;
   }
   .install-hint:empty{display:none;}
+  .install-hint.ok{color:var(--good);}
 
+
+  /* ================= AUFGERÄUMTES SETUP =================
+     Vorbild sind Apps, die mit einer Sache pro Bildschirm arbeiten:
+     Namen eintragen, starten. Alles Weitere liegt zugeklappt darunter,
+     der Start-Knopf klebt am unteren Rand. */
+  .intro h1{margin-bottom:6px;}
+  .intro p{max-width:34em;margin:0 auto;}
+
+  .settings-fold > summary{
+    display:flex;align-items:center;gap:10px;
+    color:var(--ink-primary);text-transform:none;letter-spacing:0;font-size:14px;
+  }
+  .settings-sub{
+    margin-left:auto;margin-right:4px;
+    font-size:12px;font-weight:600;color:var(--ink-muted);
+    text-transform:none;letter-spacing:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%;
+  }
+  .settings-body{padding:0 13px 14px;display:flex;flex-direction:column;gap:16px;}
+  .settings-block{display:flex;flex-direction:column;gap:8px;}
+  .settings-h{
+    font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;
+    color:var(--accent-2);font-weight:800;
+  }
+  .settings-inner{display:flex;flex-direction:column;gap:10px;}
+
+  .setup-foot{display:flex;justify-content:center;margin-top:14px;}
+
+  /* Der Start bleibt am unteren Rand sichtbar */
+  .start-bar{
+    position:sticky;bottom:0;z-index:20;
+    margin:18px -16px 0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top, var(--surface-0) 62%, transparent);
+    display:flex;justify-content:center;
+  }
+  .start-bar .btn{width:100%;max-width:420px;font-size:17px;padding:15px 20px;}
+  @media (min-width:641px){
+    .start-bar{position:static;margin:22px 0 0;padding:0;background:none;}
+    .start-bar .btn{width:auto;min-width:260px;}
+  }
+
+
+  /* Kompakte Glas-Auswahl, damit der Name die Zeile bekommt */
+  .player-row select.glass-select{
+    flex:none;width:62px;padding:7px 4px 7px 8px;
+    font-size:17px;text-align:center;
+  }
+  .player-row input{font-size:15.5px;}
+  @media (max-width:400px){ .player-row .glass-select{width:56px;font-size:16px;} }
+
+  /* Einstellungs-Zeile: Titel links, Zustand rechts, nie umbrechend */
+  .settings-fold > summary{padding:12px 13px;}
+  .settings-fold > summary > span:first-child,
+  .settings-fold > summary{white-space:nowrap;}
+  .settings-title{display:inline-flex;align-items:center;gap:7px;flex:none;}
+
+  /* Platz unter der klebenden Leiste, damit nichts dauerhaft verdeckt bleibt */
+  @media (max-width:640px){
+    #setupScreen{padding-bottom:8px;}
+  }
+
+
+  /* ================= RUHIGERER SPIELBILDSCHIRM =================
+     Der Kartenstapel ist das Herz des Bildschirms. Alles andere tritt
+     einen Schritt zurück: Werkzeug-Knöpfe werden neutral, „Am Zug" steht
+     nur noch an einer Stelle, und leere Bereiche verschwinden ganz. */
+
+  /* Werkzeugleiste: neutral statt bunt, nur der aktive Zustand hebt sich ab */
+  .topbar-actions .btn.small,
+  .topbar-actions .theme-toggle{
+    background:transparent;
+    border-color:var(--line);
+    color:var(--ink-secondary);
+    box-shadow:none;
+  }
+  .topbar-actions .btn.small:hover,
+  .topbar-actions .theme-toggle:hover{
+    border-color:var(--accent);color:var(--ink-primary);
+  }
+  .topbar-actions .btn.danger{
+    background:transparent;border-color:rgba(255,77,109,0.45);color:var(--critical);
+  }
+  .topbar-actions .btn.danger:hover{background:rgba(255,77,109,0.12);}
+  body.theme-light .topbar-actions .btn.small,
+  body.theme-light .topbar-actions .theme-toggle{
+    background:transparent;border-color:rgba(13,148,136,.4);color:#0f5047;box-shadow:none;
+  }
+  body.theme-light .topbar-actions .btn.danger{
+    background:transparent;border-color:rgba(217,38,38,.5);color:#c92a2a;
+  }
+  body.theme-light .player-card.active{
+    background:#d6f5ee;border-color:#0d9488;
+    box-shadow:0 0 0 1px #0d9488, 0 4px 14px rgba(13,148,136,.18);
+  }
+  body.theme-light .player-card.active .name{color:#0f5047;}
+
+  /* Wer am Zug ist, steht groß im Banner und wird auf der Karte durch den
+     leuchtenden Rahmen gezeigt — ein zusätzliches Textschild brach dort nur um. */
+  .player-card .turn-tag{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:auto;padding:1px 7px;font-size:10.5px;
+  }
+  /* Stattdessen wird die ganze Karte deutlich: breiterer Farbbalken und
+     ein leicht getönter Grund. Das funktioniert in beiden Designs. */
+  .player-card.active .bar{width:7px;}
+  .player-card.active{
+    background:color-mix(in srgb, var(--accent) 12%, var(--surface-1));
+  }
+  .player-card .turn-tag{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+  /* Intensität: kleiner Hinweis statt zweiter Hauptknopf */
+  .intensity-badge{
+    background:transparent;border-color:var(--line);
+    color:var(--ink-muted);font-size:11.5px;padding:5px 12px;
+    margin-bottom:10px;
+  }
+  .intensity-badge:hover{border-color:var(--accent-2);color:var(--ink-secondary);}
+
+  /* „Am Zug" enger an den Namen, weniger Leerraum bis zum Stapel */
+  .turn-banner{margin-bottom:6px;}
+  .turn-banner .who{opacity:.7;}
+
+  /* Leere Aufklapper zeigen wir gar nicht erst */
+  .fold.is-empty{display:none;}
+
+
+  /* Auf dem Handy stehen die Karten zweispaltig — das Wort „Schlücke" unter
+     jeder Zahl kostet dort mehr Platz, als es erklärt. Der Name bekommt ihn. */
+  @media (max-width:640px){
+    .player-card .sips small{display:none;}
+    .player-card .sips{font-size:20px;min-width:22px;}
+    .player-card .name{font-size:14px;}
+  }
+
+  /* Der Stapel ist die einzige Handlung auf dem Bildschirm — ein ruhiges
+     Atmen zeigt das an, ohne aufdringlich zu sein. Sobald eine Karte offen
+     ist, hört es auf. */
+  /* Bewusst nur der Schein, nicht die Position: Ein Ziel, das sich bewegt,
+     trifft man auf dem Handy schlechter. */
+  @keyframes deckBreath{
+    0%,100%{box-shadow:0 10px 26px rgba(0,0,0,0.55), 0 0 20px rgba(99,230,255,0.16), inset 0 0 0 6px rgba(255,255,255,0.03);}
+    50%    {box-shadow:0 10px 26px rgba(0,0,0,0.55), 0 0 40px rgba(99,230,255,0.42), inset 0 0 0 6px rgba(255,255,255,0.05);}
+  }
+  .deck-pile{animation:deckBreath 3.4s ease-in-out infinite;}
+  .deck-pile:hover,.deck-pile:active{animation:none;}
+  body:has(.overlay.show) .deck-pile{animation:none;}
+  @media (prefers-reduced-motion:reduce){ .deck-pile{animation:none;} }
 </style>
 </head>
 <body>
@@ -1436,23 +1590,7 @@
   <div id="setupScreen">
     <div class="intro">
       <h1>Wer spielt mit?</h1>
-      <p>Tragt eure Namen ein (2–12 Spieler:innen). Danach geht's los – Karten ziehen, Minispiele meistern, Münze werfen, Wetten abschließen und schauen, wer am Ende der NIXisNIX-König bzw. die NIXisNIX-Königin ist. 🍻</p>
-    </div>
-
-    <div class="setup-single">
-      <details class="pick-fold howto" id="howtoFold">
-        <summary>❓ So geht's — kurz erklärt</summary>
-        <div class="howto-body">
-          <ol>
-            <li><b>Namen eintragen.</b> Die Reihenfolge ist die Sitzordnung — davon hängen Karten wie „dein linker Nachbar" ab.</li>
-            <li><b>Reihum tippt eine Person auf den Kartenstapel.</b> Wer dran ist, steht auf der Karte oben rechts.</li>
-            <li><b>Die Karte sagt, was passiert:</b> trinken, jemanden auswählen, würfeln, die Münze werfen oder ein Minispiel starten. Das Ergebnis bestätigt ihr im selben Fenster, die Schlücke werden automatisch gezählt.</li>
-            <li><b>Ist der Stapel durch, kommt das Finale</b> — ein Würfelduell der beiden mit den wenigsten Schlücken. Danach gibt es den Endstand mit Titeln.</li>
-          </ol>
-          <p class="howto-tip">Oben lässt sich jederzeit das Protokoll öffnen, die letzte Karte zurücknehmen oder zwischen hellem und dunklem Design wechseln. Ein Tipp auf eine Spielerkarte lässt jemanden aussetzen.</p>
-          <p class="howto-tip">Wie hart gespielt wird, stellt ihr unten mit dem Regler ein — er rechnet alle Schluckzahlen im ganzen Spiel um.</p>
-        </div>
-      </details>
+      <p>Namen eintragen, losspielen. Alles Weitere erklärt sich unterwegs.</p>
     </div>
 
     <div class="setup-single">
@@ -1461,35 +1599,19 @@
         <div class="player-rows" id="playerRows"></div>
         <button class="add-player-btn" id="btnAddPlayer">+ Spieler:in hinzufügen</button>
         <div class="roster-box" id="rosterBox" style="display:none;"></div>
-        <div class="setup-hint">Mindestens 2, maximal 12 Personen. Die Reihenfolge bestimmt später die Sitzordnung (Nachbarn für Karten wie „linker Nachbar trinkt“). Wählt außerdem für jede Person ein Glas – der Schluck-Counter füllt sich im Spiel passend dazu.</div>
+        <div class="setup-hint">2 bis 12 Personen · die Reihenfolge ist die Sitzordnung</div>
       </div>
     </div>
 
+    <!-- Alles Optionale liegt zusammen und zugeklappt: Die Voreinstellungen
+         passen für die meisten Runden, und der Start-Knopf bleibt oben. -->
     <div class="setup-single">
-      <div class="card-panel">
-        <h3 style="margin-top:0;font-size:14px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.6px;">Was soll mitspielen?</h3>
-        <div class="pick-summary" id="pickSummary">–</div>
-
-        <div class="pick-label">Kartenarten <span class="pick-note">— wie viele Karten davon im Stapel liegen</span></div>
-        <div class="pick-grid" id="catPicker"></div>
-
-        <details class="pick-fold" id="miniFold">
-          <summary>Welche Minispiele dürfen vorkommen? <span class="fold-count" id="miniCount">–</span></summary>
-          <div class="pick-actions">
-            <button type="button" class="btn small" id="btnMiniAll">Alle an</button>
-            <button type="button" class="btn small" id="btnMiniNone">Alle aus</button>
-            <button type="button" class="btn small" id="btnMiniCalm">🪑 Ohne Bewegungsspiele</button>
-          </div>
-          <div class="pick-grid pick-grid-mini" id="miniPicker"></div>
-        </details>
-
-        <div class="setup-hint">Abgewählte Karten kommen gar nicht erst in den Stapel. Praktisch, wenn jemand nicht gut aufstehen kann oder eine Kategorie einfach nicht mag.</div>
-      </div>
-    </div>
-
-    <div class="setup-single">
-      <div class="card-panel">
-        <h3 style="margin-top:0;font-size:14px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:.6px;">Wie hart darf's werden?</h3>
+      <details class="pick-fold settings-fold" id="settingsFold">
+        <summary><span class="settings-title">⚙️ Einstellungen</span><span class="settings-sub" id="settingsSummary">–</span></summary>
+        <div class="settings-body">
+          <div class="settings-block">
+            <div class="settings-h">Wie hart darf's werden?</div>
+            <div class="settings-inner">
         <div class="intensity-box">
           <div class="intensity-head">
             <span class="intensity-icon" id="intensityIcon">😇</span>
@@ -1507,12 +1629,56 @@
           </div>
           <div class="setup-hint">Der Regler multipliziert alle Schluck-Angaben im Spiel. Trinkt verantwortungsvoll – niemand muss mitziehen.</div>
         </div>
-      </div>
+            </div>
+          </div>
+          <div class="settings-block">
+            <div class="settings-h">Was soll mitspielen?</div>
+            <div class="settings-inner">
+        <div class="pick-summary" id="pickSummary">–</div>
+
+        <div class="pick-label">Kartenarten <span class="pick-note">— wie viele Karten davon im Stapel liegen</span></div>
+        <div class="pick-grid" id="catPicker"></div>
+
+        <details class="pick-fold" id="miniFold">
+          <summary>Welche Minispiele dürfen vorkommen? <span class="fold-count" id="miniCount">–</span></summary>
+          <div class="pick-actions">
+            <button type="button" class="btn small" id="btnMiniAll">Alle an</button>
+            <button type="button" class="btn small" id="btnMiniNone">Alle aus</button>
+            <button type="button" class="btn small" id="btnMiniCalm">🪑 Ohne Bewegungsspiele</button>
+          </div>
+          <div class="pick-grid pick-grid-mini" id="miniPicker"></div>
+        </details>
+
+        <div class="setup-hint">Abgewählte Karten kommen gar nicht erst in den Stapel. Praktisch, wenn jemand nicht gut aufstehen kann oder eine Kategorie einfach nicht mag.</div>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
 
-    <div class="start-cta">
-      <button class="btn primary" id="btnStartGame">🎉 Los geht's – Spiel starten</button>
-      <button class="btn small" id="btnShare" title="Spiel teilen">🔗 Teilen</button>
+    <div class="setup-single">
+      <details class="pick-fold howto" id="howtoFold">
+        <summary>❓ So geht's — kurz erklärt</summary>
+        <div class="howto-body">
+          <ol>
+            <li><b>Namen eintragen.</b> Die Reihenfolge ist die Sitzordnung — davon hängen Karten wie „dein linker Nachbar" ab. Das Glas-Symbol daneben bestimmt nur, wie der Schluck-Zähler aussieht.</li>
+            <li><b>Reihum tippt eine Person auf den Kartenstapel.</b> Wer dran ist, steht auf der Karte oben rechts.</li>
+            <li><b>Die Karte sagt, was passiert:</b> trinken, jemanden auswählen, würfeln, die Münze werfen oder ein Minispiel starten. Das Ergebnis bestätigt ihr im selben Fenster, die Schlücke werden automatisch gezählt.</li>
+            <li><b>Ist der Stapel durch, kommt das Finale</b> — ein Würfelduell der beiden mit den wenigsten Schlücken. Danach gibt es den Endstand mit Titeln.</li>
+          </ol>
+          <p class="howto-tip">Oben lässt sich jederzeit das Protokoll öffnen, die letzte Karte zurücknehmen oder zwischen hellem und dunklem Design wechseln. Ein Tipp auf eine Spielerkarte lässt jemanden aussetzen.</p>
+          <p class="howto-tip">Wie hart gespielt wird, stellt ihr unten mit dem Regler ein — er rechnet alle Schluckzahlen im ganzen Spiel um.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="setup-foot">
+      <button class="btn ghost small" id="btnShare" title="Spiel teilen">🔗 Teilen</button>
+    </div>
+
+    <!-- Bleibt am unteren Rand stehen, damit der Start immer erreichbar ist -->
+    <div class="start-bar">
+      <button class="btn primary" id="btnStartGame">🎉 Los geht's</button>
     </div>
   </div>
 
@@ -2363,10 +2529,13 @@ function addPlayerRow(name){
   const color = PLAYER_COLORS[idx % PLAYER_COLORS.length];
   const row = document.createElement('div');
   row.className = 'player-row';
-  const glassOptions = Object.entries(GLASS_TYPES).map(([key, gt]) => `<option value="${key}">${gt.label}</option>`).join('');
+  // Nur das Symbol im geschlossenen Zustand: Der Name ist wichtiger als
+  // das Wort „Bierglas", und die Gläser sind am Symbol gut zu erkennen.
+  const glassOptions = Object.entries(GLASS_TYPES).map(([key, gt]) =>
+    `<option value="${key}">${gt.label.split(' ')[0]}</option>`).join('');
   row.innerHTML = `<span class="player-dot" style="background:${color}"></span>
-    <input type="text" maxlength="18" placeholder="Name Spieler:in ${idx + 1}" value="${escapeHtml(name || '')}">
-    <select class="glass-select" title="Glas für den Schluck-Counter wählen">${glassOptions}</select>
+    <input type="text" maxlength="18" placeholder="Spieler:in ${idx + 1}" value="${escapeHtml(name || '')}">
+    <select class="glass-select" aria-label="Glas wählen" title="Glas für den Schluck-Counter wählen">${glassOptions}</select>
     <button class="remove" title="Entfernen">✕</button>`;
   row.querySelector('.remove').addEventListener('click', () => {
     if(document.getElementById('playerRows').children.length <= 2){ toast('Mindestens 2 Spieler:innen nötig.'); return; }
@@ -2380,7 +2549,7 @@ function renumberPlaceholders(){
   [...rows.children].forEach((row, i) => {
     row.querySelector('.player-dot').style.background = PLAYER_COLORS[i % PLAYER_COLORS.length];
     const input = row.querySelector('input');
-    if(!input.value) input.placeholder = 'Name Spieler:in ' + (i + 1);
+    if(!input.value) input.placeholder = 'Spieler:in ' + (i + 1);
   });
 }
 
@@ -2433,8 +2602,7 @@ function renderPlayers(){
       <div class="glass-wrap" data-id="${p.id}">${glassMarkup(p, maxVal)}</div>
       <div class="info">
         <div class="name">${escapeHtml(p.name)}</div>
-        ${p.paused ? '<div class="turn-tag pause-tag">⏸ Pause</div>'
-                   : (i === state.currentIndex ? '<div class="turn-tag">🎯 Am Zug</div>' : '')}
+        ${p.paused ? '<div class="turn-tag pause-tag">⏸ Pause</div>' : ''}
       </div>
       <div class="sips">${p.sips}<small>Schlücke</small></div>
     `;
@@ -2466,7 +2634,10 @@ function scaleSips(text, card){
 function renderRules(){
   const list = document.getElementById('rulesList');
   const c = document.getElementById('rulesCount');
+  const fold0 = document.getElementById('rulesFold');
   if(c) c.textContent = state.activeRules.length;
+  // Solange keine Hausregel gilt, nimmt der Aufklapper nur Platz weg
+  if(fold0) fold0.classList.toggle('is-empty', state.activeRules.length === 0);
   if(state.activeRules.length === 0){ list.innerHTML = '<li class="empty">Noch keine besonderen Regeln.</li>'; return; }
   list.innerHTML = state.activeRules.map(r => `<li>${escapeHtml(scaleSips(r))}</li>`).join('');
   // Neue Hausregel: auf dem Handy einmal aufklappen, damit sie nicht untergeht
@@ -2677,6 +2848,31 @@ async function installApp(){
   if(btn) btn.style.display = 'none';
 }
 
+/* Sagt im Teilen-Fenster, ob das Installieren möglich ist — und wenn
+   nicht, woran es liegt. Der Menüpunkt taucht nämlich nur auf, wenn
+   https, Manifest und Service Worker alle drei da sind. */
+async function installStatus(){
+  const https = location.protocol === 'https:' || location.hostname === 'localhost';
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua);
+  const iosSafari = isIOS && !/CriOS|FxiOS|EdgiOS|GSA/.test(ua);
+  const inApp = /FBAN|FBAV|Instagram|Line\/|Twitter|WhatsApp|Snapchat/i.test(ua);
+
+  let sw = false;
+  if('serviceWorker' in navigator && https){
+    try { sw = !!(await navigator.serviceWorker.getRegistration()); } catch(e){ sw = false; }
+  }
+
+  if(standalone) return { ok: true, text: '✅ Läuft bereits als App — auch ohne Empfang.' };
+  if(inApp) return { ok: false, text: '⚠️ Diese Seite läuft gerade im Browser einer anderen App (z. B. WhatsApp). Dort gibt es kein Installieren. Öffne den Link über „Im Browser öffnen" in Chrome bzw. Safari.' };
+  if(!https) return { ok: false, text: '⚠️ Die Seite läuft nicht über https — daher bieten Browser weder Installieren noch Offline-Betrieb an. Das klappt erst über die GitHub-Pages-Adresse, nicht mit der heruntergeladenen Datei.' };
+  if(isIOS && !iosSafari) return { ok: false, text: '⚠️ Auf dem iPhone geht das Hinzufügen nur in Safari. In Chrome oder Firefox fehlt der Punkt.' };
+  if(isIOS) return { ok: false, text: 'ℹ️ In Safari unten auf das Teilen-Symbol tippen, dann in der Liste nach unten scrollen bis „Zum Home-Bildschirm".' };
+  if(!sw) return { ok: false, text: 'ℹ️ Der Offline-Speicher wird gerade erst eingerichtet. Lade die Seite einmal neu — danach bietet das Browser-Menü (⋮) „App installieren" an.' };
+  return { ok: true, text: 'ℹ️ Bereit zum Installieren: Browser-Menü (⋮) öffnen und „App installieren" bzw. „Zum Startbildschirm hinzufügen" wählen.' };
+}
+
 /* ---------- Teilen ----------
    Der QR-Code wird im Gerät selbst gezeichnet — keine fremde Seite, keine
    Internetverbindung, die Adresse verlässt das Handy nicht. */
@@ -2721,15 +2917,14 @@ function openShare(){
   const sys = document.getElementById('btnShareSystem');
   if(sys) sys.style.display = navigator.share ? '' : 'none';
 
-  // iPhones bieten das Installieren nicht selbst an — dort der Weg von Hand
+  // Warum lässt sich die App (nicht) installieren?
   const hint = document.getElementById('installHint');
-  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   if(hint){
-    if(standalone) hint.textContent = '';
-    else if(isIOS) hint.textContent = 'Auf dem iPhone: unten auf „Teilen" tippen und „Zum Home-Bildschirm" wählen — dann startet NIXisNIX wie eine App, auch ohne Empfang.';
-    else if(!_installPrompt) hint.textContent = 'Über das Browser-Menü lässt sich NIXisNIX zum Startbildschirm hinzufügen und läuft dann auch ohne Empfang.';
-    else hint.textContent = '';
+    hint.textContent = 'Prüfe …';
+    installStatus().then(st => {
+      hint.textContent = st.text;
+      hint.className = 'install-hint' + (st.ok ? ' ok' : '');
+    });
   }
 }
 
@@ -2978,6 +3173,12 @@ function updateDeckCount(){
   }
 }
 
+/* Kurzes Vibrieren als Rückmeldung. Browser ohne Unterstützung
+   (u. a. Safari auf dem iPhone) ignorieren das still. */
+function buzz(pattern){
+  try { if(navigator.vibrate) navigator.vibrate(pattern); } catch(e){}
+}
+
 function drawCard(){
   const panel = document.getElementById('actionPanel');
   if(panel.classList.contains('show')){ toast('Bitte zuerst die aktuelle Karte auflösen!'); return; }
@@ -2990,6 +3191,7 @@ function drawCard(){
     toast('🔀 Alle Karten wurden neu gemischt!');
   }
   pushUndo('Karte');
+  buzz(12);
   const card = state.deck.pop();
   state.discard.push(card);
   updateDeckCount();
@@ -3176,7 +3378,7 @@ function openActionForCard(card){
     }
   }
   observePanelFit(panel);
-  fitPanel();
+  fitPanelSoon();
   updateUndoButton();
 }
 
@@ -3186,6 +3388,7 @@ function openActionForCard(card){
    Aufbau und bei jeder Änderung im Panel (Münzwurf, Duell-Stufe 2,
    Schätzrunden), außerdem bei Drehung und Tastatur-Ein-/Ausblenden. */
 let _fitRaf = null;
+let _fitBusy = false;   // markiert unsere eigenen Style-Schreibvorgänge
 function fitPanel(){
   if(_fitRaf) cancelAnimationFrame(_fitRaf);
   _fitRaf = requestAnimationFrame(() => {
@@ -3195,6 +3398,7 @@ function fitPanel(){
     const inner = panel.querySelector('.panel-inner');
     if(!inner) return;
 
+    _fitBusy = true;
     // Erst zurücksetzen, dann frisch messen
     inner.style.transform = '';
     inner.style.height = '';
@@ -3202,22 +3406,52 @@ function fitPanel(){
 
     const cs = window.getComputedStyle(panel);
     const avail = panel.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-    const need = inner.scrollHeight;
-    if(!avail || !need || need <= avail + 1) return;
 
-    const scale = Math.max(0.62, avail / need);
-    inner.style.transformOrigin = 'top center';
-    inner.style.transform = 'scale(' + scale.toFixed(4) + ')';
-    inner.style.height = Math.ceil(need * scale) + 'px';
-    panel.classList.add('is-fitted');
+    /* Lieber einen langen Regeltext einklappen als die ganze Karte schrumpfen.
+       Wer den Text lesen will, tippt ihn auf – dann bleibt er offen. */
+    const rules = inner.querySelector('.mg-instructions');
+    if(rules && !rules.dataset.userOpen) rules.classList.remove('is-clamped');
+    let need = inner.scrollHeight;
+    if(rules && !rules.dataset.userOpen && avail && need > avail + 1){
+      rules.classList.add('is-clamped');
+      need = inner.scrollHeight;
+    }
+
+    if(avail && need && need > avail + 1){
+      const scale = Math.max(0.62, avail / need);
+      inner.style.transformOrigin = 'top center';
+      inner.style.transform = 'scale(' + scale.toFixed(4) + ')';
+      inner.style.height = Math.ceil(need * scale) + 'px';
+      panel.classList.add('is-fitted');
+    }
+    requestAnimationFrame(() => { _fitBusy = false; });
   });
 }
 
+/* Nachmessen, falls sich der Inhalt erst später setzt (Einblend-Animation,
+   nachgeladene Schrift, aufklappende Bereiche). Idempotent. */
+function fitPanelSoon(){
+  fitPanel();
+  setTimeout(fitPanel, 120);
+  setTimeout(fitPanel, 400);
+}
+
 let _panelObserver = null;
+let _panelResizeObserver = null;
 function observePanelFit(panel){
-  if(_panelObserver || !('MutationObserver' in window)) return;
-  _panelObserver = new MutationObserver(() => fitPanel());
-  _panelObserver.observe(panel, { childList:true, subtree:true, characterData:true });
+  if(!_panelObserver && ('MutationObserver' in window)){
+    _panelObserver = new MutationObserver(() => fitPanel());
+    _panelObserver.observe(panel, { childList:true, subtree:true, characterData:true });
+  }
+  // Größenänderungen ohne DOM-Mutation (Animationen, Schriftwechsel, Bilder)
+  if('ResizeObserver' in window){
+    const inner = panel.querySelector('.panel-inner');
+    if(inner){
+      if(!_panelResizeObserver) _panelResizeObserver = new ResizeObserver(() => { if(!_fitBusy) fitPanel(); });
+      else _panelResizeObserver.disconnect();
+      _panelResizeObserver.observe(inner);
+    }
+  }
 }
 
 window.addEventListener('resize', fitPanel);
@@ -3294,15 +3528,34 @@ function renderFreePanel(card, body){
   };
 }
 
+/* Wo „niemand" ein zulässiges Ergebnis ist, wird der Knopf nicht gesperrt —
+   stattdessen sagt er beim Tippen, was passiert. So kann man nicht mehr
+   versehentlich weiterklicken, ohne es zu merken. */
+function labelForSelection(btn, count, opts){
+  const o = opts || {};
+  if(count === 0){
+    btn.textContent = o.none || '🚫 Niemand trinkt';
+    btn.className = 'btn ghost';
+  } else {
+    btn.textContent = (o.some || '✅ Bestätigen') + ' (' + count + ')';
+    btn.className = 'btn primary';
+  }
+}
+
 function renderManualPanel(card, body){
   const info = document.createElement('div'); info.className = 'free-total';
   info.textContent = `Wähle alle Betroffenen (je ${sip(card.amount)} ${sip(card.amount) === 1 ? 'Schluck' : 'Schlücke'}). Trifft's auf niemanden zu, einfach direkt bestätigen.`;
   body.appendChild(info);
   const chipWrap = document.createElement('div'); body.appendChild(chipWrap);
-  const sel = buildChipSelector(chipWrap, activePlayers(), { max: state.players.length });
   const actions = document.createElement('div'); actions.className = 'action-buttons';
-  const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen';
-  actions.appendChild(btn); body.appendChild(actions);
+  const btn = document.createElement('button');
+  actions.appendChild(btn);
+  const sel = buildChipSelector(chipWrap, activePlayers(), {
+    max: state.players.length,
+    onChange: ids => labelForSelection(btn, ids.length),
+  });
+  labelForSelection(btn, 0);
+  body.appendChild(actions);
   btn.onclick = () => {
     const ids = sel.getSelected();
     if(ids.length === 0) addLogNarrative('Niemand betroffen — ' + scaleSips(card.text, card));
@@ -3329,14 +3582,22 @@ function renderNarrativePanel(card, body){
   let partnerSel = null;
   if(card.narrativePartner){
     const info = document.createElement('div'); info.className = 'free-total';
-    info.textContent = 'Wähle optional eine Person (nur für die Story):';
+    info.textContent = 'Wähle eine Person aus:';
     body.appendChild(info);
-    const chipWrap = document.createElement('div'); body.appendChild(chipWrap);
-    partnerSel = buildChipSelector(chipWrap, activePlayers().filter(p => p.id !== currentPlayer().id), { max: 1 });
+    var chipWrap = document.createElement('div'); body.appendChild(chipWrap);
   }
   const actions = document.createElement('div'); actions.className = 'action-buttons';
   const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = 'Weiter';
-  actions.appendChild(btn); body.appendChild(actions);
+  actions.appendChild(btn);
+  if(card.narrativePartner){
+    // Die Karte fordert ausdrücklich eine Person — ohne Auswahl geht es nicht weiter
+    btn.disabled = true;
+    partnerSel = buildChipSelector(chipWrap, activePlayers().filter(p => p.id !== currentPlayer().id), {
+      max: 1,
+      onChange: ids => { btn.disabled = ids.length !== 1; },
+    });
+  }
+  body.appendChild(actions);
   btn.onclick = () => {
     let text = card.text;
     if(partnerSel){
@@ -3432,6 +3693,7 @@ function playCoinToss(opts){
   setTimeout(() => {
     resEl.innerHTML = opts.result || '';
     resEl.classList.add('show');
+    buzz([0, 22, 70, 22]);
     hintEl.textContent = 'Tippen zum Weitermachen';
     stage.addEventListener('click', close);
     setTimeout(close, 2200);      // blendet sich von selbst wieder aus
@@ -4037,6 +4299,10 @@ function renderJumanji(body){
   /* --- Auswertung --- */
   function showResult(){
     stage.innerHTML = '';
+    // Die Tabelle zeigt Höchste/Niedrigste selbst an – Anzeigetafel und
+    // Jumanji-Banner darüber wären doppelt und kosten nur Platz.
+    board.style.display = 'none';
+    flag.style.display = 'none';
     const scores = rolls.map(r => r.score);
     const hi = Math.max.apply(null, scores);
     const lo = Math.min.apply(null, scores);
@@ -4241,8 +4507,18 @@ function renderJumanji(body){
 function renderMinigamePanel(card, body){
   const mg = pick(activeMinigames());
   const head = document.createElement('div');
-  head.innerHTML = `<div class="prompt-box" style="text-align:left;"><div class="mg-title"><span class="mg-icon">${mg.icon}</span>${escapeHtml(mg.title)}</div><div class="mg-instructions">${escapeHtml(mg.instructions)}</div></div>`;
+  head.innerHTML = `<div class="prompt-box" style="text-align:left;"><div class="mg-title"><span class="mg-icon">${mg.icon}</span>${escapeHtml(mg.title)}</div><div class="mg-instructions">${escapeHtml(mg.instructions)}</div><div class="mg-rules-more">Regeln anzeigen</div></div>`;
   body.appendChild(head);
+  // Eingeklappte Regeln lassen sich antippen – dann bleiben sie offen.
+  const _rules = head.querySelector('.mg-instructions');
+  const _more  = head.querySelector('.mg-rules-more');
+  const _toggleRules = () => {
+    if(_rules.classList.contains('is-clamped')){ _rules.dataset.userOpen = '1'; _rules.classList.remove('is-clamped'); }
+    else if(_rules.dataset.userOpen){ delete _rules.dataset.userOpen; }
+    fitPanel();
+  };
+  _rules.addEventListener('click', _toggleRules);
+  _more.addEventListener('click', _toggleRules);
 
   if(mg.custom === 'jumanji'){ renderJumanji(body); return; }
   if(mg.custom === 'zeitgefuehl'){ renderZeitgefuehl(body); return; }
@@ -4319,7 +4595,7 @@ function renderMinigamePanel(card, body){
   body.appendChild(amtRow);
 
   const actions = document.createElement('div'); actions.className = 'action-buttons';
-  const btn = document.createElement('button'); btn.className = 'btn primary'; btn.textContent = '✅ Bestätigen';
+  const btn = document.createElement('button');
   actions.appendChild(btn);
 
   // Die Münze darf nur geworfen werden, wenn eindeutig eine Person betroffen ist —
@@ -4330,12 +4606,14 @@ function renderMinigamePanel(card, body){
     onChange: ids => {
       gambleSlot.innerHTML = '';
       btn.disabled = false;
+      labelForSelection(btn, ids.length);
       if(ids.length === 1){
         const soloPlayer = state.players.find(p => p.id === ids[0]);
         renderCoinGambleWidget(gambleSlot, soloPlayer, sip(mg.amount), mg.title, finishTurn, btn);
       }
     }
   });
+  labelForSelection(btn, 0);
 
   body.appendChild(actions);
   body.appendChild(gambleSlot);
@@ -5024,6 +5302,7 @@ function syncIntensityUI(){
 function setIntensity(idx){
   state.intensity = Math.min(Math.max(0, idx | 0), INTENSITY_LEVELS.length - 1);
   syncIntensityUI();
+  updateSettingsSummary();
   saveState();
 }
 
@@ -5032,6 +5311,21 @@ function setIntensity(idx){
 
 
 /* ========== KARTENAUSWAHL VOR SPIELBEGINN ========== */
+
+/* Zeigt in der zugeklappten Einstellungs-Zeile, was gerade eingestellt ist —
+   sonst müsste man sie aufklappen, nur um nachzusehen. */
+function updateSettingsSummary(){
+  const el = document.getElementById('settingsSummary');
+  if(!el) return;
+  const total = activeDeckTemplate().length;
+  const parts = [];
+  parts.push(total === DECK_TEMPLATE.length ? 'Alle Karten' : total + ' von ' + DECK_TEMPLATE.length + ' Karten');
+  const nMini = activeMinigames().length;
+  if(nMini < MINIGAMES.length) parts.push(nMini + '/' + MINIGAMES.length + ' Minispiele');
+  parts.push(intensity().label);
+  el.textContent = parts.join(' · ');
+}
+
 function renderPickers(){
   const catBox = document.getElementById('catPicker');
   const miniBox = document.getElementById('miniPicker');
@@ -5084,6 +5378,7 @@ function renderPickers(){
   }
   const start = document.getElementById('btnStartGame');
   if(start) start.disabled = total === 0;
+  updateSettingsSummary();
 }
 
 

@@ -3,7 +3,7 @@
    Internet startet. Beim Aktualisieren gewinnt immer die neue Fassung:
    Die Seite selbst wird zuerst aus dem Netz geholt und nur bei Ausfall
    aus dem Speicher bedient. */
-const CACHE = 'nixisnix-v1';
+const CACHE = 'nixisnix-v2';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
                 './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 
