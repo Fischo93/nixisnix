@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="NIXisNIX — das Trinkspiel mit Karten, Münze und Chaos. 66 Karten, 20 Minispiele, für 2 bis 12 Spieler:innen. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="description" content="NIXisNIX — das Trinkspiel mit Karten, Münze und Chaos. 96 Karten in vier Themen-Paketen, 19 Minispiele, für 2 bis 12 Spieler:innen. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta name="theme-color" content="#0d0b18">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
@@ -12,14 +12,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NIXisNIX">
 <meta property="og:title" content="NIXisNIX — Das Trinkspiel">
-<meta property="og:description" content="66 Karten, 20 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta property="og:description" content="96 Karten in vier Themen-Paketen, 19 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta property="og:image" content="nixisnix-preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NIXisNIX — Das Trinkspiel">
-<meta name="twitter:description" content="66 Karten, 20 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="twitter:description" content="96 Karten in vier Themen-Paketen, 19 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta name="twitter:image" content="nixisnix-preview.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -289,6 +289,25 @@
 
   .player-card .info{flex:1;min-width:0;}
   .player-card .name{font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .joker-mark{margin-left:5px;font-size:11px;opacity:.85;}
+
+  /* Auswege (Münze / Weitergeben / Joker) nebeneinander statt untereinander */
+  .escape-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:7px;}
+  .escape-btn{
+    display:flex;flex-direction:column;align-items:center;gap:1px;
+    padding:9px 4px;line-height:1.15;width:100%;border-radius:14px;
+  }
+  .escape-ico{font-size:16px;}
+  .escape-lbl{font-size:12px;font-weight:700;}
+  .escape-sub{font-size:10px;opacity:.7;white-space:nowrap;
+    max-width:100%;overflow:hidden;text-overflow:ellipsis;}
+  .escape-joker{border-color:var(--warning);}
+
+  /* Weitergeben: zwei Würfel gegeneinander */
+  .pass-board{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0;}
+  .pass-side{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .pass-name{font-size:12.5px;font-weight:700;color:var(--ink-secondary);}
+  .pass-vs{font-size:12px;color:var(--ink-muted);font-weight:700;}
   .player-card .turn-tag{font-size:11.5px;color:var(--accent);font-weight:700;}
   .player-card .sips{font-size:19px;font-weight:800;min-width:32px;text-align:right;flex:none;}
   .player-card .sips small{display:block;font-size:11px;color:var(--ink-muted);font-weight:600;text-align:right;white-space:nowrap;}
@@ -401,6 +420,8 @@
   }
   @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  /* Während ein Ausweg läuft, bleibt die Auswahl darüber stehen */
+  .chip-row.locked{pointer-events:none;opacity:.45;}
   .chip{
     padding:7px 13px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface-2);
     font-size:13px;font-weight:600;color:var(--ink-secondary);display:flex;align-items:center;gap:6px;
@@ -606,6 +627,74 @@
     .topbar{margin-bottom:10px;gap:8px;}
     .site-footer{margin-top:18px;padding-top:11px;font-size:11.5px;gap:6px;}
     .site-footer .footer-note{flex-basis:100%;text-align:center;}
+  }
+
+  /* ---------- QUERFORMAT ----------
+     Liegt das Handy quer (oder steht ein flaches Tablet in der Tischmitte),
+     ist die Höhe knapp und die Breite reichlich. Deshalb wandern Stapel und
+     Spielerliste nebeneinander, und alles wird etwas flacher. */
+  @media (orientation:landscape) and (max-height:620px){
+    .app{padding:8px 14px 10px;}
+    /* Kopfzeile in eine Zeile zwingen: quer ist Höhe das knappe Gut,
+       deshalb zeigen die Knöpfe nur ihr Symbol. */
+    .topbar{margin-bottom:7px;gap:8px;flex-wrap:nowrap;}
+    .brand{min-width:0;flex:0 1 auto;}
+    .brand .logo{font-size:19px;}
+    .topbar-actions{flex-wrap:nowrap;gap:6px;}
+    .topbar-actions .btn-label{display:none;}
+    .topbar-actions .btn.small{padding:8px 11px;font-size:15px;line-height:1;}
+
+    .game-grid{
+      display:grid;grid-template-columns:minmax(0,0.95fr) minmax(0,1.05fr);
+      gap:14px;align-items:start;
+    }
+    .col-center{order:1;}
+    .col-players{order:2;}
+    .draw-stage{display:none;}
+    .center-col{gap:6px;}
+
+    .turn-banner{margin:0;}
+    .turn-banner .who{font-size:10.5px;}
+    .turn-banner .name{font-size:19px;}
+    .intensity-badge{padding:4px 10px;font-size:11px;}
+    .deck-zone{padding:0;}
+    .deck-pile{width:128px;height:180px;gap:2px;}
+    .deck-pile .dpile-logo{font-size:14px;}
+    .deck-pile .dpile-sub{font-size:10px;}
+    .deck-pile .dpile-count{font-size:11px;margin-top:2px;}
+
+    .players-panel{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+    .player-card{padding:5px 7px;gap:6px;border-radius:10px;}
+    .player-card .name{font-size:12.5px;}
+    .player-card .sips{font-size:16px;min-width:24px;}
+    .player-card .sips small{display:none;}
+    .player-card .glass-svg{width:18px;height:32px;}
+    .fold summary{padding:7px 10px;font-size:12px;}
+
+    .site-footer{margin-top:10px;padding-top:8px;font-size:10.5px;gap:5px;}
+
+    /* Karten füllen auch quer den Bildschirm — nur eben breiter. */
+    .overlay.action-overlay{align-items:center;padding:0;}
+    .action-panel{
+      max-width:none;width:100%;
+      height:100dvh;max-height:100dvh;
+      border-radius:0;border:none;
+      display:flex;flex-direction:column;justify-content:center;
+      padding:calc(8px + env(safe-area-inset-top)) 18px calc(10px + env(safe-area-inset-bottom));
+      overflow-y:auto;
+    }
+    .action-panel.show{display:flex;}
+    .action-panel::before{content:none;}
+    .panel-inner{max-width:520px;margin:0 auto;}
+    .action-buttons{justify-content:stretch;}
+    .action-buttons .btn{flex:1;justify-content:center;text-align:center;}
+    .chip-row{justify-content:center;}
+    .card-head{padding:7px 11px;}
+    .prompt-box{padding:9px 12px;margin-bottom:7px;}
+    .est-img{max-height:30vh;}
+    /* Die Zifferntastatur darf quer flacher sein */
+    .numkey{padding:8px 0;font-size:18px;}
+    .numpad{gap:6px;}
   }
 
   /* ---------- NUR HANDY: Bottom-Sheet & Symbol-Buttons ---------- */
@@ -1003,6 +1092,41 @@
   @keyframes stageIn{from{opacity:0;}to{opacity:1;}}
   @keyframes stageOut{from{opacity:1;}to{opacity:0;}}
   .coin-stage-inner{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:420px;width:100%;}
+
+  /* Bild-Bühne: nutzt dieselbe Mechanik wie der Münzwurf */
+  .image-stage{background:rgba(6,4,14,0.95);padding:10px;}
+  .image-stage-inner{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;height:100%;justify-content:center;}
+  .image-stage-scroll{
+    width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+    overflow:auto;-webkit-overflow-scrolling:touch;
+  }
+  .image-stage-scroll img{
+    max-width:100%;max-height:100%;border-radius:14px;
+    box-shadow:0 12px 40px rgba(0,0,0,.6);cursor:zoom-in;
+  }
+  /* Angetippt wird das Bild größer als der Bildschirm und lässt sich schieben —
+     nötig, um auf einem kleinen Display wirklich zählen zu können. */
+  .image-stage-close{
+    position:absolute;top:calc(10px + env(safe-area-inset-top));right:10px;z-index:2;
+    width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+    background:rgba(255,255,255,0.16);color:#fff;font-size:19px;line-height:1;
+    font-family:inherit;display:flex;align-items:center;justify-content:center;
+  }
+  .image-stage-scroll.zoomed{align-items:flex-start;justify-content:flex-start;}
+  .image-stage-scroll.zoomed img{max-width:none;max-height:none;width:260%;cursor:zoom-out;border-radius:0;}
+
+  /* Bild in der Schätzkarte */
+  .est-img-wrap{position:relative;display:block;margin:0 0 10px;cursor:zoom-in;}
+  .est-img{
+    display:block;width:100%;max-height:34vh;object-fit:contain;
+    border-radius:12px;background:var(--surface-2);
+  }
+  .est-img-zoom{
+    position:absolute;right:7px;bottom:7px;
+    background:rgba(0,0,0,.58);color:#fff;font-size:11px;font-weight:700;
+    padding:3px 8px;border-radius:999px;pointer-events:none;
+  }
+  @media (max-height:700px){ .est-img{max-height:26vh;} }
   /* Die Bühne ist bewusst immer dunkel — auch im hellen Design,
      damit die Münze wie im Rampenlicht wirkt. Farben daher fest. */
   .coin-stage{color:#ffffff;}
@@ -1238,6 +1362,16 @@
   .end-summary{font-size:12px;color:var(--ink-muted);margin-top:6px;}
   .ranking li.paused{opacity:.55;}
   .ranking li.paused em{font-size:11px;font-style:normal;color:var(--ink-muted);}
+  /* Vorschau des Abschlussbildes */
+  .cardimg-frame{
+    margin:12px 0;display:flex;justify-content:center;
+    max-height:52vh;overflow:hidden;border-radius:14px;
+  }
+  .cardimg-frame canvas{
+    width:100%;max-width:300px;height:auto;display:block;
+    border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+
   #endOverlay .end-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;}
   #endOverlay .end-summary{flex:none;}
 
@@ -1422,6 +1556,24 @@
     color:var(--accent-2);font-weight:800;
   }
   .settings-inner{display:flex;flex-direction:column;gap:10px;}
+
+  /* Themen-Pakete: vier Kacheln, immer genau eine aktiv */
+  .pack-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+  .pack-item{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:11px 8px;border-radius:13px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface-2);
+    color:var(--ink-secondary);font-family:inherit;text-align:center;
+    transition:background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .pack-item .pack-icon{font-size:20px;line-height:1;}
+  .pack-item .pack-name{font-size:13px;font-weight:700;}
+  .pack-item.on{
+    border-color:var(--accent);color:var(--ink-primary);
+    background:color-mix(in srgb, var(--accent) 16%, var(--surface-2));
+    box-shadow:0 0 0 1px var(--accent);
+  }
+  body.theme-light .pack-item.on{background:#d6f5ee;color:#0f5047;}
 
   .setup-foot{display:flex;justify-content:center;margin-top:14px;}
 
@@ -1610,6 +1762,13 @@
         <summary><span class="settings-title">⚙️ Einstellungen</span><span class="settings-sub" id="settingsSummary">–</span></summary>
         <div class="settings-body">
           <div class="settings-block">
+            <div class="settings-h">Welches Thema?</div>
+            <div class="settings-inner">
+              <div class="pack-grid" id="packPicker"></div>
+              <div class="setup-hint" id="packHint">–</div>
+            </div>
+          </div>
+          <div class="settings-block">
             <div class="settings-h">Wie hart darf's werden?</div>
             <div class="settings-inner">
         <div class="intensity-box">
@@ -1664,10 +1823,12 @@
             <li><b>Namen eintragen.</b> Die Reihenfolge ist die Sitzordnung — davon hängen Karten wie „dein linker Nachbar" ab. Das Glas-Symbol daneben bestimmt nur, wie der Schluck-Zähler aussieht.</li>
             <li><b>Reihum tippt eine Person auf den Kartenstapel.</b> Wer dran ist, steht auf der Karte oben rechts.</li>
             <li><b>Die Karte sagt, was passiert:</b> trinken, jemanden auswählen, würfeln, die Münze werfen oder ein Minispiel starten. Das Ergebnis bestätigt ihr im selben Fenster, die Schlücke werden automatisch gezählt.</li>
-            <li><b>Ist der Stapel durch, kommt das Finale</b> — ein Würfelduell der beiden mit den wenigsten Schlücken. Danach gibt es den Endstand mit Titeln.</li>
+            <li><b>Musst du allein trinken, hast du drei Auswege:</b> die Münze (doppelt oder nix), Weitergeben per Würfel gegen eine Person deiner Wahl — Verlierer:in trinkt doppelt — oder einmal pro Abend den 🃏 Joker, der die Strafe streicht.</li>
+            <li><b>Ist der Stapel durch, kommt das Finale</b> — ein Würfelduell der beiden mit den wenigsten Schlücken. Danach gibt es den Endstand mit Titeln und ein fertiges Bild für die Gruppe.</li>
           </ol>
           <p class="howto-tip">Oben lässt sich jederzeit das Protokoll öffnen, die letzte Karte zurücknehmen oder zwischen hellem und dunklem Design wechseln. Ein Tipp auf eine Spielerkarte lässt jemanden aussetzen.</p>
-          <p class="howto-tip">Wie hart gespielt wird, stellt ihr unten mit dem Regler ein — er rechnet alle Schluckzahlen im ganzen Spiel um.</p>
+          <p class="howto-tip">Wie hart gespielt wird, stellt ihr unter „Einstellungen" mit dem Regler ein — er rechnet alle Schluckzahlen im ganzen Spiel um. Dort wählt ihr auch das Thema des Abends: Klassisch, Kennenlernen, Pärchenabend oder Hardcore.</p>
+          <p class="howto-tip">Quer gehalten liegen Stapel und Spielerliste nebeneinander — praktisch, wenn das Handy auf dem Tisch liegt.</p>
         </div>
       </details>
     </div>
@@ -1745,9 +1906,24 @@
     </div>
     <div class="end-summary" id="endSummary"></div>
     <div class="action-buttons" style="justify-content:center;">
+      <button class="btn ghost" id="btnEndImage">📸 Bild teilen</button>
       <button class="btn ghost" id="btnCloseEnd">Weiterspielen</button>
       <button class="btn primary" id="btnNewGame">🔄 Neues Spiel</button>
     </div>
+  </div>
+</div>
+
+<!-- Abschlussbild zum Weiterschicken -->
+<div class="overlay" id="cardImageOverlay">
+  <div class="modal share-modal">
+    <h2>📸 Bild für die Gruppe</h2>
+    <div class="cardimg-frame"><canvas id="endCanvas" width="1080" height="1350"></canvas></div>
+    <div class="action-buttons" style="justify-content:center;flex-wrap:wrap;">
+      <button class="btn primary" id="btnImgShare">📤 Teilen</button>
+      <button class="btn" id="btnImgSave">⬇️ Speichern</button>
+      <button class="btn ghost" id="btnImgClose">Schließen</button>
+    </div>
+    <div class="setup-hint" id="imgHint" style="text-align:center;">Wird als Bilddatei gespeichert oder direkt weitergeschickt.</div>
   </div>
 </div>
 
@@ -1777,6 +1953,15 @@
     </div>
     <div class="coin-stage-result" id="coinStageResult"></div>
     <div class="coin-stage-hint" id="coinStageHint">Die Münze fliegt …</div>
+  </div>
+</div>
+
+<!-- Bild einer Schätzfrage formatfüllend, damit man wirklich zählen kann -->
+<div class="coin-stage image-stage" id="imageStage">
+  <button class="image-stage-close" id="imageStageClose" aria-label="Bild schließen">✕</button>
+  <div class="image-stage-inner">
+    <div class="image-stage-scroll" id="imageStageScroll"><img id="imageStageImg" alt=""></div>
+    <div class="coin-stage-hint" id="imageStageHint">Bild antippen zum Vergrößern · daneben tippen zum Schließen</div>
   </div>
 </div>
 
@@ -1953,6 +2138,24 @@ const CAT_META = {
   schaetz:{ label:'Schätzfrage', icon:'📊', color:'#d9f27e' },
 };
 
+/* ---------- Themen-Pakete ----------
+   Ein Paket ist ein Filter auf den Stapel plus eigene Zusatzkarten.
+   Karten ohne `pack` sind Grundstock und in jedem Paket dabei; Karten mit
+   `pack:'x'` tauchen nur in diesem Paket auf. `notPacks` nimmt einzelne
+   Grundkarten aus einem Paket wieder heraus. */
+const PACKS = [
+  { id:'klassisch',    label:'Klassisch',     icon:'🎉',
+    desc:'Der komplette Stapel, so wie er ist. Passt für fast jede Runde.' },
+  { id:'kennenlernen', label:'Kennenlernen',  icon:'👋',
+    desc:'Harmlos und gesprächig. Ohne Mutproben, mit Fragen, die eine neue Gruppe auftauen.' },
+  { id:'paerchen',     label:'Pärchenabend',  icon:'💞',
+    desc:'Zusatzkarten rund um Beziehungen, Verkupplungen und peinliche Geständnisse.' },
+  { id:'hardcore',     label:'Hardcore',      icon:'🔥',
+    desc:'Deutlich höhere Einsätze. Nur für Runden, die wissen, worauf sie sich einlassen.' },
+];
+function packOf(id){ return PACKS.find(p => p.id === id) || PACKS[0]; }
+function currentPack(){ return packOf(state.pack); }
+
 /* ---------- Kartentexte ---------- */
 
 const TRINK_CARDS = [
@@ -1976,6 +2179,42 @@ const TRINK_CARDS = [
   { text:"Die älteste Person am Tisch trinkt 2 Schlücke.", kind:'manual', amount:2 },
   { text:"Nix wie ran: Du trinkst 4 Schlücke – einfach weil die Karte es sagt.", kind:'auto', target:'self', amount:4 },
   { text:"Schnick-Schnack-Schnuck gegen deinen Nachbarn: Verlierer:in trinkt 2 Schlücke.", kind:'duel', amount:2 },
+
+  /* --- Paket „Kennenlernen“ --- */
+  { pack:'kennenlernen', text:"Jede Person, die schon einmal umgezogen ist, trinkt 1 Schluck.", kind:'manual', amount:1 },
+  { pack:'kennenlernen', text:"Wer heute schon Sport gemacht hat, trinkt 1 Schluck.", kind:'manual', amount:1 },
+  { pack:'kennenlernen', text:"Wähle eine Person und nenne eine Gemeinsamkeit zwischen euch.", kind:'narrative', narrativePartner:true },
+  { pack:'kennenlernen', text:"Erzähl kurz von deinem ersten Job. Alle anderen trinken 1 Schluck, während du redest.", kind:'auto', target:'allExceptSelf', amount:1 },
+  { pack:'kennenlernen', text:"Wer schon einmal im Ausland gelebt hat, trinkt 1 Schluck.", kind:'manual', amount:1 },
+  { pack:'kennenlernen', text:"Wer heute weiter als 10 Kilometer angereist ist, trinkt 1 Schluck.", kind:'manual', amount:1 },
+  { pack:'kennenlernen', text:"Nenne dein Lieblingsessen. Wer es auch mag, trinkt 1 Schluck mit dir.", kind:'manual', amount:1 },
+  { pack:'kennenlernen', text:"Wer heute Abend zum ersten Mal ein Trinkspiel spielt, trinkt 1 Schluck. Willkommen!", kind:'manual', amount:1 },
+  { pack:'kennenlernen', text:"Wähle die Person, die du am längsten kennst – ihr trinkt gemeinsam je 1 Schluck.", kind:'choose', choose:1, amount:1, alsoSelf:true },
+  { pack:'kennenlernen', text:"Wer heute Abend schon einen Namen am Tisch vergessen hat, trinkt 1 Schluck. Ehrlich sein!", kind:'manual', amount:1 },
+
+  /* --- Paket „Pärchenabend“ --- */
+  { pack:'paerchen', text:"Wähle die Person, mit der du hier am liebsten ein Eis teilen würdest – ihr trinkt je 2 Schlücke.", kind:'choose', choose:1, amount:2, alsoSelf:true },
+  { pack:'paerchen', text:"Erzählt, wie ihr euch kennengelernt habt. Alle anderen trinken 1 Schluck.", kind:'auto', target:'allExceptSelf', amount:1 },
+  { pack:'paerchen', text:"Wer gerade in einer Beziehung ist, trinkt 2 Schlücke.", kind:'manual', amount:2 },
+  { pack:'paerchen', text:"Wer Single ist, verteilt 3 Schlücke frei.", kind:'free', amount:3 },
+  { pack:'paerchen', text:"Wähle eine Person und mach ihr ein ehrliches Kompliment.", kind:'narrative', narrativePartner:true },
+  { pack:'paerchen', text:"Wer schon einmal aus Liebe umgezogen ist, trinkt 2 Schlücke.", kind:'manual', amount:2 },
+  { pack:'paerchen', text:"Wer einen Jahrestag schon einmal vergessen hat, trinkt 3 Schlücke.", kind:'manual', amount:3 },
+  { pack:'paerchen', text:"Wähle eine Person: Sie beschreibt dich in drei Wörtern.", kind:'narrative', narrativePartner:true },
+  { pack:'paerchen', text:"Wer schon einmal ein Date kurzfristig abgesagt hat, trinkt 2 Schlücke.", kind:'manual', amount:2 },
+  { pack:'paerchen', text:"Das längste Paar am Tisch trinkt je 1 Schluck. Auf euch!", kind:'manual', amount:1 },
+
+  /* --- Paket „Hardcore“ --- */
+  { pack:'hardcore', text:"Trink 5 Schlücke. Keine Diskussion.", kind:'auto', target:'self', amount:5 },
+  { pack:'hardcore', text:"Alle trinken 3 Schlücke. Prost!", kind:'auto', target:'all', amount:3 },
+  { pack:'hardcore', text:"Wähle eine Person: Sie trinkt 6 Schlücke.", kind:'choose', choose:1, amount:6 },
+  { pack:'hardcore', text:"Verteile 10 Schlücke frei unter den anderen Mitspieler:innen.", kind:'free', amount:10 },
+  { pack:'hardcore', text:"Beide Nachbarn (links & rechts) trinken je 4 Schlücke.", kind:'auto', target:'bothNeighbors', amount:4 },
+  { pack:'hardcore', text:"Alle außer dir trinken 3 Schlücke.", kind:'auto', target:'allExceptSelf', amount:3 },
+  { pack:'hardcore', text:"Du trinkst 1 Schluck pro Buchstabe deines Vornamens (max. 10).", kind:'namelen', capAmount:10 },
+  { pack:'hardcore', text:"Schnick-Schnack-Schnuck gegen deinen Nachbarn: Verlierer:in trinkt 5 Schlücke.", kind:'duel', amount:5 },
+  { pack:'hardcore', text:"Die Person, die ihr Glas zuletzt abgestellt hat, trinkt 4 Schlücke.", kind:'manual', amount:4 },
+  { pack:'hardcore', text:"Wähle eine Person – ihr trinkt gemeinsam je 5 Schlücke.", kind:'choose', choose:1, amount:5, alsoSelf:true },
 ];
 
 const MUENZE_CARDS = [
@@ -2058,7 +2297,7 @@ const MINIGAMES = [
     instructions:"Wer die Aussage schon erlebt hat, trinkt einen Schluck. Ehrlichkeit zählt!" },
   { id:'wahrheit', title:'Wahrheit', icon:'🗣️', timerSeconds:0, amount:2, promptBank:TRUTHS,
     instructions:"Die aktive Person muss ehrlich antworten – oder trinkt zur Strafe." },
-  { bewegung:true, id:'pflicht', title:'Pflicht', icon:'🎯', timerSeconds:20, amount:2, promptBank:DARES,
+  { bewegung:true, notPacks:['kennenlernen'], id:'pflicht', title:'Pflicht', icon:'🎯', timerSeconds:20, amount:2, promptBank:DARES,
     instructions:"Die aktive Person führt die Aufgabe aus, bevor die Zeit abläuft – oder trinkt zur Strafe." },
   { id:'zungenbrecher', title:'Zungenbrecher', icon:'👅', timerSeconds:0, amount:2, promptBank:TONGUE_TWISTERS,
     instructions:"3× fehlerfrei und schnell hintereinander aufsagen. Verhaspelt? Trinken!" },
@@ -2093,21 +2332,33 @@ const MINIGAMES = [
    Lösung nach dem Schätzen selbst ein (für Fragen über die Runde). */
 
 
-  /* ---------- Bildbasierte Schätzfragen ---------- */
-  const IMAGE_SCHAETZ_TYPES = [
-    { id:'count', label:'Objekte zählen', icon:'🔢', question:'Wie viele davon sind auf dem Bild?' },
-    { id:'height', label:'Größe schätzen', icon:'📏', question:'Wie groß ist das ungefähr?' },
-    { id:'age', label:'Alter schätzen', icon:'👤', question:'Wie alt ist diese Person ungefähr?' },
-    { id:'year', label:'Jahr schätzen', icon:'📅', question:'In welchem Jahr wurde das aufgenommen?' },
+  /* ---------- Bildbasierte Schätzfragen ----------
+     Die Bilder liegen als Dateien im Ordner „bilder/“ neben der index.html.
+     Wer eigene Fotos nutzen will, tauscht einfach die Datei aus — Dateiname
+     und `a` (die richtige Antwort) müssen zusammenpassen. Fehlt ein Bild,
+     fällt die Frage automatisch aus dem Stapel; das Spiel läuft weiter. */
+  const IMAGE_DIR = 'bilder/';
+  const IMAGE_SCHAETZ_FRAGEN = [
+    { file:'schaetz-kirschen.jpg', q:'Wie viele Kirschen liegen in der Schale?',      a:23, unit:'Kirschen' },
+    { file:'schaetz-flaschen.jpg', q:'Wie viele Flaschen stehen im Regal?',           a:14, unit:'Flaschen' },
+    { file:'schaetz-ballons.jpg',  q:'Wie viele Luftballons schweben im Bild?',       a:17, unit:'Ballons' },
+    { file:'schaetz-hoelzer.jpg',  q:'Wie viele Streichhölzer liegen auf dem Tisch?', a:41, unit:'Hölzer' },
+    { file:'schaetz-menge.jpg',    q:'Wie viele Personen stehen in der Menge?',       a:34, unit:'Personen' },
+    { file:'schaetz-groesse.jpg',  q:'Wie hoch ist der Kaktus? (Die Flasche daneben ist 26 cm hoch.)', a:62, unit:'cm' },
   ];
 
-  const IMAGE_SCHAETZ_FRAGEN = [
-    { type:'count', question:'Wie viele Äpfel', a:12, unit:'Stück', image:'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 300%27%3E%3Cdefs%3E%3ClinearGradient id=%27g1%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 style=%27stop-color:%23e8d4b8%27/%3E%3Cstop offset=%27100%25%27 style=%27stop-color:%23d4a574%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill=%27url(%23g1)%27 width=%27400%27 height=%27300%27/%3E%3Ccircle cx=%2770%27 cy=%2760%27 r=%2722%27 fill=%27%23c41e3a%27/%3E%3Ccircle cx=%27150%27 cy=%2745%27 r=%2722%27 fill=%27%23d32f2f%27/%3E%3Ccircle cx=%27220%27 cy=%2755%27 r=%2722%27 fill=%27%23c41e3a%27/%3E%3Ccircle cx=%27110%27 cy=%27130%27 r=%2722%27 fill=%27%23d32f2f%27/%3E%3Ccircle cx=%27190%27 cy=%27120%27 r=%2722%27 fill=%27%23c41e3a%27/%3E%3Ccircle cx=%27280%27 cy=%27140%27 r=%2722%27 fill=%27%23d32f2f%27/%3E%3Ccircle cx=%2780%27 cy=%27200%27 r=%2722%27 fill=%27%23c41e3a%27/%3E%3Ccircle cx=%27170%27 cy=%27210%27 r=%2722%27 fill=%27%23d32f2f%27/%3E%3Ccircle cx=%27240%27 cy=%27200%27 r=%2722%27 fill=%27%23c41e3a%27/%3E%3Ccircle cx=%27320%27 cy=%27180%27 r=%2722%27 fill=%27%23d32f2f%27/%3E%3Ccircle cx=%27130%27 cy=%27260%27 r=%2722%27 fill=%27%23c41e3a%27/%3E%3Ccircle cx=%27260%27 cy=%27270%27 r=%2722%27 fill=%27%23d32f2f%27/%3E%3C/svg%3E' },
-    { type:'count', question:'Wie viele Flaschen', a:5, unit:'Stück', image:'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 300%27%3E%3Crect fill=%27%23e8dcc8%27 width=%27400%27 height=%27300%27/%3E%3Crect x=%2730%27 y=%2780%27 width=%2750%27 height=%27150%27 fill=%27%23226622%27 stroke=%27%23111%27 stroke-width=%272%27 rx=%273%27/%3E%3Crect x=%2740%27 y=%27100%27 width=%2730%27 height=%27100%27 fill=%27%23ffcc00%27 opacity=%270.7%27/%3E%3Crect x=%27105%27 y=%2770%27 width=%2750%27 height=%27160%27 fill=%27%23006600%27 stroke=%27%23111%27 stroke-width=%272%27 rx=%273%27/%3E%3Crect x=%27115%27 y=%2795%27 width=%2730%27 height=%27110%27 fill=%27%23ff9900%27 opacity=%270.7%27/%3E%3Crect x=%27180%27 y=%2790%27 width=%2750%27 height=%27140%27 fill=%27%23226622%27 stroke=%27%23111%27 stroke-width=%272%27 rx=%273%27/%3E%3Crect x=%27190%27 y=%27110%27 width=%2730%27 height=%2790%27 fill=%27%23ffcc00%27 opacity=%270.7%27/%3E%3Crect x=%27255%27 y=%2775%27 width=%2750%27 height=%27155%27 fill=%27%23006600%27 stroke=%27%23111%27 stroke-width=%272%27 rx=%273%27/%3E%3Crect x=%27265%27 y=%27100%27 width=%2730%27 height=%27105%27 fill=%27%23ff9900%27 opacity=%270.7%27/%3E%3Crect x=%27330%27 y=%2785%27 width=%2750%27 height=%27145%27 fill=%27%23226622%27 stroke=%27%23111%27 stroke-width=%272%27 rx=%273%27/%3E%3Crect x=%27340%27 y=%27105%27 width=%2730%27 height=%2795%27 fill=%27%23ffcc00%27 opacity=%270.7%27/%3E%3C/svg%3E' },
-    { type:'count', question:'Wie viele Personen in der Gruppe', a:7, unit:'Personen', image:'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 300%27%3E%3Crect fill=%27%23f0e6d2%27 width=%27400%27 height=%27300%27/%3E%3Ccircle cx=%2750%27 cy=%2770%27 r=%2720%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%2735%27 y=%2795%27 width=%2730%27 height=%2760%27 fill=%27%234a90e2%27/%3E%3Ccircle cx=%27150%27 cy=%2760%27 r=%2722%27 fill=%27%23f0a590%27/%3E%3Crect x=%27133%27 y=%2790%27 width=%2734%27 height=%2770%27 fill=%27%23e74c3c%27/%3E%3Ccircle cx=%27250%27 cy=%2775%27 r=%2718%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%27238%27 y=%27100%27 width=%2724%27 height=%2765%27 fill=%27%236c5ce7%27/%3E%3Ccircle cx=%27330%27 cy=%2765%27 r=%2721%27 fill=%27%23f0a590%27/%3E%3Crect x=%27314%27 y=%2792%27 width=%2732%27 height=%2768%27 fill=%27%2327ae60%27/%3E%3Ccircle cx=%2780%27 cy=%27200%27 r=%2720%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%2765%27 y=%27225%27 width=%2730%27 height=%2760%27 fill=%27%234a90e2%27/%3E%3Ccircle cx=%27200%27 cy=%27210%27 r=%2722%27 fill=%27%23f0a590%27/%3E%3Crect x=%27183%27 y=%27240%27 width=%2734%27 height=%2760%27 fill=%27%23e74c3c%27/%3E%3Ccircle cx=%27310%27 cy=%27200%27 r=%2719%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%27296%27 y=%27225%27 width=%2728%27 height=%2765%27 fill=%27%236c5ce7%27/%3E%3C/svg%3E' },
-    { type:'height', question:'Wie groß ist das Objekt', a:42, unit:'cm', image:'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 300%27%3E%3Crect fill=%27%23f5f5f5%27 width=%27400%27 height=%27300%27/%3E%3Crect x=%27150%27 y=%2780%27 width=%2780%27 height=%27200%27 fill=%27%238B4513%27 stroke=%27%23000%27 stroke-width=%272%27/%3E%3Ctext x=%2710%27 y=%2785%27 font-size=%2714%27 fill=%27%23000%27%3E0cm%3C/text%3E%3Cline x1=%275%27 y1=%2780%27 x2=%2715%27 y2=%2780%27 stroke=%27%23000%27 stroke-width=%272%27/%3E%3Cline x1=%275%27 y1=%27280%27 x2=%2715%27 y2=%27280%27 stroke=%27%23000%27 stroke-width=%272%27/%3E%3Cline x1=%275%27 y1=%2780%27 x2=%275%27 y2=%27280%27 stroke=%27%23000%27 stroke-width=%271%27 stroke-dasharray=%275%27/%3E%3Ctext x=%2720%27 y=%27185%27 font-size=%2716%27 fill=%27%23000%27 font-weight=%27bold%27%3E42cm%3C/text%3E%3C/svg%3E' },
-    { type:'age', question:'Wie alt ist diese Person ungefähr', a:null, unit:'Jahre', image:'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 300%27%3E%3Crect fill=%27%23f0e6d2%27 width=%27400%27 height=%27300%27/%3E%3Ccircle cx=%2750%27 cy=%2770%27 r=%2720%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%2735%27 y=%2795%27 width=%2730%27 height=%2760%27 fill=%27%234a90e2%27/%3E%3Ccircle cx=%27150%27 cy=%2760%27 r=%2722%27 fill=%27%23f0a590%27/%3E%3Crect x=%27133%27 y=%2790%27 width=%2734%27 height=%2770%27 fill=%27%23e74c3c%27/%3E%3Ccircle cx=%27250%27 cy=%2775%27 r=%2718%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%27238%27 y=%27100%27 width=%2724%27 height=%2765%27 fill=%27%236c5ce7%27/%3E%3Ccircle cx=%27330%27 cy=%2765%27 r=%2721%27 fill=%27%23f0a590%27/%3E%3Crect x=%27314%27 y=%2792%27 width=%2732%27 height=%2768%27 fill=%27%2327ae60%27/%3E%3Ccircle cx=%2780%27 cy=%27200%27 r=%2720%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%2765%27 y=%27225%27 width=%2730%27 height=%2760%27 fill=%27%234a90e2%27/%3E%3Ccircle cx=%27200%27 cy=%27210%27 r=%2722%27 fill=%27%23f0a590%27/%3E%3Crect x=%27183%27 y=%27240%27 width=%2734%27 height=%2760%27 fill=%27%23e74c3c%27/%3E%3Ccircle cx=%27310%27 cy=%27200%27 r=%2719%27 fill=%27%23fdbcb4%27/%3E%3Crect x=%27296%27 y=%27225%27 width=%2728%27 height=%2765%27 fill=%27%236c5ce7%27/%3E%3C/svg%3E' },
-  ];
+  /* Beim Start wird geprüft, welche Bilder wirklich da sind. Nur die kommen
+     ins Spiel — so kann man Bilder weglassen oder eigene ergänzen. */
+  let IMAGE_FRAGEN_READY = [];
+  function preloadImageQuestions(){
+    IMAGE_SCHAETZ_FRAGEN.forEach(f => {
+      const src = IMAGE_DIR + f.file;
+      const im = new Image();
+      im.onload  = () => { IMAGE_FRAGEN_READY.push({ ...f, image: src }); };
+      im.onerror = () => {};
+      im.src = src;
+    });
+  }
 
   const SCHAETZ_FRAGEN = [
   { q:"Wie viele Knochen hat ein erwachsener Mensch?",                       a:206,    unit:"Knochen" },
@@ -2165,20 +2416,34 @@ const CAT_ORDER = ['trink','muenze','wette','mini','twist','regel','schaetz'];
 
 function catOn(cat){ return state.offCats.indexOf(cat) === -1; }
 function miniOn(id){ return state.offMinis.indexOf(id) === -1; }
-function activeMinigames(){ return MINIGAMES.filter(m => miniOn(m.id)); }
+
+/* Gehört diese Karte / dieses Minispiel zum gewählten Themen-Paket? */
+function inPack(entry, packId){
+  const pid = packId || state.pack || 'klassisch';
+  if(entry.pack && entry.pack !== pid) return false;
+  if(entry.notPacks && entry.notPacks.indexOf(pid) !== -1) return false;
+  return true;
+}
+
+/* Minispiele des gewählten Pakets, ohne die abgewählten */
+function packMinigames(packId){ return MINIGAMES.filter(m => inPack(m, packId)); }
+function activeMinigames(){ return packMinigames().filter(m => miniOn(m.id)); }
+
+/* Karten des gewählten Pakets, noch ohne die Abwahl im Setup */
+function packDeckTemplate(packId){ return DECK_TEMPLATE.filter(c => inPack(c, packId)); }
 
 /* Karten des aktuellen Stapels — abgewählte Arten fliegen raus.
    Sind alle Minispiele abgewählt, verschwinden auch die Minispiel-Karten. */
 function activeDeckTemplate(){
   const noMinis = activeMinigames().length === 0;
-  return DECK_TEMPLATE.filter(c => {
+  return packDeckTemplate().filter(c => {
     if(!catOn(c.cat)) return false;
     if(c.cat === 'mini' && noMinis) return false;
     return true;
   });
 }
 
-function countForCat(cat){ return DECK_TEMPLATE.filter(c => c.cat === cat).length; }
+function countForCat(cat){ return packDeckTemplate().filter(c => c.cat === cat).length; }
 
 function toggleInList(list, key){
   const i = list.indexOf(key);
@@ -2195,6 +2460,7 @@ const state = {
   finaleDone: false,
   undoStack: [],
   stats: {},
+  pack: 'klassisch',  // gewähltes Themen-Paket
   offCats: [],    // abgewählte Kartenarten
   offMinis: [],   // abgewählte Minispiele
   currentIndex: 0,
@@ -2209,7 +2475,7 @@ const state = {
    Jeder Zugriff ist abgesichert: Ist Speichern nicht möglich (Privatmodus,
    deaktivierter Speicher), läuft das Spiel unverändert weiter — nur ohne
    Fortsetzen nach dem Neuladen. */
-const SAVE_KEY = 'nixisnix.game.v1';
+const SAVE_KEY = 'nixisnix.game.v2';
 const AGE_KEY  = 'nixisnix.age.v1';
 
 function storageOk(){
@@ -2222,10 +2488,11 @@ function saveState(){
   if(!HAS_STORAGE || state.players.length === 0) return;
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({
-      v: 1,
+      v: 2,
       players: state.players,
       currentIndex: state.currentIndex,
       intensity: state.intensity,
+      pack: state.pack,
       finaleDone: state.finaleDone,
       undoStack: state.undoStack.slice(-5),
       stats: state.stats,
@@ -2250,7 +2517,7 @@ function readSavedGame(){
     const raw = localStorage.getItem(SAVE_KEY);
     if(!raw) return null;
     const d = JSON.parse(raw);
-    if(!d || d.v !== 1 || !Array.isArray(d.players) || d.players.length < 2) return null;
+    if(!d || d.v !== 2 || !Array.isArray(d.players) || d.players.length < 2) return null;
     return d;
   } catch(e){ return null; }
 }
@@ -2262,6 +2529,7 @@ function restoreSavedGame(d){
   state.players      = d.players;
   state.currentIndex = Math.min(d.currentIndex || 0, d.players.length - 1);
   state.intensity    = Math.min(Math.max(0, d.intensity | 0), INTENSITY_LEVELS.length - 1);
+  state.pack         = packOf(d.pack).id;
   state.finaleDone   = !!d.finaleDone;
   state.undoStack    = Array.isArray(d.undoStack) ? d.undoStack : [];
   state.stats        = (d.stats && typeof d.stats === 'object') ? d.stats : {};
@@ -2274,6 +2542,8 @@ function restoreSavedGame(d){
   // Sicherheitsnetz: ohne Karten im Stapel wäre das Spiel nicht spielbar
   if(state.deck.length === 0 && state.discard.length === 0) state.deck = shuffle(activeDeckTemplate());
   document.getElementById('setupScreen').style.display = 'none';
+  // Der Setup-Bildschirm war vielleicht heruntergescrollt — sonst fehlt oben die Kopfzeile
+  try { window.scrollTo(0, 0); } catch(e){}
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
   document.getElementById('btnUndo').style.display = 'inline-flex';
@@ -2564,7 +2834,7 @@ function startGame(){
   const chosen = activeDeckTemplate();
   if(chosen.length === 0){ toast('Wählt mindestens eine Kartenart aus.'); return; }
   saveRoster(entries);
-  state.players = entries.map((e, i) => ({ id: 'p' + i + '_' + Date.now(), name: e.name, glassType: e.glassType, color: PLAYER_COLORS[i % PLAYER_COLORS.length], sips: 0 }));
+  state.players = entries.map((e, i) => ({ id: 'p' + i + '_' + Date.now(), name: e.name, glassType: e.glassType, color: PLAYER_COLORS[i % PLAYER_COLORS.length], sips: 0, joker: 1 }));
   state.currentIndex = 0;
   state.deck = shuffle(chosen);
   state.discard = [];
@@ -2574,6 +2844,8 @@ function startGame(){
   state.undoStack = [];
   state.stats = {};
   document.getElementById('setupScreen').style.display = 'none';
+  // Der Setup-Bildschirm war vielleicht heruntergescrollt — sonst fehlt oben die Kopfzeile
+  try { window.scrollTo(0, 0); } catch(e){}
   document.getElementById('gameScreen').style.display = 'block';
   document.getElementById('btnEndGame').style.display = 'inline-flex';
   document.getElementById('btnUndo').style.display = 'inline-flex';
@@ -2601,7 +2873,7 @@ function renderPlayers(){
       <div class="bar" style="background:${p.color}"></div>
       <div class="glass-wrap" data-id="${p.id}">${glassMarkup(p, maxVal)}</div>
       <div class="info">
-        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="name">${escapeHtml(p.name)}${(p.joker || 0) > 0 ? '<span class="joker-mark" title="Joker noch frei">🃏</span>' : ''}</div>
         ${p.paused ? '<div class="turn-tag pause-tag">⏸ Pause</div>' : ''}
       </div>
       <div class="sips">${p.sips}<small>Schlücke</small></div>
@@ -2955,9 +3227,26 @@ async function copyShareUrl(){
    dieses Fenster. Liegt eine Karte offen, bleibt das Spiel stehen und
    weist stattdessen darauf hin — sonst wäre die Karte einfach weg. */
 const HISTORY_KEEP_OPEN = ['actionOverlay'];   // Karten dürfen nicht per Zurück verschwinden
-let _ovStack = [];
-let _ovFromHistory = false;
+let _ovStack = [];        // welche Fenster gerade offen sind, oberstes zuletzt
+let _ovHeld = false;      // halten wir gerade einen Verlaufseintrag?
 let _ovBackFromApp = false;
+
+/* Es gibt immer höchstens EINEN Verlaufseintrag für alle offenen Fenster.
+   Ein Eintrag pro Fenster hatte sich verhakt, sobald sich ein Fenster
+   schließt und im selben Moment das nächste aufgeht (Finale → Karte):
+   history.back() wirkt verzögert, pushState sofort — dadurch lief der
+   Verlauf aus dem Takt und die Zurück-Taste verließ irgendwann die Seite. */
+function syncOverlayHistory(){
+  const want = _ovStack.length > 0;
+  if(want === _ovHeld) return;
+  if(want){
+    try { history.pushState({ nixOverlay: 1 }, ''); _ovHeld = true; } catch(e){}
+  } else {
+    _ovHeld = false;
+    _ovBackFromApp = true;
+    try { history.back(); } catch(e){ _ovBackFromApp = false; }
+  }
+}
 
 function trackOverlays(){
   if(!('MutationObserver' in window)) return;
@@ -2967,17 +3256,10 @@ function trackOverlays(){
       if(!el.id) return;
       const open = el.classList.contains('show');
       const known = _ovStack.indexOf(el.id) !== -1;
-      if(open && !known){
-        _ovStack.push(el.id);
-        try { history.pushState({ nixOverlay: el.id }, ''); } catch(e){}
-      } else if(!open && known){
-        _ovStack.splice(_ovStack.lastIndexOf(el.id), 1);
-        if(!_ovFromHistory){
-          _ovBackFromApp = true;
-          try { history.back(); } catch(e){ _ovBackFromApp = false; }
-        }
-      }
+      if(open && !known) _ovStack.push(el.id);
+      else if(!open && known) _ovStack.splice(_ovStack.lastIndexOf(el.id), 1);
     });
+    syncOverlayHistory();       // einmal pro Änderungsschub, nicht pro Fenster
   });
   document.querySelectorAll('.overlay, .coin-stage').forEach(el => {
     obs.observe(el, { attributes: true, attributeFilter: ['class'] });
@@ -2986,19 +3268,19 @@ function trackOverlays(){
 
 window.addEventListener('popstate', () => {
   if(_ovBackFromApp){ _ovBackFromApp = false; return; }
+  _ovHeld = false;                      // der gehaltene Eintrag ist verbraucht
   const id = _ovStack[_ovStack.length - 1];
   if(!id) return;                       // nichts offen: Browser darf normal zurück
-  const el = document.getElementById(id);
   if(HISTORY_KEEP_OPEN.indexOf(id) !== -1){
-    // Karte offen lassen und den Verlaufseintrag wiederherstellen
-    try { history.pushState({ nixOverlay: id }, ''); } catch(e){}
+    syncOverlayHistory();               // Eintrag neu anlegen, Karte bleibt offen
     toast('Bitte zuerst die Karte auflösen.');
     return;
   }
   _ovStack.pop();
-  _ovFromHistory = true;
+  const el = document.getElementById(id);
   if(el) el.classList.remove('show');
-  setTimeout(() => { _ovFromHistory = false; }, 0);
+  // Sind darunter noch Fenster offen, brauchen wir wieder einen Eintrag
+  setTimeout(syncOverlayHistory, 0);
 });
 
 /* ---------- Bildschirm wach halten ----------
@@ -3043,7 +3325,7 @@ const UNDO_LIMIT = 8;
 function snapshotState(label){
   return {
     label: label || 'Karte',
-    sips: state.players.map(p => ({ id: p.id, sips: p.sips, paused: !!p.paused })),
+    sips: state.players.map(p => ({ id: p.id, sips: p.sips, paused: !!p.paused, joker: p.joker || 0 })),
     currentIndex: state.currentIndex,
     deck: state.deck.map(c => c.uid),
     discard: state.discard.map(c => c.uid),
@@ -3078,7 +3360,7 @@ function undoLast(){
 
   snap.sips.forEach(entry => {
     const p = state.players.find(x => x.id === entry.id);
-    if(p){ p.sips = entry.sips; p.paused = entry.paused; }
+    if(p){ p.sips = entry.sips; p.paused = entry.paused; p.joker = entry.joker || 0; }
   });
   state.currentIndex = Math.min(snap.currentIndex, state.players.length - 1);
   state.deck = toCards(snap.deck);
@@ -3700,24 +3982,212 @@ function playCoinToss(opts){
   }, 1150);
 }
 
+/* Bild groß über alles legen — auf dem Handy ist die Karte sonst zu klein,
+   um wirklich zu zählen. Ein Tipp irgendwo schließt es wieder. */
+function showImageStage(src){
+  const stage  = document.getElementById('imageStage');
+  const img    = document.getElementById('imageStageImg');
+  const scroll = document.getElementById('imageStageScroll');
+  const hint   = document.getElementById('imageStageHint');
+  if(!stage || !img || !scroll) return;
+  img.src = src;
+  scroll.classList.remove('zoomed');
+  scroll.scrollTop = 0; scroll.scrollLeft = 0;
+  if(hint) hint.textContent = 'Bild antippen zum Vergrößern · daneben tippen zum Schließen';
+  stage.classList.remove('leaving');
+  stage.classList.add('show');
+
+  const onImg = e => {
+    e.stopPropagation();
+    const z = scroll.classList.toggle('zoomed');
+    if(hint) hint.textContent = z ? 'Zum Verschieben wischen · Bild antippen zum Verkleinern'
+                                  : 'Bild antippen zum Vergrößern · daneben tippen zum Schließen';
+    if(z){ scroll.scrollLeft = (scroll.scrollWidth - scroll.clientWidth) / 2;
+           scroll.scrollTop  = (scroll.scrollHeight - scroll.clientHeight) / 2; }
+  };
+  const closeBtn = document.getElementById('imageStageClose');
+  const close = () => {
+    stage.removeEventListener('click', close);
+    img.removeEventListener('click', onImg);
+    if(closeBtn) closeBtn.removeEventListener('click', close);
+    stage.classList.add('leaving');
+    setTimeout(() => { stage.classList.remove('show', 'leaving'); scroll.classList.remove('zoomed'); }, 300);
+  };
+  img.addEventListener('click', onImg);
+  if(closeBtn) closeBtn.addEventListener('click', close);
+  stage.addEventListener('click', close);
+}
+
+/* ---------- Ausweg-Widget ----------
+   Muss genau eine Person eine feste Menge trinken, gibt es drei Auswege
+   statt einfach zu bestätigen: die Münze (doppelt oder nix), einmal pro
+   Abend den Joker, oder das Weitergeben per Würfel. Alle drei hängen an
+   derselben Stelle, damit sie überall gleich funktionieren. */
 function renderCoinGambleWidget(container, player, baseAmount, baseReason, onDone, normalBtn){
   if(baseAmount <= 0) return;
   const wrap = document.createElement('div'); wrap.style.marginTop = '4px';
   const divider = document.createElement('div');
   divider.style.cssText = 'text-align:center;color:var(--ink-muted);font-size:11px;margin:10px 0 8px;';
   divider.textContent = '– oder –';
+
+  const row = document.createElement('div');
+  row.className = 'escape-row';
+
   const gambleBtn = document.createElement('button');
-  gambleBtn.className = 'btn ghost small';
-  gambleBtn.style.width = '100%';
-  gambleBtn.innerHTML = `🪙 Münze werfen: <b>Doppelt oder NIXisNIX</b> (0 oder ${baseAmount * 2} statt ${baseAmount})`;
+  gambleBtn.className = 'btn ghost small escape-btn';
+  gambleBtn.innerHTML = `<span class="escape-ico">🪙</span><span class="escape-lbl">Münze</span>`
+    + `<span class="escape-sub">0 oder ${baseAmount * 2}</span>`;
+  row.appendChild(gambleBtn);
+
+  const opponents = activePlayers().filter(p => p.id !== player.id);
+  let passBtn = null;
+  if(opponents.length > 0){
+    passBtn = document.createElement('button');
+    passBtn.className = 'btn ghost small escape-btn';
+    passBtn.innerHTML = `<span class="escape-ico">🎲</span><span class="escape-lbl">Weitergeben</span>`
+      + `<span class="escape-sub">Verlierer: ${baseAmount * 2}</span>`;
+    row.appendChild(passBtn);
+  }
+
+  let jokerBtn = null;
+  if((player.joker || 0) > 0){
+    jokerBtn = document.createElement('button');
+    jokerBtn.className = 'btn ghost small escape-btn escape-joker';
+    jokerBtn.innerHTML = `<span class="escape-ico">🃏</span><span class="escape-lbl">Joker</span>`
+      + `<span class="escape-sub">1× pro Abend</span>`;
+    row.appendChild(jokerBtn);
+  }
+
   const coinArea = document.createElement('div'); coinArea.style.display = 'none';
-  wrap.appendChild(divider); wrap.appendChild(gambleBtn); wrap.appendChild(coinArea);
+  wrap.appendChild(divider); wrap.appendChild(row); wrap.appendChild(coinArea);
   container.appendChild(wrap);
 
-  gambleBtn.onclick = () => {
-    if(normalBtn) normalBtn.disabled = true;
-    divider.remove(); gambleBtn.remove();
+  /* Läuft ein Ausweg, darf die Personenauswahl darüber nicht mehr
+     verändert werden — sonst würde das Widget mitten im Vorgang neu
+     aufgebaut und die Karte bliebe ohne Knopf stehen. */
+  const outerChips = () => {
+    const panel = document.getElementById('actionPanel');
+    if(!panel) return [];
+    return [...panel.querySelectorAll('.chip-row')].filter(r => !wrap.contains(r));
+  };
+  const takeOver = () => {           // Ausweg gewählt: alles andere ausblenden
+    if(normalBtn){ normalBtn.dataset.hiddenByEscape = '1'; normalBtn.style.display = 'none'; }
+    divider.style.display = 'none'; row.style.display = 'none';
+    outerChips().forEach(r => r.classList.add('locked'));
     coinArea.style.display = 'block';
+    fitPanel();
+  };
+  const giveBack = () => {           // Ausweg abgebrochen: zurück auf Anfang
+    if(normalBtn && normalBtn.dataset.hiddenByEscape){ normalBtn.style.display = ''; delete normalBtn.dataset.hiddenByEscape; }
+    divider.style.display = ''; row.style.display = '';
+    outerChips().forEach(r => r.classList.remove('locked'));
+    coinArea.style.display = 'none';
+    coinArea.innerHTML = '';
+    fitPanel();
+  };
+
+  /* --- Joker: Strafe entfällt, aber nur einmal --- */
+  if(jokerBtn) jokerBtn.onclick = () => {
+    takeOver();
+    player.joker = 0;
+    bumpStat(player.id, 'jokerUsed');
+    addLogNarrative('🃏 ' + player.name + ' zieht den Joker und kommt um ' + baseAmount + ' Schlücke herum.');
+    renderPlayers(); saveState();
+    coinArea.innerHTML = '';
+    const line = document.createElement('div');
+    line.className = 'free-total';
+    line.style.cssText = 'text-align:center;margin:10px 0;';
+    line.innerHTML = `<b style="color:var(--good)">🃏 Joker eingesetzt!</b> ${escapeHtml(player.name)} trinkt nichts — und hat jetzt keinen mehr.`;
+    coinArea.appendChild(line);
+    const acts = document.createElement('div'); acts.className = 'action-buttons'; acts.style.justifyContent = 'center';
+    const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Weiter';
+    ok.onclick = onDone; acts.appendChild(ok); coinArea.appendChild(acts);
+    fitPanel();
+  };
+
+  /* --- Weitergeben: ein Würfel gegen eine Person, Verlierer:in trinkt doppelt --- */
+  if(passBtn) passBtn.onclick = () => {
+    takeOver();
+    coinArea.innerHTML = '';
+    const head = document.createElement('div'); head.className = 'est-turn';
+    head.innerHTML = '🎲 <b>Weitergeben</b> — wem schiebst du es zu?';
+    coinArea.appendChild(head);
+
+    const acts = document.createElement('div'); acts.className = 'action-buttons';
+    const back = document.createElement('button'); back.className = 'btn ghost small';
+    back.textContent = 'Zurück'; back.onclick = giveBack;
+    const go = document.createElement('button'); go.className = 'btn primary';
+    go.textContent = '🎲 Würfeln'; go.disabled = true;
+    let target = null;
+    buildChipSelector(coinArea, opponents, {
+      max: 1,
+      onChange: sel => { target = sel[0] || null; go.disabled = !target; },
+    });
+    coinArea.appendChild(acts); acts.appendChild(back); acts.appendChild(go);
+
+    const note = document.createElement('div'); note.className = 'reveal-hint';
+    note.textContent = 'Beide würfeln einmal. Wer weniger hat, trinkt ' + (baseAmount * 2) + ' Schlücke. Gleichstand wird wiederholt.';
+    coinArea.appendChild(note);
+    fitPanel();
+
+    go.onclick = () => {
+      if(!target) return;
+      const foe = state.players.find(p => p.id === target);
+      if(!foe) return;
+      coinArea.innerHTML = '';
+      const board = document.createElement('div'); board.className = 'pass-board';
+      board.innerHTML = `<div class="pass-side"><div class="pass-name">${escapeHtml(player.name)}</div>`
+        + `<div class="jum-dice">${diceFaceHtml(1)}</div></div>`
+        + `<div class="pass-vs">vs.</div>`
+        + `<div class="pass-side"><div class="pass-name">${escapeHtml(foe.name)}</div>`
+        + `<div class="jum-dice">${diceFaceHtml(1)}</div></div>`;
+      coinArea.appendChild(board);
+      // Feste Verweise statt IDs: wird das Panel zwischendurch neu aufgebaut,
+      // liefen die Würfel sonst ins Leere.
+      const diceA = board.querySelectorAll('.jum-dice')[0];
+      const diceB = board.querySelectorAll('.jum-dice')[1];
+      const out = document.createElement('div'); out.className = 'free-total';
+      out.style.cssText = 'text-align:center;margin:10px 0;';
+      out.textContent = 'Die Würfel fallen …';
+      coinArea.appendChild(out);
+      fitPanel();
+
+      const roll = () => {
+        if(!board.isConnected) return;      // Karte ist inzwischen weitergegangen
+        const a = 1 + Math.floor(Math.random() * 6);
+        const bv = 1 + Math.floor(Math.random() * 6);
+        let done = 0;
+        const after = () => {
+          if(++done < 2) return;
+          if(!board.isConnected) return;
+          if(a === bv){
+            out.textContent = 'Gleichstand ' + a + ' — nochmal!';
+            setTimeout(roll, 700);
+            return;
+          }
+          const loser  = a < bv ? player : foe;
+          const winner = a < bv ? foe : player;
+          const n = baseAmount * 2;
+          addSips(loser.id, n, baseReason + ' — Weitergeben verloren');
+          bumpStat(winner.id, 'passWin');
+          bumpStat(loser.id, 'passLoss');
+          addLogNarrative('🎲 ' + player.name + ' gibt weiter an ' + foe.name + ' — '
+            + loser.name + ' verliert und trinkt ' + n + ' Schlücke.');
+          out.innerHTML = `<b style="color:var(--critical)">${escapeHtml(loser.name)}</b> verliert und trinkt <b>${n}</b> Schlücke.`;
+          const a2 = document.createElement('div'); a2.className = 'action-buttons'; a2.style.justifyContent = 'center';
+          const ok = document.createElement('button'); ok.className = 'btn primary'; ok.textContent = 'Weiter';
+          ok.onclick = onDone; a2.appendChild(ok); coinArea.appendChild(a2);
+          fitPanel();
+        };
+        rollDice(diceA, [a], after);
+        rollDice(diceB, [bv], after);
+      };
+      roll();
+    };
+  };
+
+  gambleBtn.onclick = () => {
+    takeOver();
 
     const isNix = Math.random() < 0.5;
     playCoinToss({
@@ -4043,10 +4513,13 @@ function actionBar(parent, label, onClick, opts){
 /* Würfel rollen lassen und danach das echte Ergebnis zeigen.
    `values` sind die tatsächlich gefallenen Augen (ein oder zwei Würfel). */
 function rollDice(row, values, onDone){
+  // Fehlt die Anzeige (Karte wurde zwischendurch geschlossen), sofort weiter
+  if(!row){ if(onDone) onDone(); return; }
   row.classList.add('rolling');
   let ticks = 0;
   const spin = setInterval(() => {
     ticks++;
+    if(!row.isConnected){ clearInterval(spin); if(onDone) onDone(); return; }
     row.innerHTML = values.map(() => diceFaceHtml(1 + Math.floor(Math.random() * 6))).join('');
     if(ticks >= 8){
       clearInterval(spin);
@@ -4605,6 +5078,9 @@ function renderMinigamePanel(card, body){
     max: state.players.length,
     onChange: ids => {
       gambleSlot.innerHTML = '';
+      // Der Ausweg hatte den Bestätigen-Knopf womöglich ausgeblendet —
+      // beim Ändern der Auswahl muss er wieder da sein.
+      if(btn.dataset.hiddenByEscape){ btn.style.display = ''; delete btn.dataset.hiddenByEscape; }
       btn.disabled = false;
       labelForSelection(btn, ids.length);
       if(ids.length === 1){
@@ -4699,14 +5175,28 @@ function makeNumberField(parent, opts){
 }
 
 function renderEstimatePanel(card, body){
-  const frage = pick(SCHAETZ_FRAGEN);
+  // Bildfragen mischen sich unter die Textfragen — aber nur die, deren Bild
+  // auch wirklich geladen werden konnte.
+  const frage = pick(SCHAETZ_FRAGEN.concat(IMAGE_FRAGEN_READY));
   const order = turnOrder();
   const guesses = [];
   let step = 0;
 
   const qBox = document.createElement('div'); qBox.className = 'prompt-box';
-  qBox.innerHTML = `<div class="est-q">${escapeHtml(frage.q)}</div>`
+  if(frage.image){
+    // Auf dem Handy ist das Bild klein — ein Tipp zeigt es formatfüllend.
+    const wrap = document.createElement('div');
+    wrap.className = 'est-img-wrap';
+    wrap.innerHTML = `<img class="est-img" src="${escapeHtml(frage.image)}" alt="">`
+      + `<span class="est-img-zoom">🔍 antippen</span>`;
+    wrap.addEventListener('click', () => showImageStage(frage.image));
+    wrap.querySelector('img').addEventListener('load', fitPanel);
+    qBox.appendChild(wrap);
+  }
+  const qTxt = document.createElement('div');
+  qTxt.innerHTML = `<div class="est-q">${escapeHtml(frage.q)}</div>`
     + `<div class="est-unit">Antwort in: ${escapeHtml(frage.unit)}</div>`;
+  qBox.appendChild(qTxt);
   body.appendChild(qBox);
 
   const stage = document.createElement('div');
@@ -5057,6 +5547,7 @@ const AWARDS = [
   { key:'estimateWin', icon:'🎯', title:'Schätzmeister:in',  text:p => p.n + '× am dichtesten dran' },
   { key:'diceWin',     icon:'🎲', title:'Würfelglück',       text:p => p.n + '× die höchste Augenzahl' },
   { key:'timeWin',     icon:'⏱️', title:'Innere Uhr',        text:p => p.n + '× das beste Zeitgefühl' },
+  { key:'passWin',     icon:'🔁', title:'Abstauber:in',      text:p => p.n + '× beim Weitergeben gewonnen' },
   { key:'maxSingle',   icon:'💥', title:'Größter Einzelschluck', text:p => p.n + ' Schlücke auf einmal' },
   { key:'finaleWin',   icon:'🏁', title:'Finalsieger:in',    text:() => 'hat das Finale gewonnen' },
 ];
@@ -5110,6 +5601,171 @@ function endGame(){
   if(sum) sum.textContent = total + ' Schlücke insgesamt · ' + state.discard.length + ' Karten gespielt';
 
   document.getElementById('endOverlay').classList.add('show');
+}
+
+/* ---------- Abschlussbild ----------
+   Am Ende des Abends ein fertiges Bild, das man in die Gruppe schicken kann:
+   Rangliste, Titel und Eckdaten. Wird auf einem Canvas gezeichnet, damit
+   nichts nachgeladen werden muss und es auch offline funktioniert. */
+function drawEndImage(canvas){
+  const W = canvas.width, H = canvas.height;
+  const g = canvas.getContext('2d');
+  const dark = !document.body.classList.contains('theme-light');
+  const bg1 = dark ? '#140f2e' : '#eafaf6';
+  const bg2 = dark ? '#07050f' : '#c7ece4';
+  const ink = dark ? '#ffffff' : '#0b2b26';
+  const sub = dark ? 'rgba(255,255,255,.62)' : 'rgba(11,43,38,.62)';
+  const card = dark ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.72)';
+  const accent = dark ? '#ff5fa2' : '#0d9488';
+
+  const grad = g.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, bg1); grad.addColorStop(1, bg2);
+  g.fillStyle = grad; g.fillRect(0, 0, W, H);
+  // dezenter Lichtschein oben, wie im Spiel
+  const glow = g.createRadialGradient(W * 0.5, H * 0.06, 0, W * 0.5, H * 0.06, W * 0.8);
+  glow.addColorStop(0, dark ? 'rgba(255,95,162,.20)' : 'rgba(13,148,136,.16)');
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = glow; g.fillRect(0, 0, W, H);
+
+  const F = (w, s) => w + ' ' + s + 'px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
+  g.textAlign = 'center';
+
+  g.fillStyle = accent; g.font = F(900, 78);
+  g.fillText('NIXisNIX', W / 2, 128);
+  g.fillStyle = sub; g.font = F(600, 30);
+  const d = new Date();
+  g.fillText('Abend vom ' + d.toLocaleDateString('de-DE'), W / 2, 176);
+
+  const sorted = [...state.players].sort((a, b) => b.sips - a.sips);
+  const medals = ['🥇', '🥈', '🥉'];
+  const rowH = 78, top = 232;
+  const shown = sorted.slice(0, 8);
+  shown.forEach((p, i) => {
+    const y = top + i * rowH;
+    g.fillStyle = card;
+    roundRect(g, 70, y, W - 140, rowH - 12, 20); g.fill();
+    g.fillStyle = p.color;
+    roundRect(g, 70, y, 12, rowH - 12, 6); g.fill();
+
+    g.textAlign = 'left'; g.font = F(800, 38); g.fillStyle = ink;
+    g.fillText(medals[i] || '🍺', 104, y + 45);
+    g.font = F(700, 36);
+    g.fillText(clipText(g, p.name, 560), 168, y + 44);
+
+    // Erst das Wort setzen, dann die Zahl links davor — sonst überlappt es
+    // bei dreistelligen Werten.
+    g.textAlign = 'right';
+    g.font = F(600, 24); g.fillStyle = sub;
+    const unitW = g.measureText('Schlücke').width;
+    g.fillText('Schlücke', W - 104, y + 44);
+    g.font = F(800, 40); g.fillStyle = accent;
+    g.fillText(String(p.sips), W - 104 - unitW - 14, y + 44);
+  });
+
+  let y = top + shown.length * rowH + 26;
+  // Nur so viele Titel, wie über der Fußzeile wirklich Platz haben
+  const roomFor = Math.max(0, Math.floor((H - 150 - y - 34) / 104));
+  const awards = computeAwards().slice(0, Math.min(4, roomFor));
+  if(awards.length){
+    g.textAlign = 'center'; g.fillStyle = sub; g.font = F(800, 26);
+    g.fillText('TITEL DES ABENDS', W / 2, y); y += 34;
+    awards.forEach(a => {
+      g.fillStyle = card; roundRect(g, 70, y, W - 140, 92, 20); g.fill();
+      g.textAlign = 'left'; g.font = F(400, 42); g.fillStyle = ink;
+      g.fillText(a.icon, 104, y + 60);
+      g.font = F(700, 31); g.fillStyle = ink;
+      g.fillText(clipText(g, a.title, 430), 170, y + 44);
+      g.font = F(600, 27); g.fillStyle = dark ? a.color : darkenHex(a.color, 0.55);
+      g.fillText(clipText(g, a.name + ' — ' + a.detail, 800), 170, y + 78);
+      y += 104;
+    });
+  }
+
+  const total = state.players.reduce((s, p) => s + p.sips, 0);
+  g.textAlign = 'center';
+  g.fillStyle = ink; g.font = F(800, 34);
+  g.fillText(total + ' Schlücke · ' + state.discard.length + ' Karten', W / 2, H - 118);
+  g.fillStyle = sub; g.font = F(600, 26);
+  const pk = currentPack();
+  g.fillText(pk.icon + ' ' + pk.label + ' · ' + intensity().label + ' · ' + state.players.length + ' Personen', W / 2, H - 76);
+  g.fillStyle = accent; g.font = F(700, 26);
+  g.fillText('Selber spielen: ' + shareUrl().replace(/^https?:\/\//, ''), W / 2, H - 32);
+}
+
+/* Spielerfarben sind fürs dunkle Thema gemacht — auf hellem Grund
+   brauchen sie mehr Tiefe, sonst liest sich der Name schlecht. */
+function darkenHex(hex, amount){
+  const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ''));
+  if(!m) return hex;
+  const v = parseInt(m[1], 16);
+  const c = [(v >> 16) & 255, (v >> 8) & 255, v & 255]
+    .map(x => Math.max(0, Math.round(x * (1 - amount))));
+  return 'rgb(' + c.join(',') + ')';
+}
+
+function roundRect(g, x, y, w, h, r){
+  g.beginPath();
+  g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r);
+  g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r);
+  g.arcTo(x, y, x + w, y, r);
+  g.closePath();
+}
+
+/* Kürzt zu lange Namen, damit nichts über den Rand läuft */
+function clipText(g, text, maxWidth){
+  let t = String(text);
+  if(g.measureText(t).width <= maxWidth) return t;
+  while(t.length > 1 && g.measureText(t + '…').width > maxWidth) t = t.slice(0, -1);
+  return t + '…';
+}
+
+function openEndImage(){
+  const canvas = document.getElementById('endCanvas');
+  if(!canvas || !canvas.getContext){ toast('Bilder gehen in diesem Browser leider nicht.'); return; }
+  drawEndImage(canvas);
+  document.getElementById('cardImageOverlay').classList.add('show');
+  const shareBtn = document.getElementById('btnImgShare');
+  if(shareBtn) shareBtn.style.display = (navigator.share && navigator.canShare) ? '' : 'none';
+}
+
+function endImageBlob(){
+  return new Promise(res => {
+    const canvas = document.getElementById('endCanvas');
+    if(!canvas || !canvas.toBlob){ res(null); return; }
+    canvas.toBlob(b => res(b), 'image/png');
+  });
+}
+
+function endImageName(){
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  return 'NIXisNIX-' + d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + '.png';
+}
+
+async function saveEndImage(){
+  const blob = await endImageBlob();
+  if(!blob){ toast('Speichern hat nicht geklappt.'); return; }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = endImageName();
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  toast('📸 Bild gespeichert.');
+}
+
+async function shareEndImage(){
+  const blob = await endImageBlob();
+  if(!blob){ toast('Teilen hat nicht geklappt.'); return; }
+  const file = new File([blob], endImageName(), { type: 'image/png' });
+  if(navigator.canShare && navigator.canShare({ files: [file] })){
+    try {
+      await navigator.share({ files: [file], title: 'NIXisNIX', text: 'Unser Abend mit NIXisNIX 🍺' });
+      return;
+    } catch(e){ if(e && e.name === 'AbortError') return; }
+  }
+  saveEndImage();
 }
 
 /* ---------- Rechtstexte ----------
@@ -5232,6 +5888,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btnEndGame').addEventListener('click', endGame);
   document.getElementById('btnCloseEnd').addEventListener('click', () => document.getElementById('endOverlay').classList.remove('show'));
+  bindClick('btnEndImage', openEndImage);
+  bindClick('btnImgSave',  saveEndImage);
+  bindClick('btnImgShare', shareEndImage);
+  bindClick('btnImgClose', () => document.getElementById('cardImageOverlay').classList.remove('show'));
   document.getElementById('btnNewGame').addEventListener('click', () => {
     clearSavedGame();
     state.players = [];
@@ -5318,17 +5978,47 @@ function updateSettingsSummary(){
   const el = document.getElementById('settingsSummary');
   if(!el) return;
   const total = activeDeckTemplate().length;
+  const packTotal = packDeckTemplate().length;
   const parts = [];
-  parts.push(total === DECK_TEMPLATE.length ? 'Alle Karten' : total + ' von ' + DECK_TEMPLATE.length + ' Karten');
+  const pk = currentPack();
+  if(pk.id !== 'klassisch') parts.push(pk.icon + ' ' + pk.label);
+  parts.push(total === packTotal ? 'Alle Karten' : total + ' von ' + packTotal + ' Karten');
   const nMini = activeMinigames().length;
-  if(nMini < MINIGAMES.length) parts.push(nMini + '/' + MINIGAMES.length + ' Minispiele');
+  const packMini = packMinigames().length;
+  if(nMini < packMini) parts.push(nMini + '/' + packMini + ' Minispiele');
   parts.push(intensity().label);
   el.textContent = parts.join(' · ');
+}
+
+/* Themen-Pakete: genau eines ist aktiv. Ein Wechsel tauscht den ganzen
+   Stapel aus, deshalb wird die Abwahl darunter frisch aufgebaut. */
+function renderPackPicker(){
+  const box = document.getElementById('packPicker');
+  if(!box) return;
+  box.innerHTML = '';
+  PACKS.forEach(pk => {
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'pack-item ' + (state.pack === pk.id ? 'on' : 'off');
+    el.innerHTML = `<span class="pack-icon">${pk.icon}</span><span class="pack-name">${escapeHtml(pk.label)}</span>`;
+    el.addEventListener('click', () => {
+      if(state.pack === pk.id) return;
+      state.pack = pk.id;
+      // Abwahlen, die es im neuen Paket nicht mehr gibt, wieder freigeben
+      const ids = packMinigames().map(m => m.id);
+      state.offMinis = state.offMinis.filter(id => ids.indexOf(id) !== -1);
+      renderPickers();
+    });
+    box.appendChild(el);
+  });
+  const hint = document.getElementById('packHint');
+  if(hint) hint.textContent = currentPack().desc;
 }
 
 function renderPickers(){
   const catBox = document.getElementById('catPicker');
   const miniBox = document.getElementById('miniPicker');
+  renderPackPicker();
   if(!catBox || !miniBox) return;
 
   catBox.innerHTML = '';
@@ -5346,7 +6036,7 @@ function renderPickers(){
   });
 
   miniBox.innerHTML = '';
-  MINIGAMES.forEach(mg => {
+  packMinigames().forEach(mg => {
     const on = miniOn(mg.id);
     const el = document.createElement('button');
     el.type = 'button';
@@ -5359,19 +6049,21 @@ function renderPickers(){
   });
 
   const nMini = activeMinigames().length;
+  const packMini = packMinigames().length;
   const mc = document.getElementById('miniCount');
-  if(mc) mc.textContent = nMini + ' / ' + MINIGAMES.length;
+  if(mc) mc.textContent = nMini + ' / ' + packMini;
 
   const total = activeDeckTemplate().length;
+  const packTotal = packDeckTemplate().length;
   const sum = document.getElementById('pickSummary');
   if(sum){
     if(total === 0){
       sum.textContent = '⚠️ Kein Kartenstapel — wählt mindestens eine Art aus.';
     } else {
-      let txt = total + ' von ' + DECK_TEMPLATE.length + ' Karten im Stapel';
+      let txt = total + ' von ' + packTotal + ' Karten im Stapel';
       if(catOn('mini')){
         if(nMini === 0) txt += ' · Minispiele pausieren';
-        else txt += ' · die ' + countForCat('mini') + ' Minispiel-Karten ziehen aus ' + nMini + ' von ' + MINIGAMES.length + ' Spielen';
+        else txt += ' · die ' + countForCat('mini') + ' Minispiel-Karten ziehen aus ' + nMini + ' von ' + packMini + ' Spielen';
       }
       sum.textContent = txt;
     }
@@ -5450,6 +6142,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   paintBrandMarks();
   trackOverlays();
+  preloadImageQuestions();
 
   bindClick('btnThemeToggle', toggleTheme);
   bindClick('btnUndo', undoLast);
@@ -5466,9 +6159,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Auswahl der Minispiele
   bindClick('btnMiniAll',  () => { state.offMinis = []; renderPickers(); });
-  bindClick('btnMiniNone', () => { state.offMinis = MINIGAMES.map(m => m.id); renderPickers(); });
+  bindClick('btnMiniNone', () => { state.offMinis = packMinigames().map(m => m.id); renderPickers(); });
   bindClick('btnMiniCalm', () => {
-    state.offMinis = MINIGAMES.filter(m => m.bewegung).map(m => m.id);
+    state.offMinis = packMinigames().filter(m => m.bewegung).map(m => m.id);
     document.getElementById('miniFold').open = true;
     renderPickers();
   });

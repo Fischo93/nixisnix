@@ -3,9 +3,12 @@
    Internet startet. Beim Aktualisieren gewinnt immer die neue Fassung:
    Die Seite selbst wird zuerst aus dem Netz geholt und nur bei Ausfall
    aus dem Speicher bedient. */
-const CACHE = 'nixisnix-v2';
+const CACHE = 'nixisnix-v3';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
-                './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
+                './icon-192.png', './icon-512.png', './icon-maskable-512.png',
+                './bilder/schaetz-kirschen.jpg', './bilder/schaetz-flaschen.jpg',
+                './bilder/schaetz-ballons.jpg',  './bilder/schaetz-hoelzer.jpg',
+                './bilder/schaetz-menge.jpg',    './bilder/schaetz-groesse.jpg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));

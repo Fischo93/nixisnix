@@ -1,7 +1,7 @@
 {
   "name": "NIXisNIX — Das Trinkspiel",
   "short_name": "NIXisNIX",
-  "description": "66 Karten, 19 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser, ohne Installation. Ab 18.",
+  "description": "96 Karten in vier Themen-Paketen, 19 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser, ohne Installation. Ab 18.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
