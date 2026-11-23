@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="NIXisNIX — das Trinkspiel mit Karten, Münze und Chaos. 96 Karten in vier Themen-Paketen, 19 Minispiele, für 2 bis 12 Spieler:innen. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="description" content="NIXisNIX — das Trinkspiel mit Karten, Münze und Chaos. 96 Karten in vier Themen-Paketen, 21 Minispiele, für 2 bis 12 Spieler:innen. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta name="theme-color" content="#0d0b18">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20340%20340%22%3E%3Crect%20width%3D%22340%22%20height%3D%22340%22%20rx%3D%2270%22%20fill%3D%22%23120f22%22%2F%3E%3Cg%20transform%3D%22rotate%28-14%20170%20190%29%22%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22222%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%22118%22%20ry%3D%2266%22%20fill%3D%22%23191430%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%2213%22%2F%3E%3Cellipse%20cx%3D%22170%22%20cy%3D%22176%22%20rx%3D%2292%22%20ry%3D%2245%22%20fill%3D%22none%22%20stroke%3D%22%2363e6ff%22%20stroke-width%3D%227%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
@@ -12,14 +12,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NIXisNIX">
 <meta property="og:title" content="NIXisNIX — Das Trinkspiel">
-<meta property="og:description" content="96 Karten in vier Themen-Paketen, 19 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta property="og:description" content="96 Karten in vier Themen-Paketen, 21 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta property="og:image" content="nixisnix-preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NIXisNIX — Das Trinkspiel">
-<meta name="twitter:description" content="96 Karten in vier Themen-Paketen, 19 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
+<meta name="twitter:description" content="96 Karten in vier Themen-Paketen, 21 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser spielbar, ohne Installation. Ab 18.">
 <meta name="twitter:image" content="nixisnix-preview.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1078,6 +1078,81 @@
   #legalOverlay .legal-body{flex:1 1 auto;min-height:0;overflow-y:auto;}
   #legalOverlay .modal h2,#legalOverlay .modal .action-buttons{flex:none;}
 
+
+
+  /* ---------- DisOrDat ---------- */
+  .dod-head{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    flex-wrap:wrap;margin-bottom:8px;
+  }
+  .dod-cat{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:999px;
+    padding:5px 11px;font-size:12.5px;font-weight:700;color:var(--ink-secondary);
+  }
+  .dod-vs{font-size:11px;color:var(--ink-muted);font-weight:700;}
+  .dod-meta{display:flex;align-items:center;justify-content:space-between;margin:6px 2px 4px;}
+  .dod-clock{font-size:15px;font-weight:800;color:var(--accent-2);font-variant-numeric:tabular-nums;}
+  .dod-clock-low{color:var(--critical);}
+  .dod-progress{font-size:11.5px;color:var(--ink-muted);font-weight:600;}
+  .dod-term{
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:84px;padding:10px 12px;margin-bottom:10px;
+    border-radius:14px;background:var(--surface-2);border:1px solid var(--line);
+    font-size:27px;font-weight:800;line-height:1.15;word-break:break-word;
+    transition:background .14s ease,border-color .14s ease,color .14s ease;
+  }
+  .dod-term.dod-right{background:color-mix(in srgb, var(--good) 22%, var(--surface-2));border-color:var(--good);}
+  .dod-term.dod-wrong{background:color-mix(in srgb, var(--critical) 22%, var(--surface-2));border-color:var(--critical);}
+  .dod-buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .dod-pick{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:13px 7px;border-radius:14px;line-height:1.2;font-size:13px;font-weight:700;
+    white-space:normal;text-align:center;
+  }
+  .dod-pick-ico{font-size:20px;}
+  .dod-pick:disabled{opacity:.45;}
+  .dod-result-head{font-size:19px;font-weight:800;text-align:center;}
+  .dod-result-sub{font-size:12px;color:var(--ink-muted);text-align:center;margin-top:3px;}
+  .dod-key{display:flex;flex-direction:column;gap:4px;margin:9px 0;}
+  .dod-key-row{
+    display:flex;justify-content:space-between;gap:8px;align-items:baseline;
+    background:var(--surface-2);border-radius:9px;padding:5px 10px;
+  }
+  .dod-key-term{font-size:13px;font-weight:700;}
+  .dod-key-cat{font-size:11.5px;color:var(--ink-muted);white-space:nowrap;}
+
+  /* ---------- Fiese Multiple-Choice ---------- */
+  .mc-options{display:flex;flex-direction:column;gap:7px;margin:4px 0 2px;}
+  .mc-option{
+    display:flex;align-items:center;gap:9px;width:100%;
+    padding:11px 12px;border-radius:13px;text-align:left;
+    font-size:14px;font-weight:600;line-height:1.25;white-space:normal;
+  }
+  .mc-letter{
+    flex:none;width:23px;height:23px;border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface-3);font-size:12px;font-weight:800;
+  }
+  .mc-text{flex:1;min-width:0;word-break:break-word;}
+  .mc-option:disabled{opacity:.55;}
+  .mc-option.mc-right{
+    opacity:1;border-color:var(--good);
+    background:color-mix(in srgb, var(--good) 20%, var(--surface-2));
+  }
+  .mc-option.mc-wrong{
+    opacity:1;border-color:var(--critical);
+    background:color-mix(in srgb, var(--critical) 20%, var(--surface-2));
+  }
+  .mc-quip{
+    font-size:12.5px;line-height:1.45;color:var(--ink-secondary);
+    background:var(--surface-2);border-radius:11px;padding:9px 11px;margin-top:9px;
+  }
+  .mc-quip b{color:var(--ink-primary);}
+
+  @media (max-width:640px){
+    .dod-term{min-height:70px;font-size:23px;}
+    .mc-option{font-size:13px;padding:10px 11px;}
+  }
 
   /* ---------- Münzwurf-Bühne (liegt über allem) ---------- */
   .coin-stage{
@@ -2323,6 +2398,10 @@ const MINIGAMES = [
     instructions:"Reihum: auf Start tippen, im Kopf mitzählen und bei genau 10 Sekunden stoppen. Die Uhr bleibt unsichtbar. Wer am weitesten danebenliegt, trinkt am meisten." },
   { id:'jumanji', title:'Jumanji', icon:'🎲', timerSeconds:0, amount:0, promptBank:null, custom:'jumanji',
     instructions:"Reihum würfelt jede Person mit zwei Würfeln. Die Augen werden addiert – bei einem Pasch zählt die Augenzahl mal 3. Ein Einser-Pasch ist Jumanji! Wer am Ende die wenigsten Punkte hat, trinkt so viele Schlücke, wie die höchste Zahl anzeigt." },
+  { id:'disordat', title:'Das oder das?', icon:'🗂', timerSeconds:0, amount:0, promptBank:null, custom:'disordat',
+    instructions:"Zwei Kategorien, sieben Begriffe, 28 Sekunden. Die Person am Zug ordnet jeden Begriff der richtigen Seite zu. Pro Fehler ein Schluck — und was die Uhr frisst, zählt auch." },
+  { id:'quizmc', title:'Fiese Quizfrage', icon:'❓', timerSeconds:0, amount:0, promptBank:null, custom:'quizmc',
+    instructions:"Eine echte Frage, vier Antworten, drei davon erfunden. Richtig geraten heißt Schlücke verteilen, falsch geraten heißt selber trinken." },
   { id:'zweiwahrheiten', title:'Zwei Wahrheiten, eine Lüge', icon:'🎲', timerSeconds:0, amount:2, promptBank:null,
     instructions:"Die aktive Person nennt drei Aussagen über sich – zwei wahr, eine gelogen. Wer falsch tippt, trinkt." },
 ];
@@ -4307,6 +4386,125 @@ const QUIZ_FRAGEN = [
   { q:"Wie viele Streifen hat die Flagge der USA?", a:"13" },
 ];
 
+/* ---------- DisOrDat: zwei Kategorien, sieben Begriffe ----------
+   Vorbild ist die Sortierrunde aus You Don't Know Jack. Immer zwei
+   echte Kategorien gegeneinander — nie „echt gegen ausgedacht“, sonst
+   lässt sich nicht fair raten. `s` sagt, in welche Spalte der Begriff
+   gehört: 'a' oder 'b'. */
+const DISORDAT_SETS = [
+  {
+    a: { label:'IKEA-Möbel',   icon:'🛋️' },
+    b: { label:'Zauberspruch', icon:'🪄' },
+    items: [
+      { t:'BILLY',        s:'a' }, { t:'Alohomora',    s:'b' },
+      { t:'EXPEDIT',      s:'a' }, { t:'Expelliarmus', s:'b' },
+      { t:'KALLAX',       s:'a' }, { t:'Riddikulus',   s:'b' },
+      { t:'TROFAST',      s:'a' }, { t:'Protego',      s:'b' },
+      { t:'SNIGLAR',      s:'a' }, { t:'Sectumsempra', s:'b' },
+      { t:'POÄNG',        s:'a' }, { t:'Incendio',     s:'b' },
+      { t:'HEMNES',       s:'a' }, { t:'Levicorpus',   s:'b' },
+      { t:'MALM',         s:'a' }, { t:'Obliviate',    s:'b' },
+    ],
+  },
+  {
+    a: { label:'Pokémon',    icon:'⚡' },
+    b: { label:'Medikament', icon:'💊' },
+    items: [
+      { t:'Relaxo',     s:'a' }, { t:'Voltaren',    s:'b' },
+      { t:'Lektrobal',  s:'a' }, { t:'Thomapyrin',  s:'b' },
+      { t:'Sarzenia',   s:'a' }, { t:'Buscopan',    s:'b' },
+      { t:'Tentacha',   s:'a' }, { t:'Iberogast',   s:'b' },
+      { t:'Smettbo',    s:'a' }, { t:'Dolormin',    s:'b' },
+      { t:'Machollo',   s:'a' }, { t:'Paspertin',   s:'b' },
+      { t:'Rettan',     s:'a' }, { t:'Talcid',      s:'b' },
+      { t:'Kleinstein', s:'a' }, { t:'Bepanthen',   s:'b' },
+    ],
+  },
+  {
+    a: { label:'Nudelsorte',          icon:'🍝' },
+    b: { label:'Italienischer Verein', icon:'⚽' },
+    items: [
+      { t:'Rigatoni',     s:'a' }, { t:'Frosinone',  s:'b' },
+      { t:'Strozzapreti', s:'a' }, { t:'Cremonese',  s:'b' },
+      { t:'Orecchiette',  s:'a' }, { t:'Atalanta',   s:'b' },
+      { t:'Cavatappi',    s:'a' }, { t:'Sassuolo',   s:'b' },
+      { t:'Conchiglie',   s:'a' }, { t:'Udinese',    s:'b' },
+      { t:'Bucatini',     s:'a' }, { t:'Empoli',     s:'b' },
+      { t:'Trofie',       s:'a' }, { t:'Cagliari',   s:'b' },
+      { t:'Farfalle',     s:'a' }, { t:'Perugia',    s:'b' },
+    ],
+  },
+  {
+    a: { label:'Tatort-Ermittler:in', icon:'🔎' },
+    b: { label:'Wurstsorte',          icon:'🌭' },
+    items: [
+      { t:'Thiel',     s:'a' }, { t:'Pinkel',       s:'b' },
+      { t:'Murot',     s:'a' }, { t:'Knipp',        s:'b' },
+      { t:'Borowski',  s:'a' }, { t:'Stippgrütze',  s:'b' },
+      { t:'Odenthal',  s:'a' }, { t:'Gelbwurst',    s:'b' },
+      { t:'Ballauf',   s:'a' }, { t:'Bregenwurst',  s:'b' },
+      { t:'Lindholm',  s:'a' }, { t:'Teewurst',     s:'b' },
+      { t:'Leitmayr',  s:'a' }, { t:'Ahle Wurscht', s:'b' },
+      { t:'Faber',     s:'a' }, { t:'Kochmett',     s:'b' },
+    ],
+  },
+];
+
+/* ---------- Fiese Multiple-Choice ----------
+   Echte Frage, vier Antworten, drei davon erfunden — aber plausibel
+   genug zum Zögern. `k` ist der Index der richtigen Antwort,
+   `quip` der Kommentar beim Auflösen. */
+const QUIZ_MC = [
+  { q:'Wie lange dauerte der kürzeste Krieg der Geschichte?',
+    o:['38 Minuten','3 Tage','11 Stunden','knapp 2 Wochen'], k:0,
+    quip:'Britisches Empire gegen Sansibar, 1896. Kürzer als diese Runde.' },
+  { q:'Welches Land hat die meisten Zeitzonen?',
+    o:['Russland','Frankreich','USA','China'], k:1,
+    quip:'Frankreich, wegen der Überseegebiete. Russland ist nur das größte Missverständnis.' },
+  { q:'Welcher Buchstabe kommt in keinem einzigen Namen eines US-Bundesstaates vor?',
+    o:['Q','X','J','Z'], k:0,
+    quip:'Q. Texas hat das X, New Jersey das J, Arizona das Z. Q ist draußen.' },
+  { q:'Welche Farbe hat das Blut eines Pfeilschwanzkrebses?',
+    o:['Blau','Grün','Durchsichtig','Gelblich'], k:0,
+    quip:'Blau — Kupfer statt Eisen. Und medizinisch wertvoller als dein Jahresgehalt.' },
+  { q:'Welches Tier hat rechteckige Pupillen?',
+    o:['Die Ziege','Der Tintenfisch','Das Faultier','Der Gecko'], k:0,
+    quip:'Ziegen. Nächstes Mal, wenn eine dich anstarrt, weißt du Bescheid.' },
+  { q:'Wie heißt die Angst vor langen Wörtern?',
+    o:['Hippopotomonstrosesquippedaliophobie','Makrolexophobie','Longoverbophobie','Syllabophobie'], k:0,
+    quip:'Ja, wirklich. Jemand hatte Humor — oder gar keinen.' },
+  { q:'Wie alt wurde die älteste nachweislich dokumentierte Hauskatze?',
+    o:['38 Jahre','24 Jahre','29 Jahre','45 Jahre'], k:0,
+    quip:'38. Sie hieß Creme Puff und hatte euch allen etwas voraus.' },
+  { q:'Was war die erste Nachricht, die je über das Vorläufernetz des Internets ging?',
+    o:['„LO“','„HELLO“','„TEST“','„.“'], k:0,
+    quip:'Man wollte „LOGIN“ tippen. Nach zwei Buchstaben stürzte das System ab. Ein Omen.' },
+  { q:'Wie lange braucht Honig, um zu verderben?',
+    o:['Gar nicht','Etwa 5 Jahre','Etwa 50 Jahre','Rund 200 Jahre'], k:0,
+    quip:'Richtig gelesen. In ägyptischen Gräbern fand man essbaren Honig.' },
+  { q:'Wie viele Nullen hat ein Googol?',
+    o:['100','9','1.000','Eine Million'], k:0,
+    quip:'100. Die Suchmaschine hat sich beim Namen vertippt — so ging das los.' },
+  { q:'Woraus besteht eine Gurke zu über 95 Prozent?',
+    o:['Wasser','Zellulose','Zucker','Luft'], k:0,
+    quip:'Wasser. Du isst im Grunde ein Getränk mit Selbstbewusstsein.' },
+  { q:'Wie viele Herzen hat ein Regenwurm?',
+    o:['5','1','Keines','12'], k:0,
+    quip:'Fünf. Genau genommen Gefäßbögen — aber lass ihm die fünf Herzen.' },
+  { q:'Welches Instrument spielte Sherlock Holmes in den Romanen?',
+    o:['Geige','Klavier','Cello','Querflöte'], k:0,
+    quip:'Geige. Und zwar schlecht, wenn er nachdachte. Steht so im Buch.' },
+  { q:'Wie viele Knochen hat ein Hai?',
+    o:['Keinen einzigen','206','68','Nur den Kiefer'], k:0,
+    quip:'Keinen. Alles Knorpel. Deshalb findet man auch so selten Hai-Skelette.' },
+  { q:'Was passiert in Singapur, wenn man Kaugummi verkauft?',
+    o:['Es ist verboten und wird bestraft','Nichts','Man braucht eine Lizenz','Es ist steuerfrei'], k:0,
+    quip:'Seit 1992 verboten. Therapeutischer Kaugummi nur in der Apotheke.' },
+  { q:'Wie viele Kilometer Blutgefäße stecken grob in einem erwachsenen Menschen?',
+    o:['Rund 100.000','Rund 1.000','Rund 12.000','Rund 900.000'], k:0,
+    quip:'Etwa 100.000 — zweieinhalb Mal um die Erde. In dir. Gerade jetzt.' },
+];
+
 const CHALLENGE_QUIZ  = "Schnellste richtige Antwort auf eine Quizfrage";
 const CHALLENGE_ZAHL  = "Wer errät zuerst eine Zahl zwischen 1 und 10";
 
@@ -4977,6 +5175,244 @@ function renderJumanji(body){
   askNext();
 }
 
+/* ---------- DisOrDat: sieben Begriffe, zwei Kategorien ----------
+   Eine Person sortiert reihum sieben Begriffe in die richtige Spalte.
+   Es läuft eine Uhr: was nicht geschafft wird, zählt als Fehler.
+   Pro Fehler ein Schluck. */
+function renderDisOrDat(body){
+  const set = pick(DISORDAT_SETS);
+  const items = shuffle(set.items.slice()).slice(0, 7);
+  const player = currentPlayer();
+  const SECONDS = 28;
+
+  let idx = 0, wrong = 0, done = false;
+  let ticker = null;
+  let left = SECONDS;
+
+  const stage = document.createElement('div');
+  body.appendChild(stage);
+
+  function stopTicker(){ if(ticker){ clearInterval(ticker); ticker = null; } }
+
+  function askNext(){
+    if(idx >= items.length){ finish(); return; }
+    const item = items[idx];
+    term.textContent = item.t;
+    term.className = 'dod-term';
+    progress.textContent = (idx + 1) + ' / ' + items.length;
+    btnA.disabled = false; btnB.disabled = false;
+    fitPanel();
+  }
+
+  function answer(side){
+    if(done) return;
+    const item = items[idx];
+    const ok = item.s === side;
+    if(!ok) wrong++;
+    btnA.disabled = true; btnB.disabled = true;
+    term.className = 'dod-term ' + (ok ? 'dod-right' : 'dod-wrong');
+    term.textContent = ok ? '✅ ' + item.t : '❌ ' + item.t;
+    idx++;
+    setTimeout(() => { if(!done) askNext(); }, 420);
+  }
+
+  function finish(){
+    if(done) return;
+    done = true;
+    stopTicker();
+    stage.innerHTML = '';
+
+    const missed = items.length - idx;        // bei Zeitablauf offen geblieben
+    const total = wrong + missed;
+    const sips = sip(total);
+
+    const box = document.createElement('div');
+    box.className = 'prompt-box';
+    box.innerHTML = `<div class="dod-result-head">${total === 0 ? '🏆 Alles richtig!' : total + (total === 1 ? ' Fehler' : ' Fehler')}</div>`
+      + `<div class="dod-result-sub">${escapeHtml(player.name)} · ${idx} von ${items.length} geschafft`
+      + (missed > 0 ? ' · ' + missed + ' nicht geschafft' : '') + '</div>';
+    stage.appendChild(box);
+
+    // Auflösung: welcher Begriff gehörte wohin
+    const list = document.createElement('div');
+    list.className = 'dod-key';
+    items.forEach(it => {
+      const row = document.createElement('div');
+      row.className = 'dod-key-row';
+      const cat = it.s === 'a' ? set.a : set.b;
+      row.innerHTML = `<span class="dod-key-term">${escapeHtml(it.t)}</span>`
+        + `<span class="dod-key-cat">${cat.icon} ${escapeHtml(cat.label)}</span>`;
+      list.appendChild(row);
+    });
+    stage.appendChild(list);
+
+    const verdict = document.createElement('div');
+    verdict.className = 'free-total';
+    verdict.style.cssText = 'text-align:center;margin:10px 0;';
+    verdict.innerHTML = total === 0
+      ? `<b style="color:var(--good)">Niemand trinkt.</b> Beängstigend gutes Allgemeinwissen.`
+      : `<b>${escapeHtml(player.name)}</b> trinkt <b>${sips}</b> ${sips === 1 ? 'Schluck' : 'Schlücke'}.`;
+    stage.appendChild(verdict);
+
+    const _ab = actionBar(stage, '✅ Bestätigen', () => {
+      if(total === 0) bumpStat(player.id, 'dodPerfect');
+      else addSips(player.id, sips, 'DisOrDat: ' + set.a.label + ' oder ' + set.b.label);
+      addLogNarrative('🗂 DisOrDat (' + set.a.label + ' / ' + set.b.label + '): '
+        + player.name + ' mit ' + total + ' ' + (total === 1 ? 'Fehler' : 'Fehlern') + '.');
+      finishTurn();
+    }, { center: true });
+    void _ab;
+    fitPanel();
+  }
+
+  /* --- Aufbau ---
+     Die beiden Kategorien stehen schon auf den Knöpfen unten; eine
+     zusätzliche Zeile darüber wäre nur dieselbe Information zweimal. */
+  stage.appendChild(turnHeader(player, 1, 0, 'sortiert'));
+
+  const meta = document.createElement('div');
+  meta.className = 'dod-meta';
+  const clock = document.createElement('span');
+  clock.className = 'dod-clock';
+  clock.textContent = left + 's';
+  const progress = document.createElement('span');
+  progress.className = 'dod-progress';
+  meta.appendChild(clock); meta.appendChild(progress);
+  stage.appendChild(meta);
+
+  const term = document.createElement('div');
+  term.className = 'dod-term';
+  term.textContent = '…';
+  stage.appendChild(term);
+
+  const pick2 = document.createElement('div');
+  pick2.className = 'dod-buttons';
+  const btnA = document.createElement('button');
+  btnA.className = 'btn dod-pick';
+  btnA.innerHTML = `<span class="dod-pick-ico">${set.a.icon}</span><span>${escapeHtml(set.a.label)}</span>`;
+  const btnB = document.createElement('button');
+  btnB.className = 'btn dod-pick';
+  btnB.innerHTML = `<span class="dod-pick-ico">${set.b.icon}</span><span>${escapeHtml(set.b.label)}</span>`;
+  btnA.onclick = () => answer('a');
+  btnB.onclick = () => answer('b');
+  pick2.appendChild(btnA); pick2.appendChild(btnB);
+  stage.appendChild(pick2);
+
+  const startBar = actionBar(stage, '▶️ Los', () => {
+    startBar.bar.remove();
+    askNext();
+    ticker = setInterval(() => {
+      // Karte weitergezogen? Uhr nicht weiterlaufen lassen.
+      if(!stage.isConnected){ stopTicker(); return; }
+      left--;
+      clock.textContent = left + 's';
+      if(left <= 5) clock.classList.add('dod-clock-low');
+      if(left <= 0) finish();
+    }, 1000);
+    fitPanel();
+  }, { center: true });
+
+  btnA.disabled = true; btnB.disabled = true;
+  progress.textContent = items.length + ' Begriffe · ' + SECONDS + ' Sekunden';
+}
+
+/* ---------- Fiese Multiple-Choice ----------
+   Echte Frage, vier Antworten, drei davon Unsinn. Richtig: die Person
+   darf Schlücke verteilen. Falsch: sie trinkt selbst. */
+function renderQuizMC(body){
+  const frage = pick(QUIZ_MC);
+  const player = currentPlayer();
+  const correct = frage.o[frage.k];
+  const options = shuffle(frage.o.slice());
+
+  const stage = document.createElement('div');
+  body.appendChild(stage);
+
+  const qBox = document.createElement('div');
+  qBox.className = 'prompt-box';
+  qBox.innerHTML = `<div class="quiz-q">${escapeHtml(frage.q)}</div>`;
+  stage.appendChild(qBox);
+
+  stage.appendChild(turnHeader(player, 1, 0, 'antwortet'));
+
+  const list = document.createElement('div');
+  list.className = 'mc-options';
+  stage.appendChild(list);
+
+  const tail = document.createElement('div');
+  stage.appendChild(tail);
+
+  options.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'btn mc-option';
+    b.innerHTML = `<span class="mc-letter">${'ABCD'[i]}</span><span class="mc-text">${escapeHtml(opt)}</span>`;
+    b.onclick = () => resolve(opt, b);
+    list.appendChild(b);
+  });
+  fitPanel();
+
+  function resolve(chosen, btn){
+    const ok = chosen === correct;
+    [...list.querySelectorAll('.mc-option')].forEach(b => {
+      b.disabled = true;
+      const txt = b.querySelector('.mc-text').textContent;
+      if(txt === correct) b.classList.add('mc-right');
+      else if(b === btn) b.classList.add('mc-wrong');
+    });
+
+    const quip = document.createElement('div');
+    quip.className = 'mc-quip';
+    quip.innerHTML = `<b>${ok ? '✅ Richtig.' : '❌ Daneben.'}</b> ${escapeHtml(frage.quip)}`;
+    tail.appendChild(quip);
+    fitPanel();
+
+    if(ok){
+      const n = sip(2);
+      const info = document.createElement('div');
+      info.className = 'free-total';
+      info.style.cssText = 'text-align:center;margin:8px 0;';
+      info.textContent = `${player.name} verteilt ${n} ${n === 1 ? 'Schluck' : 'Schlücke'}.`;
+      tail.appendChild(info);
+
+      const acts = document.createElement('div'); acts.className = 'action-buttons';
+      const go = document.createElement('button'); go.className = 'btn';
+      let target = null;
+      const others = activePlayers().filter(p => p.id !== player.id);
+      buildChipSelector(tail, others, {
+        max: 1,
+        onChange: sel => {
+          target = sel[0] || null;
+          labelForSelection(go, target ? 1 : 0, { none: '🚫 Niemand trinkt', some: '✅ Bestätigen' });
+        },
+      });
+      labelForSelection(go, 0, { none: '🚫 Niemand trinkt', some: '✅ Bestätigen' });
+      acts.appendChild(go); tail.appendChild(acts);
+      go.onclick = () => {
+        bumpStat(player.id, 'quizWin');
+        if(target) addSips(target, n, 'Quizfrage falsch beantwortet von ' + player.name);
+        addLogNarrative('❓ ' + player.name + ' wusste es: „' + frage.q + '“'
+          + (target ? '' : ' — und war gnädig.'));
+        finishTurn();
+      };
+      fitPanel();
+    } else {
+      const n = sip(3);
+      const info = document.createElement('div');
+      info.className = 'free-total';
+      info.style.cssText = 'text-align:center;margin:8px 0;';
+      info.innerHTML = `<b>${escapeHtml(player.name)}</b> trinkt <b>${n}</b> ${n === 1 ? 'Schluck' : 'Schlücke'}.`;
+      tail.appendChild(info);
+      const _ab = actionBar(tail, '✅ Bestätigen', () => {
+        bumpStat(player.id, 'quizLoss');
+        addSips(player.id, n, 'Quizfrage: ' + frage.q);
+        finishTurn();
+      }, { center: true });
+      void _ab;
+      fitPanel();
+    }
+  }
+}
+
 function renderMinigamePanel(card, body){
   const mg = pick(activeMinigames());
   const head = document.createElement('div');
@@ -4994,6 +5430,8 @@ function renderMinigamePanel(card, body){
   _more.addEventListener('click', _toggleRules);
 
   if(mg.custom === 'jumanji'){ renderJumanji(body); return; }
+  if(mg.custom === 'disordat'){ renderDisOrDat(body); return; }
+  if(mg.custom === 'quizmc'){ renderQuizMC(body); return; }
   if(mg.custom === 'zeitgefuehl'){ renderZeitgefuehl(body); return; }
 
   if(mg.promptBank){
@@ -5548,6 +5986,9 @@ const AWARDS = [
   { key:'diceWin',     icon:'🎲', title:'Würfelglück',       text:p => p.n + '× die höchste Augenzahl' },
   { key:'timeWin',     icon:'⏱️', title:'Innere Uhr',        text:p => p.n + '× das beste Zeitgefühl' },
   { key:'passWin',     icon:'🔁', title:'Abstauber:in',      text:p => p.n + '× beim Weitergeben gewonnen' },
+  { key:'quizWin',     icon:'🧠', title:'Besserwisser:in',   text:p => p.n + ' richtige Quizantworten' },
+  { key:'quizLoss',    icon:'🤷', title:'Raten reicht nicht', text:p => p.n + '× bei der Quizfrage danebengelegen' },
+  { key:'dodPerfect',  icon:'🗂', title:'Sortier-Maschine',  text:p => p.n + '× fehlerfrei sortiert' },
   { key:'maxSingle',   icon:'💥', title:'Größter Einzelschluck', text:p => p.n + ' Schlücke auf einmal' },
   { key:'finaleWin',   icon:'🏁', title:'Finalsieger:in',    text:() => 'hat das Finale gewonnen' },
 ];
