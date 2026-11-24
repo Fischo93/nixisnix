@@ -3,7 +3,7 @@
    Internet startet. Beim Aktualisieren gewinnt immer die neue Fassung:
    Die Seite selbst wird zuerst aus dem Netz geholt und nur bei Ausfall
    aus dem Speicher bedient. */
-const CACHE = 'nixisnix-v4';
+const CACHE = 'nixisnix-v5';
 
 /* Ohne diese Dateien startet das Spiel nicht. */
 const CORE = ['./', './index.html', './manifest.webmanifest'];
@@ -17,6 +17,9 @@ const EXTRA = [
   './bilder/schaetz-kirschen.jpg', './bilder/schaetz-flaschen.jpg',
   './bilder/schaetz-ballons.jpg',  './bilder/schaetz-hoelzer.jpg',
   './bilder/schaetz-menge.jpg',    './bilder/schaetz-groesse.jpg',
+  './bilder/kobold1.webp', './bilder/kobold2.webp', './bilder/kobold3.webp',
+  './bilder/kobold4.webp', './bilder/kobold5.webp', './bilder/kobold6.webp',
+  './bilder/kobold7.webp',
 ];
 
 self.addEventListener('install', event => {
