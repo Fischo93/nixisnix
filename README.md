@@ -1,2 +1,0 @@
-# nixisnix
-Trinkspiel
