@@ -3,23 +3,42 @@
    Internet startet. Beim Aktualisieren gewinnt immer die neue Fassung:
    Die Seite selbst wird zuerst aus dem Netz geholt und nur bei Ausfall
    aus dem Speicher bedient. */
-const CACHE = 'nixisnix-v5';
+const CACHE = 'nixisnix-v6';
 
 /* Ohne diese Dateien startet das Spiel nicht. */
 const CORE = ['./', './index.html', './manifest.webmanifest'];
 
-/* Nützlich, aber nicht lebenswichtig: Symbole und die Bilder der
-   Schätzfragen. Diese werden einzeln abgelegt — fehlt eine Datei auf
+/* Nützlich, aber nicht lebenswichtig: Symbole, Schriften, Bilder. Diese werden einzeln abgelegt — fehlt eine Datei auf
    dem Server, darf das nicht den ganzen Offline-Betrieb lahmlegen.
    (cache.addAll() bricht bei der kleinsten Lücke komplett ab.) */
 const EXTRA = [
-  './icon-192.png', './icon-512.png', './icon-maskable-512.png',
-  './bilder/schaetz-kirschen.jpg', './bilder/schaetz-flaschen.jpg',
-  './bilder/schaetz-ballons.jpg',  './bilder/schaetz-hoelzer.jpg',
-  './bilder/schaetz-menge.jpg',    './bilder/schaetz-groesse.jpg',
-  './bilder/kobold1.webp', './bilder/kobold2.webp', './bilder/kobold3.webp',
-  './bilder/kobold4.webp', './bilder/kobold5.webp', './bilder/kobold6.webp',
-  './bilder/kobold7.webp',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png',
+  './favicon.svg',
+  './pwa-192x192.png',
+  './apple-touch-icon.png',
+  './logo-nixisnix.jpg',
+  './workbox-window.prod.es5-Bd17z0YL.js',
+  './dm-sans-latin-400-normal-CW0RaeGs.woff2',
+  './dm-sans-latin-500-normal-B9HHJjqV.woff2',
+  './dm-sans-latin-600-normal-Aqo67rzb.woff2',
+  './dm-sans-latin-700-normal-DvUfVpUG.woff2',
+  './dm-sans-latin-800-normal-C2H8778U.woff2',
+  './dm-sans-latin-900-normal-BmOyECvA.woff2',
+  './fraunces-latin-700-normal-CEOla-zY.woff2',
+  './fraunces-latin-800-normal-5RM8DebB.woff2',
+  './fraunces-latin-900-normal-DmBL83SS.woff2',
+  './bilder/schaetz-kirschen.jpg',
+  './bilder/schaetz-flaschen.jpg',
+  './bilder/schaetz-ballons.jpg',
+  './bilder/schaetz-hoelzer.jpg',
+  './bilder/schaetz-menge.jpg',
+  './bilder/schaetz-groesse.jpg',
+  './bilder/kobold1.webp',
+  './bilder/kobold2.webp',
+  './bilder/kobold3.webp',
+  './bilder/kobold4.webp',
 ];
 
 self.addEventListener('install', event => {

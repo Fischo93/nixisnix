@@ -1,13 +1,13 @@
 {
-  "name": "NIXisNIX — Das Trinkspiel",
+  "name": "NIXisNIX",
   "short_name": "NIXisNIX",
-  "description": "96 Karten in vier Themen-Paketen, 19 Minispiele, Münzwurf um Kopf oder Zahl. Direkt im Browser, ohne Installation. Ab 18.",
+  "description": "Das Trinkspiel mit goldenem Münzwurf und 19 Minispielen. Kostenlos, ohne Werbung, direkt im Browser. Ab 18.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0d0b18",
-  "theme_color": "#0d0b18",
+  "background_color": "#0b1510",
+  "theme_color": "#0b1510",
   "lang": "de",
   "categories": [
     "games",
